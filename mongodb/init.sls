@@ -9,7 +9,7 @@ mongodb:
     - user: root
     - group: root
     - mode: 440
-    - source: salt://mongodb/templates/logrotate.jinja
+    - source: salt://mongodb/files/logrotate.jinja
   service:
      - running
      - enable: True
