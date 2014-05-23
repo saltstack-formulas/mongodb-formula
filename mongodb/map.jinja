@@ -1,0 +1,14 @@
+{% set mongodb = salt['grains.filter_by']({
+    'Debian': {
+        'pip': 'python-pip',
+        'use_ppa': True,
+        'version': None,
+        'replica_set': False,
+    },
+    'RedHat': {
+        'pip': 'python-pip',
+        'use_ppa': False,
+        'version': None,
+        'replica_set': False,
+    },
+}, merge=salt['pillar.get']('mongodb:lookup')) %}

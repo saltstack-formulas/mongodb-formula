@@ -1,0 +1,9 @@
+# This file is managed by Salt!
+
+port = {{ port }}
+dbpath = {{ dbpath }}
+logpath = {{ logpath }}/mongodb.log
+
+{% if replica_set -%}
+replSet = {{ replica_set.get('name') }}
+{% endif %}
