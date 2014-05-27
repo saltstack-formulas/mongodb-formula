@@ -62,10 +62,10 @@ mongodb_configuration:
     - source: salt://mongodb/files/mongodb.conf.jinja
     - template: jinja
     - context:
-      dbpath: {{ db_path }}
-      logpath: {{ log_path }}
-      port: {{ settings.get('port', 27017) }}
-      replica_set: {{ replica_set }}
+        dbpath: {{ db_path }}
+        logpath: {{ log_path }}
+        port: {{ settings.get('port', 27017) }}
+        replica_set: {{ replica_set }}
 
 mongodb_logrotate:
   file.managed:
