@@ -3,7 +3,7 @@
 # NOTE: Currently this will not work behind a NAT in AWS VPC. 
 # see http://lodge.glasgownet.com/2012/07/11/apt-key-from-behind-a-firewall/comment-page-1/ for details
 
-{% version = salt['pillar.get']('mongodb:version') %}
+{% set version = salt['pillar.get']('mongodb:version') %}
 
 {% if version is not none %}
 
