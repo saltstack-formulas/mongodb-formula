@@ -3,6 +3,10 @@
 # NOTE: Currently this will not work behind a NAT in AWS VPC. 
 # see http://lodge.glasgownet.com/2012/07/11/apt-key-from-behind-a-firewall/comment-page-1/ for details
 
+{% version = salt['pillar.get']('mongodb:version') %}
+
+{% if version is not none %}
+
 {% from "mongodb/map.jinja" import mongodb with context %}
 {% set settings = salt['pillar.get']('mongodb:setings', {}) %}
 {% set replica_set = salt['pillar.get']('mongodb:replica_set', {}) %}
@@ -75,3 +79,5 @@ mongodb_logrotate:
     - group: root
     - mode: 440
     - source: salt://mongodb/files/logrotate.jinja
+
+{% endif %}
