@@ -3,16 +3,15 @@
 # NOTE: Currently this will not work behind a NAT in AWS VPC. 
 # see http://lodge.glasgownet.com/2012/07/11/apt-key-from-behind-a-firewall/comment-page-1/ for details
 
-{% set version = salt['pillar.get']('mongodb:version') %}
+{% set version        = salt['pillar.get']('mongodb:version') %}
 
 {% if version is not none %}
 
-{% set settings = salt['pillar.get']('mongodb:settings', {}) %}
-{% set replica_set = salt['pillar.get']('mongodb:replica_set', {}) %}
-
-{% set db_path = settings.get('db_path', '/data/db') %}
-{% set log_path = settings.get('log_path', '/var/log/mongodb') %}
-{% set use_ppa = settings.get('use_ppa', none) %}
+{% set settings       = salt['pillar.get']('mongodb:settings', {}) %}
+{% set replica_set    = salt['pillar.get']('mongodb:replica_set', {}) %}
+{% set use_ppa        = salt['pillar.get']('mongodb:use_ppa', none) %}
+{% set db_path        = settings.get('db_path', '/data/db') %}
+{% set log_path       = settings.get('log_path', '/var/log/mongodb') %}
 
 include:
   - .replica
@@ -32,7 +31,6 @@ mongodb_package:
   pkg.installed:
      - name: mongodb
     {% endif %}
-
 
 mongodb_db_path:
   file.directory:
