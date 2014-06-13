@@ -7,17 +7,18 @@
 
 {% if version is not none %}
 
-{% from "mongodb/map.jinja" import mongodb with context %}
-{% set settings = salt['pillar.get']('mongodb:setings', {}) %}
+{% set settings = salt['pillar.get']('mongodb:settings', {}) %}
 {% set replica_set = salt['pillar.get']('mongodb:replica_set', {}) %}
+
 {% set db_path = settings.get('db_path', '/data/db') %}
 {% set log_path = settings.get('log_path', '/var/log/mongodb') %}
+{% set use_ppa = settings.get('use_ppa', none) %}
 
 include:
   - .replica
 
 mongodb_package:
-{% if mongodb.use_ppa %}
+{% if use_ppa is not none %}
   pkgrepo.managed:
     - humanname: MongoDB PPA
     - name: deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen
@@ -26,13 +27,12 @@ mongodb_package:
     - keyserver: keyserver.ubuntu.com
   pkg.installed:
     - name: mongodb-10gen
-    {% if mongodb.version != None %}
-    - version: {{ mongodb.version }}
-    {% endif %}
-{% else %}
+    - version: {{ version }}
+    {% else %}
   pkg.installed:
      - name: mongodb
-{% endif %}
+    {% endif %}
+
 
 mongodb_db_path:
   file.directory:
