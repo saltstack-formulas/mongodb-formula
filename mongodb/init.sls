@@ -2,8 +2,10 @@
 # the id of the minion
 # NOTE: Currently this will not work behind a NAT in AWS VPC. 
 # see http://lodge.glasgownet.com/2012/07/11/apt-key-from-behind-a-firewall/comment-page-1/ for details
+{% from "mongodb/map.jinja" import mongodb with context %}
 
 {% set version        = salt['pillar.get']('mongodb:version', none) %}
+{% set package_name   = salt['pillar.get']('mongodb:package_name', "mongodb-10gen") %}
 
 {% if version is not none %}
 
@@ -25,7 +27,7 @@ mongodb_package:
     - keyid: 7F0CEB10
     - keyserver: keyserver.ubuntu.com
   pkg.installed:
-    - name: mongodb-10gen
+    - name: {{ package_name }}
     - version: {{ version }}
     {% else %}
   pkg.installed:
@@ -50,14 +52,14 @@ mongodb_log_path:
 
 mongodb_service:
   service.running:
-    - name: mongodb
+    - name: {{ mongodb.mongod }}
     - enable: True
     - watch:
       - file: mongodb_configuration
 
 mongodb_configuration:
   file.managed:
-    - name: /etc/mongodb.conf
+    - name: {{ mongodb.conf_path }}
     - user: root
     - group: root
     - mode: 644
