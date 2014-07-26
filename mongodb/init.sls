@@ -69,6 +69,7 @@ mongodb_configuration:
         dbpath: {{ db_path }}
         logpath: {{ log_path }}
         port: {{ settings.get('port', 27017) }}
+        bind_ip: {{ settings.get('bind_ip', "127.0.0.1") }}
         replica_set: {{ replica_set }}
 
 mongodb_logrotate:
