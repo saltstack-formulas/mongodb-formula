@@ -1,7 +1,7 @@
 {% from "mongodb/map.jinja" import mongodb with context %}
-{% set replica_set = salt['pillar.get']('mongodb:replica_set', {}) %}
+{% set include_tools = salt['pillar.get']('mongodb:include_tools', False) %}
 
-{% if replica_set %}
+{% if include_tools %}
 
 python_pip:
   pkg.installed:
