@@ -13,3 +13,11 @@ mongodb:
     log_path: /mongodb/log
     log_append: True
     rest: True
+
+mongos:
+  use_ppa: True
+  version: 2.6.4
+  package_name: mongodb-org-mongos
+  settings:
+    log_file: /mongodb/log/mongos.log
+    config_svrs: "cfg1.local:27019,cfg2.local:27019,cfg3.local:27019"
