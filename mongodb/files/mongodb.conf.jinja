@@ -8,3 +8,11 @@ logpath = {{ logpath }}/mongodb.log
 {% if replica_set -%}
 replSet = {{ replica_set.get('name') }}
 {% endif %}
+
+{% if config_svr == True %}
+configsvr=true
+{% endif %}
+
+{% if shard_svr == True %}
+shardsvr=true
+{% endif %}

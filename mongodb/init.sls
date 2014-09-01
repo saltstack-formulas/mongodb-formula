@@ -1,6 +1,6 @@
 # This setup for mongodb assumes that the replica set can be determined from
 # the id of the minion
-# NOTE: Currently this will not work behind a NAT in AWS VPC. 
+# NOTE: Currently this will not work behind a NAT in AWS VPC.
 # see http://lodge.glasgownet.com/2012/07/11/apt-key-from-behind-a-firewall/comment-page-1/ for details
 {% from "mongodb/map.jinja" import mongodb with context %}
 
@@ -11,12 +11,14 @@
 
 {% set settings       = salt['pillar.get']('mongodb:settings', {}) %}
 {% set replica_set    = salt['pillar.get']('mongodb:replica_set', {}) %}
+{% set config_svr     = salt['pillar.get']('mongodb:config_svr', False) %}
+{% set shard_svr      = salt['pillar.get']('mongodb:shard_svr', False) %}
 {% set use_ppa        = salt['pillar.get']('mongodb:use_ppa', none) %}
 {% set db_path        = settings.get('db_path', '/data/db') %}
 {% set log_path       = settings.get('log_path', '/var/log/mongodb') %}
 
 include:
-  - .replica
+  - .tools
 
 mongodb_package:
 {% if use_ppa is not none %}
@@ -71,6 +73,8 @@ mongodb_configuration:
         port: {{ settings.get('port', 27017) }}
         bind_ip: {{ settings.get('bind_ip', "127.0.0.1") }}
         replica_set: {{ replica_set }}
+        config_svr: {{ config_svr }}
+        shard_svr: {{ shard_svr }}
 
 mongodb_logrotate:
   file.managed:
