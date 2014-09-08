@@ -4,7 +4,7 @@
 # see http://lodge.glasgownet.com/2012/07/11/apt-key-from-behind-a-firewall/comment-page-1/ for details
 {% from "mongodb/map.jinja" import mongodb with context %}
 
-{% set version        = salt['pillar.get']('mongodb:version', none) %}
+{% set version        = salt['pillar.get']('mongodb:version', '2.6.4') %}
 {% set package_name   = salt['pillar.get']('mongodb:package_name', "mongodb-10gen") %}
 
 {% if version is not none %}
@@ -21,7 +21,7 @@ include:
   - .tools
 
 mongodb_package:
-{% if use_ppa is not none %}
+{% if use_ppa %}
   pkgrepo.managed:
     - humanname: MongoDB PPA
     - name: deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen
@@ -31,10 +31,10 @@ mongodb_package:
   pkg.installed:
     - name: {{ package_name }}
     - version: {{ version }}
-    {% else %}
+{% else %}
   pkg.installed:
      - name: mongodb
-    {% endif %}
+{% endif %}
 
 mongodb_db_path:
   file.directory:
