@@ -43,6 +43,9 @@ mongodb_db_path:
     - group: mongodb
     - mode: 755
     - makedirs: True
+    - recurse:
+        - user
+        - group
 
 mongodb_log_path:
   file.directory:
