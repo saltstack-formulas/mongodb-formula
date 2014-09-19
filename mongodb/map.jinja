@@ -11,4 +11,8 @@
         'mongos': 'mongos',
         'conf_path': '/etc/mongodb.conf'
     },
-}, merge=salt['pillar.get']('mongodb:lookup')) %}
+}, merge=salt['grains.filter_by']({
+    'Ubuntu': {
+        'mongod': 'mongodb',
+    },
+}, grain='os', merge=salt['pillar.get']('samba:lookup'))) %}
