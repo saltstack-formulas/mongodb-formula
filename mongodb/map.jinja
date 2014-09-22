@@ -1,7 +1,7 @@
 {% set mongodb = salt['grains.filter_by']({
     'Debian': {
         'pip': 'python-pip',
-        'mongod': 'mongod',
+        'mongod': 'mongodb',
         'mongos': 'mongos',
         'conf_path': '/etc/mongod.conf'
     },
