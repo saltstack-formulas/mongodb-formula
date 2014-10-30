@@ -3,7 +3,7 @@ mongodb:
   version: 2.6.4
   package_name: mongodb-10gen
   mongo_directory: /mongodb
-  inclue_tools: True
+  include_tools: True
   manage_replica_set: False
   reconfigure_replica_set: False
   config_svr: False
