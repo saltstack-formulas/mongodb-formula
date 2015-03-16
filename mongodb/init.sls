@@ -31,6 +31,15 @@ mongodb_package:
   pkg.installed:
     - name: {{ package_name }}
     - version: {{ version }}
+{% elif grains['oscodename'] == 'jessie' %}
+  pkgrepo.managed:
+    - humanname: MongoDB main
+    - name: deb http://repo.mongodb.org/apt/debian jessie/mongodb-org/3.0 main
+    - file: /etc/apt/sources.list.d/mongodb.list
+    - keyid: 7F0CEB10
+    - keyserver: keyserver.ubuntu.com
+  pkg.installed:
+    - name: mongodb
 {% else %}
   pkg.installed:
      - name: mongodb
