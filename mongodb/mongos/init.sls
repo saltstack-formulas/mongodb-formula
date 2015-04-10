@@ -1,9 +1,6 @@
 {% from "mongodb/map.jinja" import mongodb with context %}
 
-{% set version        = salt['pillar.get']('mongodb:version', none) %}
 {% set package_name   = salt['pillar.get']('mongos:package_name', "mongodb-org-mongos") %}
-
-{% if version is not none %}
 
 {% set use_ppa        = salt['pillar.get']('mongos:use_ppa', none) %}
 {% set settings       = salt['pillar.get']('mongos:settings', {}) %}
@@ -20,7 +17,6 @@ mongos_package:
     - keyserver: keyserver.ubuntu.com
   pkg.installed:
     - name: {{ package_name }}
-    - version: {{ version }}
     {% else %}
   pkg.installed:
      - name: mongos
@@ -76,5 +72,3 @@ mongos_logrotate:
     - group: root
     - mode: 440
     - source: salt://mongodb/mongos/files/logrotate.jinja
-
-{% endif %}
