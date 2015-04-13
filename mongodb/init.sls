@@ -4,10 +4,7 @@
 # see http://lodge.glasgownet.com/2012/07/11/apt-key-from-behind-a-firewall/comment-page-1/ for details
 {% from "mongodb/map.jinja" import mongodb with context %}
 
-{% set version        = salt['pillar.get']('mongodb:version', '2.6.4') %}
 {% set package_name   = salt['pillar.get']('mongodb:package_name', "mongodb-10gen") %}
-
-{% if version is not none %}
 
 {% set settings       = salt['pillar.get']('mongodb:settings', {}) %}
 {% set replica_set    = salt['pillar.get']('mongodb:replica_set', {}) %}
@@ -30,7 +27,6 @@ mongodb_package:
     - keyserver: keyserver.ubuntu.com
   pkg.installed:
     - name: {{ package_name }}
-    - version: {{ version }}
 {% else %}
   pkg.installed:
      - name: mongodb
@@ -87,5 +83,3 @@ mongodb_logrotate:
     - group: root
     - mode: 440
     - source: salt://mongodb/files/logrotate.jinja
-
-{% endif %}
