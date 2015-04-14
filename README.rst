@@ -1,7 +1,18 @@
 mongodb
 =======
 
-mongodb
--------
+Install and configure various parts of a mongodb cluster.
 
-Install mongodb server and service
+Available states
+================
+
+
+``mongodb``
+-----------
+
+Install mongodb server and service.
+
+``mongodb.logrotate``
+---------------------
+
+Install mongodb logrotate configuration file.
