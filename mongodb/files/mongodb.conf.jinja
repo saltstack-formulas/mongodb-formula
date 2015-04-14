@@ -1,18 +1,19 @@
+{% from "mongodb/map.jinja" import mdb with context -%}
 # This file is managed by Salt!
 
-bind_ip = {{ bind_ip }}
-port = {{ port }}
-dbpath = {{ dbpath }}
-logpath = {{ logpath }}/mongodb.log
+bind_ip = {{ mdb.settings.bind_ip }}
+port = {{ mdb.settings.port }}
+dbpath = {{ mdb.db_path }}
+logpath = {{ mdb.log_path }}/mongodb.log
 
-{% if replica_set -%}
-replSet = {{ replica_set.get('name') }}
+{% if mdb.replica_set.name -%}
+replSet = {{ mdb.replica_set.name }}
 {% endif %}
 
-{% if config_svr == True %}
+{% if mdb.config_svr == True %}
 configsvr=true
 {% endif %}
 
-{% if shard_svr == True %}
+{% if mdb.shard_svr == True %}
 shardsvr=true
 {% endif %}

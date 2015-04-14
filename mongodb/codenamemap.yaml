@@ -1,0 +1,4 @@
+trusty:
+  use_repo: True
+precise:
+  use_repo: True

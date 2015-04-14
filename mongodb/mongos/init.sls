@@ -1,14 +1,7 @@
-{% from "mongodb/map.jinja" import mongodb with context %}
-
-{% set package_name   = salt['pillar.get']('mongos:package_name', "mongodb-org-mongos") %}
-
-{% set use_ppa        = salt['pillar.get']('mongos:use_ppa', none) %}
-{% set settings       = salt['pillar.get']('mongos:settings', {}) %}
-{% set log_path       = settings.get('log_path', '/var/log/mongos') %}
-{% set log_file       = settings.get('log_file', '/var/log/mongos/mongos.log') %}
+{% from "mongodb/map.jinja" import ms with context %}
 
 mongos_package:
-{% if use_ppa is not none %}
+{% if ms.use_ppa is not none %}
   pkgrepo.managed:
     - humanname: MongoDB PPA
     - name: deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen
@@ -16,15 +9,15 @@ mongos_package:
     - keyid: 7F0CEB10
     - keyserver: keyserver.ubuntu.com
   pkg.installed:
-    - name: {{ package_name }}
-    {% else %}
+    - name: {{ ms.repo_package_name }}
+{% else %}
   pkg.installed:
-     - name: mongos
-    {% endif %}
+    - name: {{ ms.package_name }}
+{% endif %}
 
 mongos_log_file:
   file.directory:
-    - name: {{ log_path }}
+    - name: {{ ms.log_path }}
     - user: root
     - group: root
     - mode: 755
@@ -35,8 +28,6 @@ mongos_init:
     - name: /etc/init/mongos.conf
     - source: salt://mongodb/mongos/files/init/mongos.conf.jinja
     - template: jinja
-    - context:
-        conf_path: {{ mongodb.conf_path }}
 
 mongos_init_d:
   file.managed:
@@ -46,23 +37,19 @@ mongos_init_d:
 
 mongos_service:
   service.running:
-    - name: {{ mongodb.mongos }}
+    - name: {{ ms.mongos }}
     - enable: True
     - watch:
       - file: mongos_configuration
 
 mongos_configuration:
   file.managed:
-    - name: {{ mongodb.conf_path }}
+    - name: {{ ms.conf_path }}
     - user: root
     - group: root
     - mode: 644
     - source: salt://mongodb/mongos/files/mongos.conf.jinja
     - template: jinja
-    - context:
-        logfile: {{ log_file }}
-        port: {{ settings.get('port', 27017) }}
-        config_svrs: {{ settings.get('config_svrs', '') }}
 
 mongos_logrotate:
   file.managed:

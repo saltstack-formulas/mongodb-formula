@@ -1,11 +1,10 @@
-{% from "mongodb/map.jinja" import mongodb with context %}
-{% set include_tools = salt['pillar.get']('mongodb:include_tools', False) %}
+{% from "mongodb/map.jinja" import mdb with context %}
 
-{% if include_tools %}
+{% if mdb.include_tools %}
 
 python_pip:
   pkg.installed:
-    - name: {{ mongodb.pip }}
+    - name: {{ mdb.pip }}
 
 pymongo_package:
   pip.installed:

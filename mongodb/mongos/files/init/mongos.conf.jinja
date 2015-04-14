@@ -1,3 +1,6 @@
+{% from "mongodb/map.jinja" import ms with context %}
+# THIS FILE IS MANAGED BY SALT
+
 # Ubuntu upstart file at /etc/init/mongod.conf
 
 # Recommended ulimit values for mongod or mongos
@@ -22,7 +25,7 @@ stop on runlevel [06]
 
 script
   ENABLE_MONGOD="yes"
-  CONF={{ conf_path }}
+  CONF={{ ms.conf_path }}
   DAEMON=/usr/bin/mongos
   DAEMONUSER=${DAEMONUSER:-mongodb}
 
