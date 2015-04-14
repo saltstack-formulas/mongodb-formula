@@ -29,12 +29,6 @@ mongos_init:
     - source: salt://mongodb/files/mongos.upstart.conf.jinja
     - template: jinja
 
-mongos_init_d:
-  file.managed:
-    - name: /etc/init.d/mongos
-    - source: salt://mongodb/mongos/files/init.d/mongos.jinja
-    - template: jinja
-
 mongos_service:
   service.running:
     - name: {{ ms.mongos }}
