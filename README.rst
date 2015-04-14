@@ -16,3 +16,8 @@ Install mongodb server and service.
 ---------------------
 
 Install mongodb logrotate configuration file.
+
+``mongodb.mongos``
+------------------
+
+Install/configure mongo query router service.
