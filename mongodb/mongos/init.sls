@@ -48,5 +48,5 @@ mongos_configuration:
     - user: root
     - group: root
     - mode: 644
-    - source: salt://mongodb/mongos/files/mongos.conf.jinja
+    - source: salt://mongodb/files/mongos.conf.jinja
     - template: jinja
