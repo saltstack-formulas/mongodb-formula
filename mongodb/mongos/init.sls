@@ -58,4 +58,4 @@ mongos_logrotate:
     - user: root
     - group: root
     - mode: 440
-    - source: salt://mongodb/mongos/files/logrotate.jinja
+    - source: salt://mongodb/files/logrotate.jinja
