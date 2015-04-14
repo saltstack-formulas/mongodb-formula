@@ -26,7 +26,7 @@ mongos_log_file:
 mongos_init:
   file.managed:
     - name: /etc/init/mongos.conf
-    - source: salt://mongodb/mongos/files/init/mongos.conf.jinja
+    - source: salt://mongodb/files/mongos.upstart.conf.jinja
     - template: jinja
 
 mongos_init_d:
