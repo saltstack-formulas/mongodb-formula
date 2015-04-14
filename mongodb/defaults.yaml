@@ -4,8 +4,6 @@ mongodb:
   pip: python-pip
   mongod: mongodb
 
-  include_tools: True
-  
   conf_path: /etc/mongodb.conf
   log_path: /var/log/mongodb
   db_path: /data/db

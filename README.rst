@@ -21,3 +21,8 @@ Install mongodb logrotate configuration file.
 ------------------
 
 Install/configure mongo query router service.
+
+``mongodb.tools``
+-----------------
+
+Install additional tools and python libraries.

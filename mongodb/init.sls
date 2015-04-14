@@ -4,9 +4,6 @@
 # see http://lodge.glasgownet.com/2012/07/11/apt-key-from-behind-a-firewall/comment-page-1/ for details
 {% from "mongodb/map.jinja" import mdb with context %}
 
-include:
-  - .tools
-
 mongodb_package:
 {% if mdb.use_ppa %}
   pkgrepo.managed:
