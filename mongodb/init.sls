@@ -61,8 +61,7 @@ mongodb_configuration:
 mongodb_logrotate:
   file.managed:
     - name: /etc/logrotate.d/mongodb
-    - template: jinja
     - user: root
     - group: root
     - mode: 440
-    - source: salt://mongodb/files/logrotate.jinja
+    - source: salt://mongodb/files/logrotate
