@@ -1,6 +1,5 @@
 mongodb:
   use_ppa: True
-  version: 2.6.4
   package_name: mongodb-10gen
   mongo_directory: /mongodb
   include_tools: True
@@ -16,7 +15,6 @@ mongodb:
 
 mongos:
   use_ppa: True
-  version: 2.6.4
   package_name: mongodb-org-mongos
   settings:
     log_file: /mongodb/log/mongos.log
