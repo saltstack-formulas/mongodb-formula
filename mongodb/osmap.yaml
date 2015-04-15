@@ -1,0 +1,4 @@
+Debian:
+  use_repo: True
+  mongodb_package: mongodb-org
+  mongos_package: mongodb-org-mongos

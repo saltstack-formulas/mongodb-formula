@@ -1,14 +1,13 @@
-{% set mongodb = salt['grains.filter_by']({
-    'Debian': {
-        'pip': 'python-pip',
-        'mongod': 'mongodb',
-        'mongos': 'mongos',
-        'conf_path': '/etc/mongodb.conf'
-    },
-    'RedHat': {
-        'pip': 'python-pip',
-        'mongod': 'mongodb',
-        'mongos': 'mongos',
-        'conf_path': '/etc/mongodb.conf'
-    },
-}, merge=salt['pillar.get']('mongodb:lookup')) %}
+{% import_yaml "mongodb/defaults.yaml" as defaults %}
+{% import_yaml "mongodb/osmap.yaml" as osmap %}
+{% import_yaml "mongodb/codenamemap.yaml" as codemap %}
+
+{% set distro_map = salt['pillar.get']('mongodb:lookup',
+    default=salt['grains.filter_by'](os_map), merge=True) %}
+{% set code_map = salt['grains.filter_by'](codemap, grain='oscodename') %}
+
+{% do defaults.mongodb.update(osmap) %}
+{% do defaults.mongodb.update(codemap) %}
+
+{% set mdb = salt['pillar.get']('mongodb', default=defaults.mongodb, merge=True) %}
+{% set ms = salt['pillar.get']('mongos', default=defaults.mongos, merge=True) %}

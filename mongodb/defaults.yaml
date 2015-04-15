@@ -1,0 +1,35 @@
+mongodb:
+  mongodb_package: mongodb
+  mongos_package: mongos
+  pip: python-pip
+  mongod: mongodb
+
+  conf_path: /etc/mongodb.conf
+  log_path: /var/log/mongodb
+  db_path: /data/db
+  use_repo: False
+  use_ppa: False
+
+  config_svr: False
+  shard_svr: True
+
+  replica_set:
+    name: None
+
+  settings:
+    port: 27017
+    bind_ip: 127.0.0.1
+
+mongos:
+  mongos_package: mongos
+  log_path: /var/log/mongos
+  log_file: /var/log/mongos/mongos.log
+  conf_path: /etc/mongodb.conf
+  mongos: mongos
+
+  use_repo: False
+  use_ppa: False
+
+  settings:
+    port: 27017
+    config_svrs: ""

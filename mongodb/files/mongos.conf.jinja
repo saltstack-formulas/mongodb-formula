@@ -1,0 +1,4 @@
+{% from "mongodb/map.jinja" import ms with context -%}
+port={{ ms.settings.port }}
+logpath={{ ms.log_file }}
+configdb={{ ms.settings.config_svrs }}
