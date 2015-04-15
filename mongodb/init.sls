@@ -5,19 +5,18 @@
 {% from "mongodb/map.jinja" import mdb with context %}
 
 mongodb_package:
-{% if mdb.use_ppa %}
+{% if mdb.use_ppa or mdb.use_repo %}
+  {% set os = salt['grains.get']('os')|lower %}
+  {% set code = salt['grains.get']('oscodename') %}
   pkgrepo.managed:
-    - humanname: MongoDB PPA
-    - name: deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen
+    - humanname: MongoDB.org Repo
+    - name: deb https://repo.mongodb.org/apt/{{ os }} {{ code }}/mongodb-org/stable main
     - file: /etc/apt/sources.list.d/mongodb.list
     - keyid: 7F0CEB10
     - keyserver: keyserver.ubuntu.com
-  pkg.installed:
-    - name: {{ mdb.repo_package_name }}
-{% else %}
-  pkg.installed:
-     - name: {{ mdb.repo_package_name }}
 {% endif %}
+  pkg.installed:
+     - name: {{ mdb.mongodb_package }}
 
 mongodb_db_path:
   file.directory:
