@@ -1,6 +1,6 @@
 mongodb:
-  package_name: mongodb
-  repo_package_name: mongodb-10gen
+  mongodb_package: mongodb
+  mongos_package: mongos
   pip: python-pip
   mongod: mongodb
 
@@ -21,8 +21,7 @@ mongodb:
     bind_ip: 127.0.0.1
 
 mongos:
-  package_name: mongos
-  repo_package_name: mongodb-org-mongos
+  mongos_package: mongos
   log_path: /var/log/mongos
   log_file: /var/log/mongos/mongos.log
   conf_path: /etc/mongodb.conf
