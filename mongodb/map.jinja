@@ -3,7 +3,7 @@
 {% import_yaml "mongodb/codenamemap.yaml" as codemap %}
 
 {% set distro_map = salt['pillar.get']('mongodb:lookup',
-    default=salt['grains.filter_by'](os_map), merge=True) %}
+    default=salt['grains.filter_by'](osmap), merge=True) %}
 {% set code_map = salt['grains.filter_by'](codemap, grain='oscodename') %}
 
 {% do defaults.mongodb.update(osmap) %}
