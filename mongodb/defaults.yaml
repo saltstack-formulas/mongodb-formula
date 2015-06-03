@@ -14,7 +14,7 @@ mongodb:
   shard_svr: True
 
   replica_set:
-    name: None
+    name: null
 
   settings:
     port: 27017
