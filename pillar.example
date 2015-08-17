@@ -6,6 +6,7 @@ mongodb:
   reconfigure_replica_set: False
   config_svr: False
   shard_svr: False
+  storage_engine: wiredTiger
   settings:
     db_path: /mongodb/data
     log_path: /mongodb/log
