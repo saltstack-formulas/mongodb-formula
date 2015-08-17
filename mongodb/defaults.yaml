@@ -16,6 +16,8 @@ mongodb:
   replica_set:
     name: null
 
+  storage_engine: null
+
   settings:
     port: 27017
     bind_ip: 127.0.0.1

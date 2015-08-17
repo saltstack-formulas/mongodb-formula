@@ -10,6 +10,10 @@ logpath = {{ mdb.log_path }}/mongodb.log
 replSet = {{ mdb.replica_set.name }}
 {% endif %}
 
+{% if mdb.storage_engine -%}
+storageEngine = {{ mdb.storage_engine }}
+{% endif %}
+
 {% if mdb.config_svr == True %}
 configsvr=true
 {% endif %}
