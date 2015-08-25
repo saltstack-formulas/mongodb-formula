@@ -10,7 +10,7 @@ mongodb_package:
   {% set code = salt['grains.get']('oscodename') %}
   pkgrepo.managed:
     - humanname: MongoDB.org Repo
-    - name: deb http://repo.mongodb.org/apt/{{ os }} {{ code }}/mongodb-org/stable main
+    - name: deb http://repo.mongodb.org/apt/{{ os }} {{ code }}/mongodb-org/stable {{ mdb.repo_component }}
     - file: /etc/apt/sources.list.d/mongodb.list
     - keyid: 7F0CEB10
     - keyserver: keyserver.ubuntu.com

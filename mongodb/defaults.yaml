@@ -9,6 +9,7 @@ mongodb:
   db_path: /data/db
   use_repo: False
   use_ppa: False
+  repo_component: main
 
   config_svr: False
   shard_svr: True
