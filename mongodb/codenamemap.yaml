@@ -3,7 +3,9 @@ trusty:
   use_repo: True
   mongodb_package: mongodb-org
   mongos_package: mongodb-org-mongos
+  repo_component: multiverse
 precise:
   use_repo: True
   mongodb_package: mongodb-org
   mongos_package: mongodb-org-mongos
+  repo_component: multiverse
