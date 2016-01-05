@@ -1,22 +1,26 @@
 mongodb:
-  use_ppa: True
+  use_repo: True
   version: 3.2
-  package_name: mongodb-10gen
+  repo_component: multiverse
+  mongodb_package: mongodb-org
   mongo_directory: /mongodb
-  manage_replica_set: False
-  reconfigure_replica_set: False
+  replica_set:
+    name: squiggles
   config_svr: False
   shard_svr: False
   storage_engine: wiredTiger
+  db_path: /mongodb/data
+  log_path: /mongodb/log
+  log_append: True
+  conf_path: /etc/mongodb.conf
+  rest: True
   settings:
-    db_path: /mongodb/data
-    log_path: /mongodb/log
-    log_append: True
-    rest: True
+    bind_ip: 127.0.0.1
+    port: 27017
 
 mongos:
-  use_ppa: True
-  package_name: mongodb-org-mongos
+  use_repo: True
+  mongos_package: mongodb-org-mongos
+  log_file: /mongodb/log/mongos.log
   settings:
-    log_file: /mongodb/log/mongos.log
     config_svrs: "cfg1.local:27019,cfg2.local:27019,cfg3.local:27019"
