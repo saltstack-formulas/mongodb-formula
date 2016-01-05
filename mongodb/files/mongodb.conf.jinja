@@ -5,6 +5,7 @@ bind_ip = {{ mdb.settings.bind_ip }}
 port = {{ mdb.settings.port }}
 dbpath = {{ mdb.db_path }}
 logpath = {{ mdb.log_path }}/mongodb.log
+logappend = {{ mdb.log_append }}
 
 {% if mdb.replica_set.name -%}
 replSet = {{ mdb.replica_set.name }}
@@ -20,4 +21,8 @@ configsvr=true
 
 {% if mdb.shard_svr == True %}
 shardsvr=true
+{% endif %}
+
+{% if mdb.rest == True %}
+rest=true
 {% endif %}

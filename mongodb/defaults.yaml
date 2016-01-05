@@ -6,6 +6,7 @@ mongodb:
 
   conf_path: /etc/mongodb.conf
   log_path: /var/log/mongodb
+  log_append: True
   db_path: /data/db
   use_repo: False
   version: stable
@@ -14,6 +15,7 @@ mongodb:
 
   config_svr: False
   shard_svr: True
+  rest: False
 
   replica_set:
     name: null
