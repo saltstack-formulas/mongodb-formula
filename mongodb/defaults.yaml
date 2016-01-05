@@ -8,6 +8,7 @@ mongodb:
   log_path: /var/log/mongodb
   db_path: /data/db
   use_repo: False
+  version: stable
   use_ppa: False
   repo_component: main
 
