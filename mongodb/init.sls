@@ -21,8 +21,8 @@ mongodb_package:
 mongodb_db_path:
   file.directory:
     - name: {{ mdb.db_path }}
-    - user: mongodb
-    - group: mongodb
+    - user: {{ mdb.mongodb_user }}
+    - group: {{ mdb.mongodb_group }}
     - mode: 755
     - makedirs: True
     - recurse:
@@ -32,8 +32,8 @@ mongodb_db_path:
 mongodb_log_path:
   file.directory:
     - name: {{ mdb.log_path }}
-    - user: mongodb
-    - group: mongodb
+    - user: {{ mdb.mongodb_user }}
+    - group: {{ mdb.mongodb_group }}
     - mode: 755
     - makedirs: True
 
