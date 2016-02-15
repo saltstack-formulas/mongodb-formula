@@ -9,3 +9,7 @@ precise:
   mongodb_package: mongodb-org
   mongos_package: mongodb-org-mongos
   repo_component: multiverse
+jessie:
+  use_repo: False
+  mongodb_package: mongodb-server
+  mongos_package: mongodb-server
