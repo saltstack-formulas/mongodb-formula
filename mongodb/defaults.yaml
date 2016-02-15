@@ -3,6 +3,8 @@ mongodb:
   mongos_package: mongos
   pip: python-pip
   mongod: mongodb
+  mongodb_user: mongodb
+  mongodb_group: mongodb
 
   conf_path: /etc/mongodb.conf
   log_path: /var/log/mongodb
