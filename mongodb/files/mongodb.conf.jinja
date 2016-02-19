@@ -27,8 +27,8 @@ shardsvr=true
 rest=true
 {% endif %}
 
-{% if 'setParameter' in mdb -%}
-  {% for k,v in mdb.setParameter.iteritems() -%}
+{% if 'set_parameter' in mdb -%}
+  {% for k,v in mdb.set_parameter.iteritems() -%}
 setParameter = {{ k }}={{ v }}
   {% endfor -%}
 {% endif -%}
