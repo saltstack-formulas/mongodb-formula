@@ -1,6 +1,12 @@
 {% from "mongodb/map.jinja" import mdb with context -%}
 # This file is managed by Salt!
 
+{% if 'mongod_settings' in mdb -%}
+
+{{ mdb.mongod_settings | yaml(false) }}
+
+{% else -%}
+
 bind_ip = {{ mdb.settings.bind_ip }}
 port = {{ mdb.settings.port }}
 dbpath = {{ mdb.db_path }}
@@ -33,3 +39,4 @@ setParameter = {{ k }}={{ v }}
   {% endfor -%}
 {% endif -%}
 
+{% endif-%}
