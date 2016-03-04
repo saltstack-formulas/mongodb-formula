@@ -20,7 +20,11 @@ mongodb_package:
 
 mongodb_db_path:
   file.directory:
+{% if 'mongod_settings' in mdb %}
+    - name: {{ mdb.mongod_settings.storage.dbPath }}
+{% else %}
     - name: {{ mdb.db_path }}
+{% endif %}
     - user: {{ mdb.mongodb_user }}
     - group: {{ mdb.mongodb_group }}
     - mode: 755
@@ -31,7 +35,11 @@ mongodb_db_path:
 
 mongodb_log_path:
   file.directory:
+{% if 'mongod_settings' in mdb %}
+    - name: {{ salt['file.dirname'](mdb.mongod_settings.systemLog.path) }}
+{% else %}
     - name: {{ mdb.log_path }}
+{% endif %}
     - user: {{ mdb.mongodb_user }}
     - group: {{ mdb.mongodb_group }}
     - mode: 755
