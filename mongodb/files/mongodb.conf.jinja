@@ -1,42 +1,56 @@
-{% from "mongodb/map.jinja" import mdb with context -%}
+{%- from "mongodb/map.jinja" import mdb with context -%}
+
 # This file is managed by Salt!
 
 {% if 'mongod_settings' in mdb -%}
 
+# mongod.conf
+
+# for documentation of all options, see:
+#   http://docs.mongodb.org/manual/reference/configuration-options/
+
 {{ mdb.mongod_settings | yaml(false) }}
 
-{% else -%}
+{%- else -%}
+
+# mongodb.conf
+
+# Where to store the data.
+dbpath={{ mdb.db_path }}
+
+# Where to log.
+logpath={{ mdb.log_path }}/mongodb.log
+
+logappend={{ mdb.settings.log_append | yaml_encode() }}
 
 bind_ip = {{ mdb.settings.bind_ip }}
 port = {{ mdb.settings.port }}
-dbpath = {{ mdb.db_path }}
-logpath = {{ mdb.log_path }}/mongodb.log
-logappend = {{ mdb.log_append }}
 
-{% if mdb.replica_set.name -%}
+# Enable journaling, http://www.mongodb.org/display/DOCS/Journaling
+journal={{ mdb.settings.journal | yaml_encode() }}
+
+    {%- if mdb.settings.configsvr %}
+
+configsvr={{ mdb.settings.configsvr }}
+
+    {%- elif mdb.settings.shardsvr %}
+
+shardsvr={{ mdb.settings.shardsvr }}
+
+    {%- endif %}
+
+    {%- if mdb.settings.replSet and not mdb.settings.configsvr %}
 replSet = {{ mdb.replica_set.name }}
-{% endif %}
+    {%- endif %}
 
-{% if mdb.storage_engine -%}
-storageEngine = {{ mdb.storage_engine }}
-{% endif %}
+    {%- if mdb.settings.rest %}
 
-{% if mdb.config_svr == True %}
-configsvr=true
-{% endif %}
+rest={{ mdb.settings.rest }}
 
-{% if mdb.shard_svr == True %}
-shardsvr=true
-{% endif %}
+    {%- endif %}
 
-{% if mdb.rest == True %}
-rest=true
-{% endif %}
-
-{% if 'set_parameter' in mdb -%}
-  {% for k,v in mdb.set_parameter.iteritems() -%}
+{% for k, v in mdb.settings.set_parameter | default({}) | dictsort() %}
 setParameter = {{ k }}={{ v }}
-  {% endfor -%}
-{% endif -%}
+{%- endfor %}
 
-{% endif-%}
+{%- endif %}

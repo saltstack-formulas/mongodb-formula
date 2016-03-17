@@ -1,4 +1,31 @@
+default: {}
+
 Debian:
+  # Install MongoDB 2.4 from Debian repo
+  use_repo: False
+  mongodb_package: mongodb
+
+RedHat:
   use_repo: True
   mongodb_package: mongodb-org
-  mongos_package: mongodb-org-mongos
+
+  mongodb_user: mongod
+  mongodb_group: mongod
+  mongod: mongod
+  conf_path: /etc/mongod.conf
+
+  mongod_settings:
+    systemLog:
+      destination: file
+      logAppend: true
+      path: /var/log/mongodb/mongod.log
+    storage:
+      dbPath: /var/lib/mongo
+      journal:
+        enabled: true
+    processManagement:
+      fork: true                                # fork and run in background
+      pidFilePath: /var/run/mongodb/mongod.pid  # location of pidfile
+    net:
+      port: 27017
+      bindIp: 127.0.0.1  # Listen to local interface only
