@@ -32,13 +32,13 @@ Install/configure MongoDB query router service.
 
 This state requires ``mongos:settings:config_svrs`` Pillar to be set correctly, its value will be
 substituted as argument for ``--configdb`` option of ``mongos`` executable (in the configuration
-file). See `MongoDB reference maual`_ for additional information.
+file). See `MongoDB reference manual`_ for additional information.
 
 .. note::
 
   The state currently works only on Ununtu LTS releases 12.04 and 14.04.
 
-.. _`MongoDB reference maual`: https://docs.saltstack.com/en/latest/topics/mine/index.html
+.. _`MongoDB reference manual`: https://docs.saltstack.com/en/latest/topics/mine/index.html
 
 ``mongodb.tools``
 -----------------
