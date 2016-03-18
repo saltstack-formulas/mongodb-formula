@@ -1,12 +1,12 @@
 mongodb:
   use_repo: False
+  # This is useful default with use_repo: True
   version: stable
-  # Debian/Ubuntu specific
-  repo_component: main
 
   mongodb_package: mongodb
   pip: python-pip
 
+  # MongoDB 2.4 configuration
   mongodb_user: mongodb
   mongodb_group: mongodb
   mongod: mongodb

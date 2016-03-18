@@ -6,7 +6,7 @@
 mongodb:
   use_repo: True
   version: 3.2
-  repo_component: multiverse
+  repo_component: multiverse    # this is for Ubuntu, use 'main' for Debian
   mongodb_package: mongodb-org
   mongodb_user: mongodb
   mongodb_group: mongodb

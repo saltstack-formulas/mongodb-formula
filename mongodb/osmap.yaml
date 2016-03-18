@@ -4,6 +4,7 @@ Debian:
   # Install MongoDB 2.4 from Debian repo
   use_repo: False
   mongodb_package: mongodb
+  repo_component: main
 
 RedHat:
   use_repo: True

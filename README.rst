@@ -16,7 +16,10 @@ repository at `repo.mongodb.org`_.
 
 .. note::
 
-  On Debian 8 (or later) MongoDB 2.4 packages will be installed from distribution repository.
+  By default on Debian 8 (or later) MongoDB 2.4 packages will be installed from distribution
+  repository. It is also possible to install newer version from `repo.mongodb.org`_ by setting
+  ``mongodb:lookup:use_repo`` Pillar to the ``True`` and other related keys. See ``pillar.example``
+  file for details.
 
 .. _`repo.mongodb.org`: https://repo.mongodb.org/
 
