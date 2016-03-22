@@ -1,43 +1,38 @@
 mongodb:
+  use_repo: False
+  # This is useful default with use_repo: True
+  version: stable
+
   mongodb_package: mongodb
-  mongos_package: mongos
   pip: python-pip
-  mongod: mongodb
+
+  # MongoDB 2.4 configuration
   mongodb_user: mongodb
   mongodb_group: mongodb
+  mongod: mongodb
 
   conf_path: /etc/mongodb.conf
   log_path: /var/log/mongodb
-  log_append: True
-  db_path: /data/db
-  use_repo: False
-  version: stable
-  use_ppa: False
-  repo_component: main
-
-  config_svr: False
-  shard_svr: True
-  rest: False
-
-  replica_set:
-    name: null
-
-  storage_engine: null
+  db_path: /var/lib/mongodb
 
   settings:
+    log_append: True
     port: 27017
     bind_ip: 127.0.0.1
+    journal: True
+    configsvr: False
+    shardsvr: False
+    replSet: ''
+    rest: False
 
 mongos:
-  mongos_package: mongos
+  use_repo: True
+  mongos_package: mongodb-org-mongos
+
   log_path: /var/log/mongos
   log_file: /var/log/mongos/mongos.log
-  conf_path: /etc/mongodb.conf
+  conf_path: /etc/mongos.conf
   mongos: mongos
-
-  use_repo: False
-  use_ppa: False
 
   settings:
     port: 27017
-    config_svrs: ""

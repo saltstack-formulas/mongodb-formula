@@ -1,4 +1,4 @@
-{% from "mongodb/map.jinja" import mdb with context %}
+{%- from "mongodb/map.jinja" import mdb with context -%}
 
 python_pip:
   pkg.installed:
