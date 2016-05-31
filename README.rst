@@ -46,7 +46,7 @@ file). See `MongoDB reference manual`_ for additional information.
 ``mongodb.tools``
 -----------------
 
-Install additional tools and python libraries.
+Install additional tools and Python libraries.
 
 Operating systems support
 =========================
