@@ -1,7 +1,7 @@
 # This setup for mongodb assumes that the replica set can be determined from
 # the id of the minion
 
-{%- from "mongodb/map.jinja" import mdb with context -%}
+{%- from 'mongodb/map.jinja' import mdb with context -%}
 
 {%- if mdb.use_repo %}
 
@@ -12,7 +12,7 @@
 
 mongodb_repo:
   pkgrepo.managed:
-    - humanname: MongoDB.org Repo
+    - humanname: MongoDB.org Repository
     - name: deb http://repo.mongodb.org/apt/{{ os }} {{ code }}/mongodb-org/{{ mdb.version }} {{ mdb.repo_component }}
     - file: /etc/apt/sources.list.d/mongodb-org.list
     - keyid: EA312927
@@ -24,30 +24,32 @@ mongodb_repo:
   pkgrepo.managed:
     {%- if mdb.version == 'stable' %}
     - name: mongodb-org
-    - humanname: MongoDB Repository
+    - humanname: MongoDB.org Repository
+    - gpgkey: https://www.mongodb.org/static/pgp/server-3.2.asc
     {%- else %}
     - name: mongodb-org-{{ mdb.version }}
     - humanname: MongoDB {{ mdb.version | capitalize() }} Repository
+    - gpgkey: https://www.mongodb.org/static/pgp/server-{{ mdb.version }}.asc
     {%- endif %}
     - baseurl: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/{{ mdb.version }}/$basearch/
-    - gpgcheck: 0
+    - gpgcheck: 1
     - enabled: 1
 
   {%- endif %}
 
 {%- endif %}
 
-mongodb_packages:
+mongodb_package:
   pkg.installed:
     - name: {{ mdb.mongodb_package }}
 
 mongodb_log_path:
   file.directory:
-{%- if 'mongod_settings' in mdb %}
+    {%- if 'mongod_settings' in mdb %}
     - name: {{ salt['file.dirname'](mdb.mongod_settings.systemLog.path) }}
-{%- else %}
+    {%- else %}
     - name: {{ mdb.log_path }}
-{%- endif %}
+    {%- endif %}
     - user: {{ mdb.mongodb_user }}
     - group: {{ mdb.mongodb_group }}
     - mode: 755
@@ -58,11 +60,11 @@ mongodb_log_path:
 
 mongodb_db_path:
   file.directory:
-  {%- if 'mongod_settings' in mdb %}
+    {%- if 'mongod_settings' in mdb %}
     - name: {{ mdb.mongod_settings.storage.dbPath }}
-  {%- else %}
+    {%- else %}
     - name: {{ mdb.db_path }}
-  {%- endif %}
+    {%- endif %}
     - user: {{ mdb.mongodb_user }}
     - group: {{ mdb.mongodb_group }}
     - mode: 755
@@ -84,7 +86,5 @@ mongodb_service:
   service.running:
     - name: {{ mdb.mongod }}
     - enable: True
-    - require:
-      - file: mongodb_db_path
     - watch:
       - file: mongodb_config
