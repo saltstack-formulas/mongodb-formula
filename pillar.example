@@ -5,7 +5,7 @@
 ## in mongodb/init.sls).
 mongodb:
   use_repo: True
-  version: 3.2
+  version: 3.2 # use oldstable in for 1.8 - 2.6
   repo_component: multiverse    # this is for Ubuntu, use 'main' for Debian
   mongodb_package: mongodb-org
   mongodb_user: mongodb
