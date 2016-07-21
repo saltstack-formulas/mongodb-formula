@@ -31,7 +31,7 @@ mongodb_repo:
     {%- elif mdb.version == 'oldstable' %}
     - name: mongodb-org-{{ mdb.version }}
     - humanname: MongoDB oldstable Repository
-    - baseurl: http://downloads-distro.mongodb.org/repo/redhat/os/x86_64
+    - baseurl: http://downloads-distro.mongodb.org/repo/redhat/os/$basearch/
     - gpgcheck: 0
     {%- else %}
     - name: mongodb-org-{{ mdb.version }}
