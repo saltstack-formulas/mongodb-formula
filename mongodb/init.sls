@@ -26,14 +26,21 @@ mongodb_repo:
     - name: mongodb-org
     - humanname: MongoDB.org Repository
     - gpgkey: https://www.mongodb.org/static/pgp/server-3.2.asc
+    - baseurl: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/{{ mdb.version }}/$basearch/
+    - gpgcheck: 1
+    {%- elif mdb.version == 'oldstable' %}
+    - name: mongodb-org-{{ mdb.version }}
+    - humanname: MongoDB oldstable Repository
+    - baseurl: http://downloads-distro.mongodb.org/repo/redhat/os/$basearch/
+    - gpgcheck: 0
     {%- else %}
     - name: mongodb-org-{{ mdb.version }}
     - humanname: MongoDB {{ mdb.version | capitalize() }} Repository
     - gpgkey: https://www.mongodb.org/static/pgp/server-{{ mdb.version }}.asc
-    {%- endif %}
     - baseurl: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/{{ mdb.version }}/$basearch/
     - gpgcheck: 1
-    - enabled: 1
+    {%- endif %}
+    - disabled: 0
 
   {%- endif %}
 
