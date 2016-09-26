@@ -24,7 +24,11 @@ mongodb_user:
 
 mongos_log_path:
   file.directory:
+{%- if 'mongos_settings' in ms %}
+    - name: {{ salt['file.dirname'](ms.mongos_settings.systemLog.path) }}
+{%- else %}
     - name: {{ ms.log_path }}
+{%- endif %}
     - user: mongodb
     - group: mongodb
     - mode: 755
