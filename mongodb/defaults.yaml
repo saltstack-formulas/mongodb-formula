@@ -32,6 +32,9 @@ mongos:
   log_path: /var/log/mongos
   log_file: /var/log/mongos/mongos.log
   conf_path: /etc/mongos.conf
+  mongos_user: mongodb
+  mongos_user_home: /var/log/mongos
+  mongos_group: mongodb
   mongos: mongos
 
   settings:
