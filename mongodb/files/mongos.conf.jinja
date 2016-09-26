@@ -1,4 +1,14 @@
 {% from "mongodb/map.jinja" import ms with context -%}
+
+{%- if 'mongos_settings' in ms -%}
+
+# This file is managed by Salt!
+
+{{ ms.mongos_settings | yaml(false) }}
+
+{%- else -%}
+
 port={{ ms.settings.port }}
 logpath={{ ms.log_file }}
 configdb={{ ms.settings.config_svrs }}
+{%- endif %}
