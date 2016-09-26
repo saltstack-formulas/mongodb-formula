@@ -14,12 +14,19 @@ mongos_package:
   pkg.installed:
     - name: {{ ms.mongos_package }}
 
-mongodb_user:
+mongos_user:
   user.present:
-    - name: mongodb
+    - name: {{ ms.mongos_user }}
     - gid_from_name: True
-    - home: {{ ms.log_path }}
+    - home: {{ ms.mongos_user_home }}
     - shell: /bin/sh
+    - system: True
+    - require:
+      - group: mongos_group
+
+mongos_group:
+  group.present:
+    - name: {{ ms.mongos_group }}
     - system: True
 
 mongos_log_path:
@@ -29,8 +36,8 @@ mongos_log_path:
 {%- else %}
     - name: {{ ms.log_path }}
 {%- endif %}
-    - user: mongodb
-    - group: mongodb
+    - user: {{ ms.mongos_user }}
+    - group: {{ ms.mongos_group }}
     - mode: 755
     - makedirs: True
 
