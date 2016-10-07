@@ -4,6 +4,7 @@ mongodb:
   version: stable
 
   mongodb_package: mongodb
+  keyid: EA312927
   pip: python-pip
 
   # MongoDB 2.4 configuration
