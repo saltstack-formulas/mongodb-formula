@@ -39,7 +39,7 @@ file). See `MongoDB reference manual`_ for additional information.
 
 .. note::
 
-  The state currently works only on Ununtu LTS releases 12.04 and 14.04.
+  The state currently works only on Ubuntu LTS releases 12.04 and 14.04.
 
 .. _`MongoDB reference manual`: https://docs.saltstack.com/en/latest/topics/mine/index.html
 
