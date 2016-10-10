@@ -15,7 +15,7 @@ mongodb_repo:
     - humanname: MongoDB.org Repository
     - name: deb http://repo.mongodb.org/apt/{{ os }} {{ code }}/mongodb-org/{{ mdb.version }} {{ mdb.repo_component }}
     - file: /etc/apt/sources.list.d/mongodb-org.list
-    - keyid: EA312927
+    - keyid: {{ mdb.keyid }}
     - keyserver: keyserver.ubuntu.com
 
   {%- elif grains['os_family'] == 'RedHat' %}

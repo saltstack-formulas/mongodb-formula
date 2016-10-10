@@ -48,6 +48,11 @@ mongodb:
 #     set_parameter:
 #       textSearchEnabled: 'true'
 
+## Use this for MongoDB 3.0 on Ubuntu
+# mongodb:
+#   version: 3.0
+#   keyid: 7F0CEB10 
+
 ## MongoDB query router configuration
 mongos:
   use_repo: True
