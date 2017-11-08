@@ -3,8 +3,8 @@ mongodb:
   # This is useful default with use_repo: True
   version: stable
 
-  mongodb_package: mongodb
-  keyid: EA312927
+  mongodb_package: mongodb-org
+  keyid: 0C49F3730359A14518585931BC711F9BA15703C6 
   pip: python-pip
 
   # MongoDB 2.4 configuration
