@@ -80,6 +80,15 @@ mongodb_db_path:
       - user
       - group
 
+{% if salt['grains.get']('selinux:enabled') == True %}
+mongodb_db_path_restorecon:
+  selinux.fcontext_policy_applied:
+    - name: {{ mdb.mongod_settings.storage.dbPath }}
+    - recursive: True
+    - require:
+      - file: {{ mdb.mongod_settings.storage.dbPath }}
+{% endif %}
+
 mongodb_config:
   file.managed:
     - name: {{ mdb.conf_path }}
