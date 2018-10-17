@@ -1,63 +1,154 @@
-## For versions of Mongo that use the YAML format for configuration, use the
-## following. All entries in mongod_settings are written to the config file
-## verbatim. The storage:dbPath and systemLog:path entries are required in
-## this usage and take precedence over db_path at the top level (see references
-## in mongodb/init.sls).
+
 mongodb:
-  use_repo: True
-  version: 3.2 # use oldstable in for 1.8 - 2.6
-  repo_component: multiverse    # this is for Ubuntu, use 'main' for Debian
-  mongodb_package: mongodb-org
-  mongodb_user: mongodb
-  mongodb_group: mongodb
-  mongod: mongod
-  conf_path: /etc/mongod.conf
-  log_path: /mongodb/log
-  db_path: /mongodb/data
-  mongod_settings:
-    systemLog:
-      destination: file
-      logAppend: true
-      path: /var/log/mongodb/mongod.log
-    storage:
-      dbPath: /var/lib/mongodb
-      journal:
-        enabled: true
-    net:
-      port: 27017
-      bindIp: 0.0.0.0
-    setParameter:
-      textSearchEnabled: true
 
-## Use this for MongoDB 2.4
-# mongodb:
-#   use_repo: False
-#   mongodb_package: mongodb
-#   conf_path: /etc/mongodb.conf
-#   db_path: /mongodb/data
-#   log_path: /mongodb/log
-#   settings:
-#     log_append: True
-#     bind_ip: 0.0.0.0
-#     port: 27017
-#     journal: True
-#     configsvr: False
-#     shardsvr: True
-#     replSet: squiggles
-#     rest: False
-#     set_parameter:
-#       textSearchEnabled: 'true'
+  ## minimal pillar data for GNU/Linux
+  server:
+    ### these are mutually exclusive ###
+    use_repo: True
+    version: 4.0
+    #use_archive: True
+    #version: 4.0.3
+  bic:
+    version: 2.7.0
 
-## Use this for MongoDB 3.0 on Ubuntu
-# mongodb:
-#   version: 3.0
-#   keyid: 7F0CEB10 
 
-## MongoDB query router configuration
-mongos:
-  use_repo: True
-  mongos_package: mongodb-org-mongos
-  log_path: /mongodb/log
-  log_file: /mongodb/log/mongos.log
-  settings:
-    config_svrs: "cfg1.local:27019,cfg2.local:27019,cfg3.local:27019"
+  ## more advanced pillar data (from 'defaults.yaml')
+  system:
+    userhome: /home
+    use_firewalld: False
+    use_selinux: False
+    pidpath: /var/run/mongodb
+    deps:
+      - curl
+      - openssl
+  dl:
+    interval: 60
+    retries: 2
+    tmpdir: /tmp/mongodbtmp
+
+  server:
+    package: mongodb-org
+    version: 4.0
+    use_repo: False
+    use_archive: False
+    use_schema: False
+    disable_transparent_hugepages: true
+    binpath: /usr    #could be /usr/local/mongodb when use_archive=true
+    user: mongodb
+    group: mongodb
+    mongod:
+      service: mongod
+      shortcut: false
+      package: mongodb-org-server
+      conf_path: /etc/mongod.conf
+      conf:
+        systemLog:
+          logAppend: False
+          destination: file
+          path: /var/log/mongodb/mongod.log
+        storage:
+          dbPath: /var/lib/mongodb/mongod
+          journal:
+            enabled: true
+        replication:
+          replSetName: "rs1"
+        sharding:
+          clusterRole: shardsvr
+        net:
+          bindIp: {{ grains.ipv4[-1] or grains.ipv6[-1] }}
+          port: 27018
+        processManagement:
+          timeZoneInfo: /usr/share/zoneinfo
+          fork: true
+          pidFilePath: /var/run/mongodb/mongod.pid
+      systemd:
+        file: /usr/lib/systemd/system/mongod.service
+        conf:
+          Type: forking
+          LimitFSIZE: infinity
+          LimitCPU: infinity
+          LimitAS: infinity
+          LimitNOFILE: 64000
+          LimitNPROC: 64000
+          LimitMEMLOCK: infinity
+          TasksMax: infinity
+          TasksAccounting: false
+
+    mongos:
+      service: mongos
+      shortcut: false
+      package: mongodb-org-mongos
+      conf_path: /etc/mongos.conf
+      conf:
+        systemLog:
+          destination: file
+          path: /var/log/mongodb/mongos.log
+        processManagement:
+          timeZoneInfo: /usr/share/zoneinfo
+          fork: true
+          pidFilePath: /var/run/mongodb/mongos.pid
+        net:
+          bindIp: {{ grains.ipv4[-1] or grains.ipv6[-1] }}
+          port: 28017
+        sharding:
+          configDB: 'rs1/{{ grains.ipv4[-1] or grains.ipv6[-1] }}:27018'
+      systemd:
+        file: /usr/lib/systemd/system/mongos.service
+        conf:
+          Type: simple
+          LimitFSIZE: infinity
+          LimitCPU: infinity
+          LimitAS: infinity
+          LimitNOFILE: 64000
+          LimitNPROC: 64000
+          LimitMEMLOCK: infinity
+          TasksMax: infinity
+          TasksAccounting: false
+    shell:
+      package: mongodb-org-shell
+      mongorc: /etc/mongorc.js
+    tools:
+      package: mongodb-org-tools
+
+  bic:
+    version: 2.7.0
+    use_repo: False
+    use_archive: true
+    use_schema: True
+    binpath: /usr/local/bic
+    user: mongodb
+    group: mongodb
+    mongosqld:
+      service: mongosqld
+      shortcut: false
+      conf_path: /etc/mongosqld.conf
+      conf:
+        systemLog:
+          logAppend: true
+          path: /var/log/mongodb/mongosqld.log
+        schema:
+          path: /etc/mongosqld/schema
+        security:
+          enabled: false
+        mongodb:
+          net:
+            uri: '{{ grains.ipv4[-1] or grains.ipv6[-1] }}:27018'
+            #auth:
+            #  username: root
+            #  password: changeme
+        net:
+          bindIp: {{ grains.ipv4[-1] or grains.ipv6[-1] }}
+          port: 3307
+      systemd:
+        file: /usr/lib/systemd/system/mongosqld.service
+        conf:
+          Type: simple
+          LimitFSIZE: infinity
+          LimitCPU: infinity
+          LimitAS: infinity
+          LimitNOFILE: 64000
+          LimitNPROC: 64000
+          LimitMEMLOCK: infinity
+          TasksMax: infinity
+          TasksAccounting: false
+

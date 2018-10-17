@@ -1,0 +1,16 @@
+#########################################################
+# File managed by Salt. Changes risk being overwritten.
+#########################################################
+# MongoDB {{ svc }} logrotate
+{{ pattern }} {
+    daily
+    missingok
+    rotate {{ days }}
+    compress
+    dateext
+    notifempty
+    sharedscripts
+    postrotate
+        /bin/kill -SIGUSR1 `cat {{ pidpath }}/{{ svc }}.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}
