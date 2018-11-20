@@ -1,0 +1,35 @@
+//#########################################################
+//# File managed by Salt. Changes risk being overwritten.
+//#########################################################
+//# MongoDB {{ svc }}
+// disable dropDatabase
+db.dropDatabase = DB.prototype.dropDatabase = function() {
+  print("dropDatabase is disabled on this environment");
+};
+
+prompt = function() {
+  // case mongos
+  if (rs.status().info = 'mongos') {
+    return rs.status().info + ':[' + db.version() + '] > ';
+  }
+
+  // for  replicasets
+  switch (rs.status().myState) {
+    case 1:
+      stateStr = 'PRIMARY'
+      break;
+  
+    case 2:
+      stateStr = 'SECONDARY'
+      break;
+  
+    case 7:
+      stateStr = 'ARBITER'
+      break;
+  
+    dafault:
+      stateStr = 'MONGO'
+      break;
+  }
+  return rs.status().set + ':' + stateStr + ':[' + db.version() + '] > ';
+}
