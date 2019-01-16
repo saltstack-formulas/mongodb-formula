@@ -14,8 +14,14 @@
       enabled: 1
       disabled: 0
 
-    {%- if grains.os_family in ('Debian', 'Ubuntu',) %}
+    {%- if grains.os_family in ('Debian',) %}
 
+      name: 'deb http://repo.mongodb.org/apt/{{ os }} {{ codename }}/mongodb-org/RELEASE {{ comp or '' }}'
+      file: /etc/apt/sources.list.d/mongodb-org-RELEASE.list
+      keyid: 9DA31620334BD75D9DCB49F368818C72E52529D4
+      keyserver: hkp://keyserver.ubuntu.com:80
+
+    {% elif grains.os_family in ('Ubuntu',) %}
       name: 'deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/{{ os }} {{ codename }}/mongodb-org/RELEASE {{ comp or '' }}'
       file: /etc/apt/sources.list.d/mongodb-org-RELEASE.list
       keyid: 9DA31620334BD75D9DCB49F368818C72E52529D4
@@ -53,4 +59,3 @@
 {{ distro_codename('rhel', 'Fedora 28 (Twenty Eight)', 'rhel70') }}
 {{ distro_codename('rhel', 'Fedora 29 (Twenty Nine)', 'rhel70') }}
 {{ distro_codename('rhel', 'Fedora 30 (Thirty)', 'rhel70') }}
-
