@@ -3,10 +3,6 @@
 # vim: ft=yaml
 {% from 'mongodb/map.jinja' import mongodb with context %}
 
-mongodb server archive {{ mongodb.server.dirname }} cleancache:
-  file.absent:
-    - name: /private/{{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }}
-
 mongodb server archive {{ mongodb.server.dirname }} download:
   file.directory:
     - names:
@@ -17,10 +13,13 @@ mongodb server archive {{ mongodb.server.dirname }} download:
     - names: {{ mongodb.system.deps }}
   cmd.run:
     - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }} {{ mongodb.server.url }}
+    - onlyif: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }}
         {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
         attempts: {{ mongodb.dl.retries }}
         interval: {{ mongodb.dl.interval }}
+        until: True
+        splay: 10
         {% endif %}
 
 mongodb server archive {{ mongodb.server.dirname }} install:
@@ -31,7 +30,7 @@ mongodb server archive {{ mongodb.server.dirname }} install:
     - trim_output: True
     - enforce_toplevel: True
     - source_hash: {{ mongodb.server.url ~ '.sha256' if "source_hash" not in mongodb.server else mongodb.server.source_hash }}
-    - onchanges:
+    - require:
       - mongodb server archive {{ mongodb.server.dirname }} download
     - require_in:
       - file: mongodb server archive {{ mongodb.server.dirname }} install
@@ -55,8 +54,4 @@ mongodb server archive {{ mongodb.server.dirname }} profile:
       svrpath: {{ mongodb.server.binpath }}
       bicpath: {{ mongodb.bic.binpath or None }}
     - onlyif: test -d {{ mongodb.server.binpath }}
-
-mongodb server archive {{ mongodb.server.dirname }} tidyup:
-  file.absent:
-    - name: {{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }}
 
