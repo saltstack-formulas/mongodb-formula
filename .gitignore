@@ -3,3 +3,13 @@
 # Backups
 *~
 *.bak
+
+# Testinfra
+junit*.xml
+vendor/
+.kitchen/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
