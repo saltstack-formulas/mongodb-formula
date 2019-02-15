@@ -1,42 +1,143 @@
 mongodb:
-  use_repo: False
-  # This is useful default with use_repo: True
-  version: stable
+  system:
+    pip: python-pip
+    userhome: /home
+    prefix: /opt
+    use_firewalld: False
+    use_selinux: False
+    pidpath: /var/run/mongodb
+    deps:
+      - curl
+      - openssl
+  dl:
+    interval: 60
+    retries: 2
+    tmpdir: /tmp/mongodbtmp
 
-  mongodb_package: mongodb-org
-  keyid: 0C49F3730359A14518585931BC711F9BA15703C6 
-  pip: python-pip
+  server:
+    package: mongodb-org
+    version: 4.0
+    use_repo: False
+    use_archive: False
+    use_schema: False
+    disable_transparent_hugepages: true
+    binpath: /usr
+    user: mongodb
+    group: mongodb
+    mongod:
+      service: mongod
+      shortcut: false
+      package: mongodb-org-server
+      conf_path: /etc/mongod.conf
+      conf:
+        systemLog:
+          logAppend: False
+          destination: file
+          path: /var/log/mongodb/mongod.log
+        storage:
+          dbPath: /var/lib/mongodb/mongod
+          journal:
+            enabled: true
+        replication:
+          replSetName: "rs1"
+        sharding:
+          clusterRole: shardsvr
+        net:
+          bindIp: {{ grains.ipv4[-1] or grains.ipv6[-1] }}
+          port: 27018
+        processManagement:
+          timeZoneInfo: /usr/share/zoneinfo
+          fork: true
+          pidFilePath: /var/run/mongodb/mongod.pid
+      systemd:
+        file: /usr/lib/systemd/system/mongod.service
+        conf:
+          Type: forking
+          LimitFSIZE: infinity
+          LimitCPU: infinity
+          LimitAS: infinity
+          LimitNOFILE: 64000
+          LimitNPROC: 64000
+          LimitMEMLOCK: infinity
+          TasksMax: infinity
+          TasksAccounting: false
 
-  # MongoDB 2.4 configuration
-  mongodb_user: mongodb
-  mongodb_group: mongodb
-  mongod: mongodb
 
-  conf_path: /etc/mongodb.conf
-  log_path: /var/log/mongodb
-  db_path: /var/lib/mongodb
+    mongos:
+      service: mongos
+      shortcut: false
+      package: mongodb-org-mongos
+      conf_path: /etc/mongos.conf
+      conf:
+        systemLog:
+          destination: file
+          path: /var/log/mongodb/mongos.log
+        processManagement:
+          timeZoneInfo: /usr/share/zoneinfo
+          fork: true
+          pidFilePath: /var/run/mongodb/mongos.pid
+        net:
+          bindIp: {{ grains.ipv4[-1] or grains.ipv6[-1] }}
+          port: 28017
+        sharding:
+          configDB: 'rs1/{{ grains.ipv4[-1] or grains.ipv6[-1] }}:27018'
+      systemd:
+        file: /usr/lib/systemd/system/mongos.service
+        conf:
+          Type: simple
+          LimitFSIZE: infinity
+          LimitCPU: infinity
+          LimitAS: infinity
+          LimitNOFILE: 64000
+          LimitNPROC: 64000
+          LimitMEMLOCK: infinity
+          TasksMax: infinity
+          TasksAccounting: false
+    shell:
+      package: mongodb-org-shell
+      mongorc: /etc/mongorc.js
+    tools:
+      package: mongodb-org-tools
 
-  settings:
-    log_append: True
-    port: 27017
-    bind_ip: 127.0.0.1
-    journal: True
-    configsvr: False
-    shardsvr: False
-    replSet: ''
-    rest: False
+  bic:
+    version: 2.7.0
+    use_repo: False
+    use_archive: true
+    use_schema: True
+    binpath: /usr/local/bic
+    user: mongodb
+    group: mongodb
+    mongosqld:
+      service: mongosqld
+      shortcut: false
+      conf_path: /etc/mongosqld.conf
+      conf:
+        systemLog:
+          logAppend: true
+          path: /var/log/mongodb/mongosqld.log
+        schema:
+          path: /etc/mongosqld/schema
+        security:
+          enabled: false
+        mongodb:
+          net:
+            uri: '{{ grains.ipv4[-1] or grains.ipv6[-1] }}:27018'
+            #auth:
+            #  username: root
+            #  password: changeme
+        net:
+          bindIp: {{ grains.ipv4[-1] or grains.ipv6[-1] }}
+          port: 29017
+      systemd:
+        file: /usr/lib/systemd/system/mongosqld.service
+        conf:
+          Type: simple
+          LimitFSIZE: infinity
+          LimitCPU: infinity
+          LimitAS: infinity
+          LimitNOFILE: 64000
+          LimitNPROC: 64000
+          LimitMEMLOCK: infinity
+          TasksMax: infinity
+          TasksAccounting: false
 
-mongos:
-  use_repo: True
-  mongos_package: mongodb-org-mongos
-
-  log_path: /var/log/mongos
-  log_file: /var/log/mongos/mongos.log
-  conf_path: /etc/mongos.conf
-  mongos_user: mongodb
-  mongos_user_home: /var/log/mongos
-  mongos_group: mongodb
-  mongos: mongos
-
-  settings:
-    port: 27017

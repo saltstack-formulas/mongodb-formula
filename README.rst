@@ -1,62 +1,69 @@
 mongodb
 =======
 
-Install and configure various parts of a MongoDB cluster.
+Install and configure MongoDB products on GNU/Linux and MacOS.
 
-Available states
+Meta states
 ================
 
 ``mongodb``
 -----------
 
-Install MongoDB server and run the service.
+Metastate to deploy MongoDB products from packages and/or archive files.  
 
-By default the latest stable version of MongoDB 3.X packages will be installed from official
-repository at `repo.mongodb.org`_.
+``mongodb.server``
+-------------------
 
-.. note::
+Deploy and configure MongoDB "Community Server" and start 'mongos' and 'mongod' services.
 
-  By default on Debian 8 (or later) MongoDB 2.4 packages will be installed from distribution
-  repository. It is also possible to install newer version from `repo.mongodb.org`_ by setting
-  ``mongodb:lookup:use_repo`` Pillar to the ``True`` and other related keys. See ``pillar.example``
-  file for details.
+``mongodb.bic``
+-------------------
 
-.. _`repo.mongodb.org`: https://repo.mongodb.org/
+Deploy and configure MongoDB "Connector for BI" and start 'mongosqld' service.
 
-``mongodb.logrotate``
----------------------
+``mongodb.remove``
+-----------
 
-Install MongoDB logrotate configuration file.
+Metastate to uninstall MongoDB products
 
-``mongodb.mongos``
-------------------
+Other states
+================
 
-Install/configure MongoDB query router service.
+``mongodb.server.config``
+``mongodb.server.clean``
+``mongodb.bic.config``
+``mongodb.bic.clean``
 
-This state requires ``mongos:settings:config_svrs`` Pillar to be set correctly, its value will be
-substituted as argument for ``--configdb`` option of ``mongos`` executable (in the configuration
-file). See `MongoDB reference manual`_ for additional information.
+Pillar Data
+===============
+Use linux distribution repo::
 
-.. note::
+       mongodb:
+         server:
+           version: '4.0'
 
-  The state currently works only on Ubuntu LTS releases 12.04 and 14.04.
+Use official  upstream repo::
 
-.. _`MongoDB reference manual`: https://docs.saltstack.com/en/latest/topics/mine/index.html
+       mongodb:
+         server:
+           use_repo: True
+           version: '4.0'
 
-``mongodb.tools``
------------------
+Use official upstream archives::
 
-Install additional tools and Python libraries.
+       mongodb:
+         server:
+           use_archive: True
+           version: '4.0.3'
+         bic:
+           version: 2.7.0
 
-Operating systems support
-=========================
+Testing
+========
+This formula works "out-of-the-box", or with pillars, on these operating systems.
 
-This formula works "out-of-the-box" and tested on those operating systems:
-
-- CentOS/Red Hat Enterprise Linux 5, 6 and 7
-- Debian GNU/Linux 8 "Jessie" (stable)
-- Ubuntu LTS 12.04
-- Ubuntu LTS 14.04
-
+- Ubuntu 16.04
+- Centos 7.5.1804 (firewall + selinux enforcing)
+- MacOS/Darwin
 
 .. vim: fenc=utf-8 spell spl=en cc=100 tw=99 fo=want sts=2 sw=2 et

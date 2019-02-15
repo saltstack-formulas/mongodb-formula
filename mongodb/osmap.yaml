@@ -1,32 +1,15 @@
-default: {}
+###  mongodb/osmap.yaml
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
 
-Debian:
-  # Install MongoDB 2.4 from Debian repo
-  use_repo: False
-  mongodb_package: mongodb
-  repo_component: main
+Amazon:
+  server:
+    url: 'https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-amazon2-RELEASE.tgz'
+  bic:
+    url: 'https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-linux-x86_64-amzn64-vRELEASE.tgz'
 
-RedHat:
-  use_repo: True
-  mongodb_package: mongodb-org
-
-  mongodb_user: mongod
-  mongodb_group: mongod
-  mongod: mongod
-  conf_path: /etc/mongod.conf
-
-  mongod_settings:
-    systemLog:
-      destination: file
-      logAppend: true
-      path: /var/log/mongodb/mongod.log
-    storage:
-      dbPath: /var/lib/mongo
-      journal:
-        enabled: true
-    processManagement:
-      fork: true                                # fork and run in background
-      pidFilePath: /var/run/mongodb/mongod.pid  # location of pidfile
-    net:
-      port: 27017
-      bindIp: 127.0.0.1  # Listen to local interface only
+Windows:
+  server:
+    url: 'http://downloads.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-v4.0-latest.zip'
+  bic:
+    url: 'https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-win32-x86_64-vRELEASE.msi'
