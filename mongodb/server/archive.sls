@@ -50,7 +50,7 @@ mongodb server archive {{ mongodb.server.dirname }} profile:
     - mode: 644
     - context:
       path: {{ mongodb.server.binpath }}
-      svrpath: {{ mongodb.server.binpath }}
+      srvpath: {{ mongodb.server.binpath }}
       bicpath: {{ mongodb.bic.binpath or None }}
     - onlyif: test -d {{ mongodb.server.binpath }}
 
