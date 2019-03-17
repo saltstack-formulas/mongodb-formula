@@ -12,13 +12,27 @@ mongodb robo3t archive {{ mongodb.robo3t.dirname }} download:
   cmd.run:
     - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.arcname }} {{ mongodb.robo3t.url }}
     - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.arcname }}
-          {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
+         {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
         attempts: {{ mongodb.dl.retries }}
         interval: {{ mongodb.dl.interval }}
         until: True
         splay: 10
-          {% endif %}
+         {% endif %}
+         {%- if mongodb.robo3t.source_hash and (grains['saltversioninfo'] <= [2016, 11, 6] or grains.os in ('MacOS',)) %}
+  module.run:
+    - name: file.check_hash
+    - path: '{{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.arcname }}'
+    - file_hash: {{ mongodb.robo3t.source_hash }}
+    - onchanges:
+      - cmd: mongodb robo3t archive {{ mongodb.robo3t.dirname }} download
+    - require_in:
+           {% if grains.os == 'MacOS' %}
+      - macpackge: mongodb robo3t archive {{ mongodb.robo3t.dirname }} install
+           {%- else %}
+      - archive: mongodb robo3t archive {{ mongodb.robo3t.dirname }} install
+           {%- endif %}
+        {%- endif %}
 
 mongodb robo3t archive {{ mongodb.robo3t.dirname }} install:
       {% if grains.os == 'MacOS' %}
