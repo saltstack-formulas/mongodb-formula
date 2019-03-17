@@ -13,7 +13,7 @@ mongodb server archive {{ mongodb.server.dirname }} download:
     - names: {{ mongodb.system.deps }}
   cmd.run:
     - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }} {{ mongodb.server.url }}
-    - onlyif: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }}
+    - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }}
         {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
         attempts: {{ mongodb.dl.retries }}
