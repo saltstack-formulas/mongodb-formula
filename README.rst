@@ -21,7 +21,12 @@ Deploy and configure MongoDB "Community Server" and start 'mongos' and 'mongod' 
 
 Deploy and configure MongoDB "Connector for BI" and start 'mongosqld' service.
 
-``mongodb.remove``
+``mongodb.robo3t``
+-------------------
+
+Deploy Robo 3T (formerly Robomongo), a GUI for MongoDB
+
+``mongodb.clean``
 -----------
 
 Metastate to uninstall MongoDB products
@@ -30,9 +35,17 @@ Other states
 ================
 
 ``mongodb.server.config``
+
 ``mongodb.server.clean``
+
 ``mongodb.bic.config``
+
 ``mongodb.bic.clean``
+
+``mongodb.robo3t.config``
+
+``mongodb.robo3t.clean``
+
 
 Pillar Data
 ===============

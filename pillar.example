@@ -1,7 +1,9 @@
 
 mongodb:
 
-  ## minimal pillar data for GNU/Linux
+  ## No pillar data supported ##
+
+  ## minimal pillar data for GNU/Linux ##
   server:
     ### these are mutually exclusive ###
     use_repo: True
@@ -10,7 +12,8 @@ mongodb:
     #version: 4.0.3
   bic:
     version: 2.7.0
-
+  robo3t:
+    version: 1.2.1
 
   ## more advanced pillar data (from 'defaults.yaml')
   system:
@@ -25,6 +28,10 @@ mongodb:
     interval: 60
     retries: 2
     tmpdir: /tmp/mongodbtmp
+
+  robo3t:
+    url: https://download.robomongo.org/1.2.1/linux/robo3t-1.2.1-linux-x86_64-3e50a65.tar.gz
+    source_hash: sha512=ead2c4847dc1cd4024f60f34a142af6c6818f90a37b5ae075c8b65414ee8ca8074355446c9e264094f776f7798bfba37a7c7018f94d0bec109715061ab3a57c3
 
   server:
     package: mongodb-org

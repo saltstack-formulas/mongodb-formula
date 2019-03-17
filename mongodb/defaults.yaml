@@ -24,6 +24,7 @@ mongodb:
     binpath: /usr
     user: mongodb
     group: mongodb
+
     mongod:
       service: mongod
       shortcut: false
@@ -61,7 +62,6 @@ mongodb:
           LimitMEMLOCK: infinity
           TasksMax: infinity
           TasksAccounting: false
-
 
     mongos:
       service: mongos
@@ -140,4 +140,3 @@ mongodb:
           LimitMEMLOCK: infinity
           TasksMax: infinity
           TasksAccounting: false
-

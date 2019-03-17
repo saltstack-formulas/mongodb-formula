@@ -3,18 +3,23 @@
 {% import_yaml "mongodb/osfamilymap.yaml" as osfamilymap %}
 {% import_yaml "mongodb/oscodemap.yaml" as oscodemap %}
 
+##Robo3T
+{% import_yaml "mongodb/robo3t/defaults.yaml" as defaults_robo %}
+
 {% set m = salt['grains.filter_by'](
     defaults,
     merge=salt['grains.filter_by'](
-        osfamilymap,
-        grain='os_family',
+        defaults_robo,
         merge=salt['grains.filter_by'](
-            osmap,
-            grain='os',
+            osfamilymap,
+            grain='os_family',
+            merge=salt['grains.filter_by'](
+                osmap,
+                grain='os',
                 merge=salt['grains.filter_by'](
                     oscodemap,
                     grain='oscodename',
-                    merge=salt['pillar.get']('mongodb', {}),
+                    merge=salt['pillar.get']('mongodb', {}), base='mongodb',),
                 base='mongodb',
                 ),
             base='mongodb',
@@ -34,6 +39,13 @@
 {%- do m.bic.update({ 'arcname': arcname|replace('RELEASE', m.bic.version),
                       'dirname': arcname|replace('RELEASE', m.bic.version)|replace('.tgz', '')|replace('-ssl', ''),
                       'url'    : m.bic.url|replace('RELEASE', m.bic.version)|string }) %}
+
+{%- set arcname = m.robo3t.url.split('/')[-1]|string %}
+{%- do m.robo3t.update({ 'arcname': arcname|replace('RELEASE', m.robo3t.version),
+                         'dirname': arcname|replace('RELEASE', m.robo3t.version)|replace('.tgz', '')|replace('-ssl', ''),
+                         'url'    : m.robo3t.url|replace('RELEASE', m.robo3t.version)|string }) %}
+
+
 
 {## BACKWARDS COMPATIBILE PILLARS TRANSLATION ##}
 {## Remove this section after 1/Jan/2020 ##}
