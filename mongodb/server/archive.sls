@@ -35,7 +35,6 @@ mongodb server archive {{ mongodb.server.dirname }} install:
     - require_in:
       - file: mongodb server archive {{ mongodb.server.dirname }} install
       - file: mongodb server archive {{ mongodb.server.dirname }} profile
-      - file: mongodb server archive {{ mongodb.server.dirname }} tidyup
    {%- if mongodb.server.use_archive %}
   file.symlink:
     - name: {{ mongodb.server.binpath }}
