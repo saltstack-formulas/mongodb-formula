@@ -36,7 +36,6 @@ mongodb bic archive {{ mongodb.bic.dirname }} install:
     - require_in:
       - file: mongodb bic archive {{ mongodb.bic.dirname }} install
       - file: mongodb bic archive {{ mongodb.bic.dirname }} profile
-      - file: mongodb bic archive {{ mongodb.bic.dirname }} tidyup
   file.symlink:
     - name: {{ mongodb.bic.binpath }}
     - target: {{ mongodb.system.prefix }}/{{ mongodb.bic.dirname }}
