@@ -3,6 +3,7 @@
 # vim: ft=yaml
 
 include:
-  - mongodb.server.clean
+  - mongodb.mongod.clean
+  - mongodb.mongos.clean
   - mongodb.bic.clean
   - mongodb.robo3t.clean

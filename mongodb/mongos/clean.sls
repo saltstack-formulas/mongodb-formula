@@ -10,7 +10,7 @@ mongodb server clean firewalld service running:
     - enable: True
    {%- endif %}
 
-{%- for svc in ('mongod', 'mongos',) %}
+{%- for svc in ('mongos') %}
 
   {%- if "processManagement" in mongodb.server[svc]['conf'] and mongodb.server[svc]['conf']['processManagement']['pidFilePath'] %}
      {%- set pidpath = mongodb.server[svc]['conf']['processManagement']['pidFilePath'] %}

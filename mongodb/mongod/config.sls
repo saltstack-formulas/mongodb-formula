@@ -42,7 +42,7 @@ mongodb server tools pymongo package:
     - require:
       - pkg: mongodb server tools pypip package
 
-{%- for svc in ('mongod', 'mongos',) %}
+{%- for svc in ('mongod') %}
 
   {%- if "processManagement" in mongodb.server[svc]['conf'] and mongodb.server[svc]['conf']['processManagement']['pidFilePath'] %}
      {%- set pidpath = salt['file.dirname']( mongodb.server[svc]['conf']['processManagement']['pidFilePath']) %}
