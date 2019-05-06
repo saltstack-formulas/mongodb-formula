@@ -47,7 +47,7 @@ Other states
 
 ``mongodb.bic.clean``
 
-``mongodb.robo3t.config``
+``mongodb.compass.clean``
 
 ``mongodb.robo3t.clean``
 
