@@ -21,10 +21,15 @@ Deploy and configure MongoDB "Community Server" and start 'mongos' and 'mongod' 
 
 Deploy and configure MongoDB "Connector for BI" and start 'mongosqld' service.
 
+``mongodb.compass``
+-------------------
+
+Deploy Compass, the GUI for MongoDB
+
 ``mongodb.robo3t``
 -------------------
 
-Deploy Robo 3T (formerly Robomongo), a GUI for MongoDB
+Deploy Robo 3T (formerly Robomongo), another GUI for MongoDB
 
 ``mongodb.clean``
 -----------

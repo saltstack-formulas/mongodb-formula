@@ -4,4 +4,4 @@
 
 include:
   - mongodb.server
-  - mongodb.bic
+  - mongodb.compass

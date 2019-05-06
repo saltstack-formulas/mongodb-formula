@@ -32,6 +32,10 @@ Windows:
     ### hash for v1.2.1
     source_hash: sha512=1d143a4eb96f639102e3586445204d111cc94accbc3e3724c973f5e34d3df2ba971601eee9b2fe2601d694067577324160fb7bf9a3e1f1daad0b91cd1c717237
 
+  compass:
+    url: https://downloads.mongodb.com/compass/mongodb-compass-community-RELEASE-win32-x64.zip
+    ### hash for version 1.17.0
+    source_hash: sha512=d8e98efea4a694786556773ad8234eb8b85f04afc3b31c75a81c4e81f3a2a5be75298ec78b5666bedc4d6f1bdb8b43b6880670b50c7767ce11874875dff54541
 
 MacOS:
   system:
@@ -67,3 +71,8 @@ MacOS:
     url: https://download.robomongo.org/RELEASE/osx/robo3t-RELEASE-darwin-x86_64-3e50a65.dmg
     ### hash for v1.2.1
     source_hash: sha512=1abd0f592503c100271646ce172c4af5c1f9fb322840dc7087eb0810a31368332a671523a1dc52ce7a4a5e37d36190405188bf6fb22c857fe132ea1b15548bf9
+
+  compass:
+    url: https://downloads.mongodb.com/compass/mongodb-compass-community-RELEASE-darwin-x64.dmg
+    ### hash for v1.17.0
+    source_hash: sha512=cc6b23e9e18cafc06831a51c16ca7e1d3725fc1c49e98b307d0bfe693881b0c1f088f2c231bd519eba6888a1b96733d718e25fcc7c20595b19f01183812c557d

@@ -5,4 +5,5 @@
 include:
   - mongodb.server.clean
   - mongodb.bic.clean
+  - mongodb.compass.clean
   - mongodb.robo3t.clean
