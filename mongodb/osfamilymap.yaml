@@ -4,7 +4,8 @@
 
 Debian:
   server:
-    #deb unofficial packages conflict with MongoDB offical supported packages, so ..
+    #deb unofficial packages conflict with MongoDB offical supported packages, so true
+    use_repo: true
 
 RedHat:
   system:
@@ -25,4 +26,3 @@ Suse:
     url: 'https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-suse12-RELEASE.tgz'
   bic:
     url: 'https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-linux-x86_64-suse12-vRELEASE.tgz'
-
