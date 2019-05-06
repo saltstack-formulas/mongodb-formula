@@ -7,10 +7,10 @@ mongodb compass cleanup:
   file.absent:
     - names:
         {%- if grains.os in ('MacOS',) %}
-      - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB ({{ svc }})
+      - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB Compass Community
         {%- endif %}
       - {{ mongodb.system.prefix }}/{{ mongodb.compass.dirname }}
       - {{ mongodb.dl.tmpdir }}/{{ mongodb.compass.arcname }}
         {%- if grains.os in ('MacOS',) %}
-      - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB ({{ svc }})
+      - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB Compass Community
         {%- endif %}
