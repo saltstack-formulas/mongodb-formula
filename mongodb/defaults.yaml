@@ -14,12 +14,17 @@ mongodb:
     retries: 2
     tmpdir: /tmp/mongodbtmp
 
+  robo3t:
+    version: 1.2.1
+    url: https://download.robomongo.org/RELEASE/linux/robo3t-RELEASE-linux-x86_64-3e50a65.tar.gz
+
   server:
     package: mongodb-org
     version: 4.0
-    use_repo: False
-    use_archive: False
-    use_schema: False
+    use_repo: true
+    use_archive: false
+    url: None
+    use_schema: false
     disable_transparent_hugepages: true
     binpath: /usr
     user: mongodb

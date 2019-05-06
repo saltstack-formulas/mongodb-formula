@@ -5,7 +5,6 @@
 Debian:
   server:
     #deb unofficial packages conflict with MongoDB offical supported packages, so ..
-    use_repo: true
 
 RedHat:
   system:
@@ -15,7 +14,6 @@ RedHat:
     deps:
       - libcurl
   server:
-    use_repo: true
     user: mongod
     group: mongod
   bic:
