@@ -18,11 +18,28 @@ Windows:
     source_hash: sha512=1d143a4eb96f639102e3586445204d111cc94accbc3e3724c973f5e34d3df2ba971601eee9b2fe2601d694067577324160fb7bf9a3e1f1daad0b91cd1c717237
 
 MacOS:
+  system:
+    use_firewalld: False
+    use_selinux: False
+    userhome: /users
+       {% if grains.os == 'MacOS' %}
+    user: {{ salt['pillar.get']('mongodb:server:user', salt['cmd.run']("stat -f '%Su' /dev/console")) }}
+    group: {{ salt['pillar.get']('mongodb:server:group', salt['cmd.run']("stat -f '%Sg' /dev/console")) }}
+       {% endif %}
   server:
+    version: 4.0.3
+    use_archive: true
+    binpath: /usr/local/mongodb
     url: 'https://fastdl.mongodb.org/osx/mongodb-osx-ssl-x86_64-RELEASE.tgz'
+    mongod:
+      service: org.mongo.mongodb.mongod
+    mongos:
+      service: org.mongo.mongodb.mongos
   bic:
     url: 'https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-osx-x86_64-vRELEASE.tgz'
     source_hash: md5=b88ccf9ce4ff785fd1e65add94e4eb8e
+    mongosqld:
+      service: org.mongo.mongodb.mongosqld
   robo3t:
     url: https://download.robomongo.org/RELEASE/osx/robo3t-RELEASE-darwin-x86_64-3e50a65.dmg
     source_hash: sha512=1abd0f592503c100271646ce172c4af5c1f9fb322840dc7087eb0810a31368332a671523a1dc52ce7a4a5e37d36190405188bf6fb22c857fe132ea1b15548bf9
