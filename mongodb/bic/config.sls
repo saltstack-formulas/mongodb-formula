@@ -27,8 +27,10 @@ mongodb bic user and group present:
     - fullname: mongoDB user
     - shell: /bin/bash
     - createhome: False
+        {%- if grains.os != 'MacOS' %}
     - groups:
       - {{ mongodb.bic.group }}
+        {%- endif %}
 
 mongodb bic tools pypip package:
   pkg.installed:
