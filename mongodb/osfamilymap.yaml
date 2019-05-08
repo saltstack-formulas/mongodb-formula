@@ -46,3 +46,4 @@ Suse:
     url: https://downloads.mongodb.com/compass/mongodb-compass-community-RELEASE.x86_64.rpm
     ### hash for v1.17.0
     source_hash: sha512=4478943e1dea416c17bec6603f46a8fa4c4248e3e9a5aad2f8ca2d9911146a96586713c07306a683a3129672d36cc0f7ff09a1e352c56f5d5326e9cf6fce5278
+
