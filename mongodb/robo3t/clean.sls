@@ -7,10 +7,10 @@ mongodb robo3t cleanup:
   file.absent:
     - names:
         {%- if grains.os in ('MacOS',) %}
-      - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB ({{ svc }})
+      - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/Robo 3T
         {%- endif %}
       - {{ mongodb.system.prefix }}/{{ mongodb.robo3t.dirname }}
       - {{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.arcname }}
         {%- if grains.os in ('MacOS',) %}
-      - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB ({{ svc }})
+      - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/Robo 3T
         {%- endif %}

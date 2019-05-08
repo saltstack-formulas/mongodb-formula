@@ -27,8 +27,10 @@ mongodb server user and group present:
     - fullname: mongoDB user
     - shell: /bin/bash
     - createhome: False
+    	{%- if grains.os != 'MacOS' %}
     - groups:
       - {{ mongodb.server.group }}
+        {%- endif %}
 
 mongodb server tools pypip package:
   pkg.installed:
