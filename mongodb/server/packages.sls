@@ -34,6 +34,6 @@ mongodb server package installed:
     - refresh: True
     - name: {{ mongodb.server.package }}
         {%- if mongodb.server.use_repo %}
-    - fromrepo: {{ mongodb.server.repo.name|replace('RELEASE', mongodb.server.version) or None }}
+    - fromrepo: {{ mongodb.server.repo.from_repo_value }}
         {%- endif %}
 

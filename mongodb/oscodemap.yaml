@@ -20,6 +20,7 @@
       file: /etc/apt/sources.list.d/mongodb-org-RELEASE.list
       keyid: 9DA31620334BD75D9DCB49F368818C72E52529D4
       keyserver: hkp://keyserver.ubuntu.com:80
+      from_repo_value: '{{ codename }}'
 
     {%- else %}
 
@@ -27,7 +28,8 @@
       name: mongodb-org-RELEASE
       humanname: MongoDB RELEASE Repository
       gpgkey: 'https://www.mongodb.org/static/pgp/server-RELEASE.asc'
-
+      from_repo_value: {{ mongodb.server.repo.name|replace('RELEASE', mongodb.server.version) or None }}
+      
     {%- endif %}
 {% endmacro %}
 
