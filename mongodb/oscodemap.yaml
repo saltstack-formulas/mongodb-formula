@@ -28,7 +28,7 @@
       name: mongodb-org-RELEASE
       humanname: MongoDB RELEASE Repository
       gpgkey: 'https://www.mongodb.org/static/pgp/server-RELEASE.asc'
-      from_repo_value: {{ mongodb.server.repo.name|replace('RELEASE', mongodb.server.version) or None }}
+      from_repo_value: ''
       
     {%- endif %}
 {% endmacro %}
