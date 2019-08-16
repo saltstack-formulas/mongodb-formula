@@ -8,7 +8,12 @@
   {%- if grains['os_family'] == 'Debian' %}
 
     {%- set os   = salt['grains.get']('os') | lower() %}
+    # No 3.6 support for Bionic so we must use Xenial codename.
+    {% if grains['oscodename'] == 'bionic' %}
+    {%- set code = "xenial" %}
+    {% else %}
     {%- set code = salt['grains.get']('oscodename') %}
+    {% endif %}
 
 mongodb_repo:
   pkgrepo.managed:
