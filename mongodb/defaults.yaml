@@ -20,6 +20,7 @@ mongodb:
     url: https://download.robomongo.org/RELEASE/linux/robo3t-RELEASE-linux-x86_64-3e50a65.tar.gz
 
   compass:
+    install: false
     version: 1.17.0
     binpath: /usr/local
 
