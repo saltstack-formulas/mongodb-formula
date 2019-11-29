@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-shortcutName='${1}'
+shortcutName="${1}"
 app="{{ app }}"
 Source="/Applications/$app"
 Destination="{{ home }}/{{ user }}/Desktop/${shortcutName}"
