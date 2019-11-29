@@ -39,6 +39,8 @@ mongodb:
        {%- endif %}
 
   compass:
+    # compass will not be installed unless this is set
+    install: true
     ######## install from archive file
     version: 1.17.0
 
