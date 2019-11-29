@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
 mongodb:
-  use_repo: True
+  use_repo: true
   version: 3.4
   repo_component: multiverse    # this is for Ubuntu, use 'main' for Debian
   mongodb_package: mongodb-org

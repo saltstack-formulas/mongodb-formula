@@ -1,10 +1,13 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
 mongodb:
   system:
     pip: python-pip
     userhome: /home
     prefix: /opt
-    use_firewalld: False
-    use_selinux: False
+    use_firewalld: false
+    use_selinux: false
     pidpath: /var/run/mongodb
     deps:
       - curl
@@ -17,6 +20,7 @@ mongodb:
   robo3t:
     version: 1.2.1
     binpath: /usr/local
+    # yamllint disable-line rule:line-length
     url: https://download.robomongo.org/RELEASE/linux/robo3t-RELEASE-linux-x86_64-3e50a65.tar.gz
 
   compass:
@@ -43,7 +47,7 @@ mongodb:
       conf_path: /etc/mongod.conf
       conf:
         systemLog:
-          logAppend: False
+          logAppend: false
           destination: file
           path: /var/log/mongodb/mongod.log
         storage:
@@ -55,7 +59,7 @@ mongodb:
         sharding:
           clusterRole: shardsvr
         net:
-          bindIp: {{ grains.ipv4[-1] or grains.ipv6[-1] }}
+          bindIp: '{{ grains.ipv4[-1] or grains.ipv6[-1] }}'
           port: 27018
         processManagement:
           timeZoneInfo: /usr/share/zoneinfo
@@ -88,7 +92,7 @@ mongodb:
           fork: true
           pidFilePath: /var/run/mongodb/mongos.pid
         net:
-          bindIp: {{ grains.ipv4[-1] or grains.ipv6[-1] }}
+          bindIp: '{{ grains.ipv4[-1] or grains.ipv6[-1] }}'
           port: 28017
         sharding:
           configDB: 'rs1/{{ grains.ipv4[-1] or grains.ipv6[-1] }}:27018'
@@ -112,9 +116,9 @@ mongodb:
 
   bic:
     version: 2.7.0
-    use_repo: False
+    use_repo: false
     use_archive: true
-    use_schema: True
+    use_schema: true
     binpath: /usr/local/bic
     user: mongodb
     group: mongodb
@@ -133,11 +137,11 @@ mongodb:
         mongodb:
           net:
             uri: '{{ grains.ipv4[-1] or grains.ipv6[-1] }}:27018'
-            #auth:
+            # auth:
             #  username: root
             #  password: changeme
         net:
-          bindIp: {{ grains.ipv4[-1] or grains.ipv6[-1] }}
+          bindIp: '{{ grains.ipv4[-1] or grains.ipv6[-1] }}'
           port: 29017
       systemd:
         file: /usr/lib/systemd/system/mongosqld.service
