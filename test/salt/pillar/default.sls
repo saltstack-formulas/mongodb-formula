@@ -2,44 +2,13 @@
 # vim: ft=yaml
 ---
 mongodb:
-
-  ## NO PILLAR DATA ##
-
-
-  ## MINIMAL EXAMPLE ##
-
-  server:
-    ######## install from OS distribution (default: true)
-    use_repo: true
-    version: 4.0
-    ######## install from archive file (default: false)
-    # use_archive: true
-    # version: 4.0.3
-    # {%- if grains.os == 'MacOS' %}
-    # yamllint disable-line rule:line-length
-    # source_hash: sha512=001f2f480ef70edc423f08ff3b8d299a404f3544318737aa7db3a303e681b5ba3e6b3c605a84ea75b48e7ed9427a8ddbad39b85811f353180e95b1054480b166
-    # {%- endif %}
-
-
-  ## DETAILED EXAMPLE ##
-
   robo3t:
     ######## install from archive file
     version: 1.2.1
-    # {%- if grains.os == 'Windows' %}
-    # yamllint disable-line rule:line-length
-    # source_hash: sha512=1d143a4eb96f639102e3586445204d111cc94accbc3e3724c973f5e34d3df2ba971601eee9b2fe2601d694067577324160fb7bf9a3e1f1daad0b91cd1c717237
-    # {%- elif grains.os == 'MacOS' %}
-    # yamllint disable-line rule:line-length
-    # source_hash: sha512=1abd0f592503c100271646ce172c4af5c1f9fb322840dc7087eb0810a31368332a671523a1dc52ce7a4a5e37d36190405188bf6fb22c857fe132ea1b15548bf9
-    # {%- else %} # Linux
     # yamllint disable-line rule:line-length
     source_hash: sha512=ead2c4847dc1cd4024f60f34a142af6c6818f90a37b5ae075c8b65414ee8ca8074355446c9e264094f776f7798bfba37a7c7018f94d0bec109715061ab3a57c3
-    # {%- endif %}
 
   compass:
-    # compass will not be installed unless this is set
-    install: true
     ######## install from archive file
     version: 1.17.0
 
@@ -58,8 +27,11 @@ mongodb:
 
   server:
     package: mongodb-org
-    version: 4.0
-    use_repo: false
+    version: 4.2
+    use_repo: true
+    repo:
+      # `keyid` for version `4.2` (Debian-based)
+      keyid: E162F504A20CDF15827F718D4B7C549A058F8B6B
     use_archive: false
     use_schema: false
     disable_transparent_hugepages: true
@@ -143,9 +115,6 @@ mongodb:
   bic:
     ######### install from archive file
     version: 2.7.0
-    # {%- if grains.os == 'MacOS' %}
-    # source_hash: md5=b88ccf9ce4ff785fd1e65add94e4eb8e
-    # {%- endif %}
     use_repo: false
     use_archive: true
     use_schema: true

@@ -57,7 +57,7 @@ mongodb server cleanup:
     - name: pymongo
   file.absent:
     - names:
-      - {{ mongodb.server.shell.mongorc }} 
+      - {{ mongodb.server.shell.mongorc }}
       - {{ mongodb.system.prefix }}/{{ mongodb.server.dirname }}
       - {{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }}
       - /etc/logrotate.d/mongodb-mongod

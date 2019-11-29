@@ -8,15 +8,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Label</key>
-	<string>org.mongo.mongodb.{{ svc }}</string>
-	<key>RunAtLoad</key>
-	<true/>
-	<key>ProgramArguments</key>
-	<array>
-		<string>{{ binpath }}/bin/{{ svc }} </string>
-		<string>--config </string>
-		<string>{{ config }}</string>
-	</array>
+  <key>Label</key>
+  <string>org.mongo.mongodb.{{ svc }}</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>ProgramArguments</key>
+  <array>
+    <string>{{ binpath }}/bin/{{ svc }} </string>
+    <string>--config </string>
+    <string>{{ config }}</string>
+  </array>
 </dict>
 </plist>

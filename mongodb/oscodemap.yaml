@@ -1,10 +1,10 @@
-###  mongodb/codenamemap.yaml
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
-
+---
 {% macro distro_codename(os, codename, tag, comp='') %}
 {{ codename|default(codename, true) }}:
   bic:
+    # yamllint disable-line rule:line-length
     url: 'https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-linux-x86_64-{{ tag }}-vRELEASE.tgz'
 
   server:
@@ -16,6 +16,7 @@
 
     {%- if grains.os_family in ('Debian', 'Ubuntu',) %}
 
+      # yamllint disable-line rule:line-length
       name: 'deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/{{ os }} {{ codename }}/mongodb-org/RELEASE {{ comp or '' }}'
       file: /etc/apt/sources.list.d/mongodb-org-RELEASE.list
       keyid: 9DA31620334BD75D9DCB49F368818C72E52529D4
@@ -24,16 +25,17 @@
 
     {%- else %}
 
+      # yamllint disable-line rule:line-length
       baseurl: 'https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/RELEASE/$basearch/'
       name: mongodb-org-RELEASE
       humanname: MongoDB RELEASE Repository
       gpgkey: 'https://www.mongodb.org/static/pgp/server-RELEASE.asc'
       from_repo_value: ''
-      
+
     {%- endif %}
 {% endmacro %}
 
-#Debian
+# Debian
 {{ distro_codename('debian', 'jessie',  'debian81', 'main') }}
 {{ distro_codename('debian', 'stretch', 'debian92', 'main') }}
 {{ distro_codename('debian', 'buster',  'debian92', 'main') }}
@@ -43,16 +45,15 @@
 {{ distro_codename('debian', 'Debian GNU/Linux 10 (buster)',  'debian92', 'main') }}
 {{ distro_codename('debian', 'Debian GNU/Linux 11 (bullseye)',  'debian92', 'main') }}
 
-#Ubuntu
+# Ubuntu
 {{ distro_codename('ubuntu', 'trusty', 'ubuntu1404', 'multiverse') }}
 {{ distro_codename('ubuntu', 'xenial', 'ubuntu1604', 'multiverse') }}
 {{ distro_codename('ubuntu', 'bionic', 'ubuntu1804', 'multiverse') }}
 {{ distro_codename('ubuntu', 'cosmic', 'ubuntu1804', 'multiverse') }}
 
-#Redhat
+# Redhat
 {{ distro_codename('rhel', 'CentOS Linux 7 (Core)',    'rhel70') }}
 {{ distro_codename('rhel', 'Fedora 27 (Twenty Seven)', 'rhel70') }}
 {{ distro_codename('rhel', 'Fedora 28 (Twenty Eight)', 'rhel70') }}
 {{ distro_codename('rhel', 'Fedora 29 (Twenty Nine)', 'rhel70') }}
 {{ distro_codename('rhel', 'Fedora 30 (Thirty)', 'rhel70') }}
-
