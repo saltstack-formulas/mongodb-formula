@@ -180,7 +180,7 @@ mongodb bic {{ svc }} launchd service file:
       - service: mongodb bic {{ svc }} service running
 
        {%- if mongodb.bic[svc]['shortcut'] %}
-   
+
 mongodb bic {{ svc }} desktop shortcut clean:
   file.absent:
     - name: '{{ mongodb.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB ({{ svc }})'
