@@ -27,10 +27,10 @@ mongodb server user and group present:
     - fullname: mongoDB user
     - shell: /bin/bash
     - createhome: False
-    	{%- if grains.os != 'MacOS' %}
+    {%- if grains.os != 'MacOS' %}
     - groups:
       - {{ mongodb.server.group }}
-        {%- endif %}
+    {%- endif %}
 
 mongodb server tools pypip package:
   pkg.installed:
@@ -209,7 +209,7 @@ mongodb server {{ svc }} launchd service file:
       - service: mongodb server {{ svc }} service running
 
        {%- if mongodb.server[svc]['shortcut'] %}
-   
+
 mongodb server {{ svc }} desktop shortcut clean:
   file.absent:
     - name: '{{ mongodb.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB ({{ svc }})'

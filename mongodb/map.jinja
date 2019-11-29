@@ -27,7 +27,7 @@
         base='mongodb',
         ),
     base='mongodb',
-)%}
+) %}
 
 #### archives
 {%- set arcname = m.server.url.split('/')[-1]|string %}
@@ -52,8 +52,8 @@
 
 
 
-{## BACKWARDS COMPATIBILE PILLARS TRANSLATION ##}
-{## Remove this section after 1/Jan/2020 ##}
+{#- BACKWARDS COMPATIBILE PILLARS TRANSLATION #}
+{#- Remove this section after 1/Jan/2020 #}
 
 {%- set legacy = salt['pillar.get']('mongodb:lookup', {}) %}
 {%- do m.update( legacy ) if legacy %}
