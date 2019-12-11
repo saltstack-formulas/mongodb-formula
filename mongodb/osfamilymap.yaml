@@ -9,14 +9,12 @@ Debian:
   server:
     # deb unofficial packages conflict with MongoDB offical supported packages
     use_repo: true
-
   compass:
     # yamllint disable-line rule:line-length
     url: https://downloads.mongodb.com/compass/mongodb-compass-community_RELEASE_amd64.deb
     ### hash for v1.17.0
     # yamllint disable-line rule:line-length
     source_hash: sha512=cc6b23e9e18cafc06831a51c16ca7e1d3725fc1c49e98b307d0bfe693881b0c1f088f2c231bd519eba6888a1b96733d718e25fcc7c20595b19f01183812c557d
-
 
 RedHat:
   system:
@@ -25,15 +23,12 @@ RedHat:
     pip: python2-pip
     deps:
       - libcurl
-
   server:
     user: mongod
     group: mongod
-
   bic:
     user: mongod
     group: mongod
-
   compass:
     # yamllint disable-line rule:line-length
     url: https://downloads.mongodb.com/compass/mongodb-compass-community-RELEASE.x86_64.rpm
@@ -41,15 +36,12 @@ RedHat:
     # yamllint disable-line rule:line-length
     source_hash: sha512=4478943e1dea416c17bec6603f46a8fa4c4248e3e9a5aad2f8ca2d9911146a96586713c07306a683a3129672d36cc0f7ff09a1e352c56f5d5326e9cf6fce5278
 
-
 Suse:
   server:
     url: 'https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-suse12-RELEASE.tgz'
-
   bic:
     # yamllint disable-line rule:line-length
     url: 'https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-linux-x86_64-suse12-vRELEASE.tgz'
-
   compass:
     # yamllint disable-line rule:line-length
     url: https://downloads.mongodb.com/compass/mongodb-compass-community-RELEASE.x86_64.rpm
