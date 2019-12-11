@@ -29,12 +29,12 @@ mongodb bic {{ svc }} cleanup:
       - {{ mongodb.bic[svc]['conf_path'] }}
       - /Library/LaunchAgents/org.mongo.{{ svc }}.plist
       - /Library/LaunchAgents/org.mongo.mongodb.{{ svc }}.plist
-      - {{ salt['file.dirname'](mongodb.bic[svc]['conf']['systemLog']['path']) }}
+      - {{ salt['file.pkgname'](mongodb.bic[svc]['conf']['systemLog']['path']) }}
      {%- if "storage" in mongodb.bic[svc]['conf'] and "dbPath" in mongodb.bic[svc]['conf']['storage'] %}
       - {{ mongodb.bic[svc]['conf']['storage']['dbPath'] }}
      {%- endif %}
      {%- if "schema" in mongodb.bic[svc]['conf'] and "path" in mongodb.bic[svc]['conf']['schema'] %}
-      - {{ salt['file.dirname']( mongodb.bic[svc]['conf']['schema']['path']) }}
+      - {{ salt['file.pkgname']( mongodb.bic[svc]['conf']['schema']['path']) }}
      {%- endif %}
      {%- if grains.os in ('MacOS',) %}
       - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB ({{ svc }})

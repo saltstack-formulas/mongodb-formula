@@ -29,13 +29,13 @@ mongodb server {{ svc }} cleanup:
       - {{ mongodb.server[svc]['conf_path'] }}
       - /Library/LaunchAgents/org.mongo.{{ svc }}.plist
       - /Library/LaunchAgents/org.mongo.mongodb.{{ svc }}.plist
-      - {{ salt['file.dirname'](mongodb.server[svc]['conf']['systemLog']['path']) }}
+      - {{ salt['file.pkgname'](mongodb.server[svc]['conf']['systemLog']['path']) }}
      {%- if "storage" in mongodb.server[svc]['conf'] and "dbPath" in mongodb.server[svc]['conf']['storage'] %}
       - {{ mongodb.server[svc]['conf']['storage']['dbPath'] }}
      {%- endif %}
-      - {{ salt['file.dirname'](mongodb.server[svc]['conf']['systemLog']['path']) }}
+      - {{ salt['file.pkgname'](mongodb.server[svc]['conf']['systemLog']['path']) }}
      {%- if "schema" in mongodb.server[svc]['conf'] and "path" in mongodb.server[svc]['conf']['schema'] %}
-      - {{ salt['file.dirname']( mongodb.server[svc]['conf']['schema']['path']) }}
+      - {{ salt['file.pkgname']( mongodb.server[svc]['conf']['schema']['path']) }}
      {%- endif %}
      {%- if grains.os in ('MacOS',) %}
       - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB ({{ svc }})
