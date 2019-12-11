@@ -10,3 +10,5 @@ mongodb compass cleanup:
       - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB Compass Community
       - {{ mongodb.system.userhome }}/{{ mongodb.system.user }}/Desktop/MongoDB Compass
         {%- endif %}
+      - {{ mongodb.system.prefix }}/{{ mongodb.compass.pkgname }}
+      - {{ mongodb.dl.tmpdir }}/{{ mongodb.compass.name }}

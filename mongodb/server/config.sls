@@ -47,14 +47,14 @@ mongodb server tools pymongo package:
 {%- for svc in ('mongod', 'mongos',) %}
 
   {%- if "processManagement" in mongodb.server[svc]['conf'] and mongodb.server[svc]['conf']['processManagement']['pidFilePath'] %}
-     {%- set pidpath = salt['file.pkgname']( mongodb.server[svc]['conf']['processManagement']['pidFilePath']) %}
+     {%- set pidpath = salt['file.dirname']( mongodb.server[svc]['conf']['processManagement']['pidFilePath']) %}
   {%- else %}
      {%- set pidpath = mongodb.system.pidpath %}
   {%- endif %}
 
 mongodb server {{ svc }} logpath:
   file.directory:
-    - name: {{ salt['file.pkgname'](mongodb.server[svc]['conf']['systemLog']['path']) }}
+    - name: {{ salt['file.dirname'](mongodb.server[svc]['conf']['systemLog']['path']) }}
     - user: {{ mongodb.server.user }}
     - group: {{ mongodb.server.group }}
     - dir_mode: '0775'
@@ -66,7 +66,7 @@ mongodb server {{ svc }} logpath:
       - user: mongodb server user and group present
    {%- if mongodb.system.use_selinux %}
   selinux.fcontext_policy_present:
-    - name: '{{ salt['file.pkgname'](mongodb.server[svc]['conf']['systemLog']['path']) }}(/.*)?'
+    - name: '{{ salt['file.dirname'](mongodb.server[svc]['conf']['systemLog']['path']) }}(/.*)?'
     - sel_type: mongod_log_t
     - require_in:
       - selinux: mongodb server {{ svc }} service running
@@ -88,7 +88,7 @@ mongodb server {{ svc }} datapath:
       - user: mongodb server user and group present
      {%- if mongodb.system.use_selinux %}
   selinux.fcontext_policy_present:
-    - name: '{{ salt['file.pkgname'](mongodb.server[svc]['conf']['storage']['dbPath']) }}(/.*)?'
+    - name: '{{ salt['file.dirname'](mongodb.server[svc]['conf']['storage']['dbPath']) }}(/.*)?'
     - sel_type: mongod_var_lib_t
     - require_in:
       - selinux: mongodb server {{ svc }} service running
@@ -138,7 +138,7 @@ mongodb server {{ svc }} schema path:
    {%- if mongodb.system.use_selinux %}
 
   selinux.fcontext_policy_present:
-    - name: {{ salt['file.pkgname']( mongodb.server[svc]['conf']['schema']['path']) }}
+    - name: {{ salt['file.dirname']( mongodb.server[svc]['conf']['schema']['path']) }}
     - sel_type: etc_t
     - require_in:
       - selinux: mongodb server {{ svc }} service running
@@ -284,12 +284,12 @@ mongodb server {{ svc }} service running:
     {%- if "storage" in mongodb.server[svc]['conf'] and "dbPath" in mongodb.server[svc]['conf']['storage'] %}
       - {{ mongodb.server[svc]['conf']['storage']['dbPath'] }}
     {%- endif %}
-      - {{ salt['file.pkgname'](mongodb.server[svc]['conf']['systemLog']['path']) }}
+      - {{ salt['file.dirname'](mongodb.server[svc]['conf']['systemLog']['path']) }}
       - {{ pidpath }}
       - {{ mongodb.server[svc]['conf_path'] }}
       - /etc/logrotate.d/mongodb_{{ svc }}
  {%- if mongodb.server.use_schema and "schema" in mongodb.server[svc]['conf'] and mongodb.server[svc]['conf']['schema']['path'] %}
-      - {{ salt['file.pkgname']( mongodb.server[svc]['conf']['schema']['path']) }}
+      - {{ salt['file.dirname']( mongodb.server[svc]['conf']['schema']['path']) }}
  {%- endif %}
     - recursive: True
     - require:

@@ -40,14 +40,14 @@ mongodb bic tools pypip package:
 {%- for svc in ('mongosqld',) %}
 
    {%- if "processManagement" in mongodb.bic[svc]['conf'] and mongodb.bic[svc]['conf']['processManagement']['pidFilePath'] %}
-      {%- set pidpath = salt['file.pkgname']( mongodb.bic[svc]['conf']['processManagement']['pidFilePath']) %}
+      {%- set pidpath = salt['file.dirname']( mongodb.bic[svc]['conf']['processManagement']['pidFilePath']) %}
    {%- else %}
       {%- set pidpath = mongodb.system.pidpath %}
    {%- endif %}
 
 mongodb bic {{ svc }} logpath:
   file.directory:
-    - name: {{ salt['file.pkgname'](mongodb.bic[svc]['conf']['systemLog']['path']) }}
+    - name: {{ salt['file.dirname'](mongodb.bic[svc]['conf']['systemLog']['path']) }}
     - user: {{ mongodb.bic.user }}
     - group: {{ mongodb.bic.group }}
     - dir_mode: '0775'
@@ -59,7 +59,7 @@ mongodb bic {{ svc }} logpath:
       - user: mongodb bic user and group present
    {%- if mongodb.system.use_selinux %}
   selinux.fcontext_policy_present:
-    - name: '{{ salt['file.pkgname'](mongodb.bic[svc]['conf']['systemLog']['path']) }}(/.*)?'
+    - name: '{{ salt['file.dirname'](mongodb.bic[svc]['conf']['systemLog']['path']) }}(/.*)?'
     - sel_type: mongod_log_t
     - require_in:
       - selinux: mongodb bic {{ svc }} service running
@@ -110,7 +110,7 @@ mongodb bic {{ svc }} schema path:
      {%- if mongodb.system.use_selinux %}
 
   selinux.fcontext_policy_present:
-    - name: {{ salt['file.pkgname']( mongodb.bic[svc]['conf']['schema']['path']) }}
+    - name: {{ salt['file.dirname']( mongodb.bic[svc]['conf']['schema']['path']) }}
     - sel_type: etc_t
     - require_in:
       - selinux: mongodb bic {{ svc }} service running
@@ -238,12 +238,12 @@ mongodb bic {{ svc }} service running:
       {%- if mongodb.system.use_selinux %}
   selinux.fcontext_policy_applied:
     - names:
-      - {{ salt['file.pkgname'](mongodb.bic[svc]['conf']['systemLog']['path']) }}
+      - {{ salt['file.dirname'](mongodb.bic[svc]['conf']['systemLog']['path']) }}
       - {{ mongodb.bic[svc]['conf_path'] }}
       - {{ pidpath }}
       - /etc/logrotate.d/mongodb_{{ svc }}
       {%- if mongodb.bic.use_schema and "schema" in mongodb.bic[svc]['conf'] and mongodb.bic[svc]['conf']['schema']['path'] %}
-      - {{ salt['file.pkgname']( mongodb.bic[svc]['conf']['schema']['path']) }}
+      - {{ salt['file.dirname']( mongodb.bic[svc]['conf']['schema']['path']) }}
       {%- endif %}
     - recursive: True
     - require:
