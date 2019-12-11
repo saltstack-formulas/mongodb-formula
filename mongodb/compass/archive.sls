@@ -10,8 +10,8 @@ mongodb compass archive {{ mongodb.compass.dirname }} download:
       - {{ mongodb.system.prefix }}/{{ mongodb.compass.dirname }}/
     - makedirs: True
   cmd.run:
-    - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.compass.arcname }} {{ mongodb.compass.url }}
-    - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.compass.arcname }}
+    - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.compass.name }} {{ mongodb.compass.url }}
+    - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.compass.name }}
          {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
         attempts: {{ mongodb.dl.retries }}
@@ -22,7 +22,7 @@ mongodb compass archive {{ mongodb.compass.dirname }} download:
          {%- if mongodb.compass.source_hash and (grains['saltversioninfo'] <= [2016, 11, 6] or grains.os in ('MacOS',)) %}
   module.run:
     - name: file.check_hash
-    - path: '{{ mongodb.dl.tmpdir }}/{{ mongodb.compass.arcname }}'
+    - path: '{{ mongodb.dl.tmpdir }}/{{ mongodb.compass.name }}'
     - file_hash: {{ mongodb.compass.source_hash }}
     - onchanges:
       - cmd: mongodb compass archive {{ mongodb.compass.dirname }} download
@@ -37,7 +37,7 @@ mongodb compass archive {{ mongodb.compass.dirname }} download:
 mongodb compass archive {{ mongodb.compass.dirname }} install:
       {% if grains.os == 'MacOS' %}
   macpackage.installed:
-    - name: '{{ mongodb.dl.tmpdir }}/{{ mongodb.compass.arcname }}'
+    - name: '{{ mongodb.dl.tmpdir }}/{{ mongodb.compass.name }}'
     - store: True
     - dmg: True
     - app: True
@@ -45,7 +45,7 @@ mongodb compass archive {{ mongodb.compass.dirname }} install:
     - allow_untrusted: True
       {% else %}
   archive.extracted:
-    - source: file://{{ mongodb.dl.tmpdir }}/{{ mongodb.compass.arcname }}
+    - source: file://{{ mongodb.dl.tmpdir }}/{{ mongodb.compass.name }}
     - name: {{ mongodb.system.prefix }}
     - makedirs: True
     - trim_output: True

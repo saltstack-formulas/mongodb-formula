@@ -10,8 +10,8 @@ mongodb robo3t archive {{ mongodb.robo3t.dirname }} download:
       - {{ mongodb.system.prefix }}/{{ mongodb.robo3t.dirname }}/
     - makedirs: True
   cmd.run:
-    - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.arcname }} {{ mongodb.robo3t.url }}
-    - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.arcname }}
+    - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.name }} {{ mongodb.robo3t.url }}
+    - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.name }}
          {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
         attempts: {{ mongodb.dl.retries }}
@@ -22,7 +22,7 @@ mongodb robo3t archive {{ mongodb.robo3t.dirname }} download:
          {%- if mongodb.robo3t.source_hash and (grains['saltversioninfo'] <= [2016, 11, 6] or grains.os in ('MacOS',)) %}
   module.run:
     - name: file.check_hash
-    - path: '{{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.arcname }}'
+    - path: '{{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.name }}'
     - file_hash: {{ mongodb.robo3t.source_hash }}
     - onchanges:
       - cmd: mongodb robo3t archive {{ mongodb.robo3t.dirname }} download
@@ -37,7 +37,7 @@ mongodb robo3t archive {{ mongodb.robo3t.dirname }} download:
 mongodb robo3t archive {{ mongodb.robo3t.dirname }} install:
       {% if grains.os == 'MacOS' %}
   macpackage.installed:
-    - name: '{{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.arcname }}'
+    - name: '{{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.name }}'
     - store: True
     - dmg: True
     - app: True
@@ -45,7 +45,7 @@ mongodb robo3t archive {{ mongodb.robo3t.dirname }} install:
     - allow_untrusted: True
       {% else %}
   archive.extracted:
-    - source: file://{{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.arcname }}
+    - source: file://{{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.name }}
     - name: {{ mongodb.system.prefix }}
     - makedirs: True
     - trim_output: True

@@ -12,8 +12,8 @@ mongodb server archive {{ mongodb.server.dirname }} download:
   pkg.installed:
     - names: {{ mongodb.system.deps }}
   cmd.run:
-    - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }} {{ mongodb.server.url }}
-    - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }}
+    - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.server.name }} {{ mongodb.server.url }}
+    - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.server.name }}
         {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
         attempts: {{ mongodb.dl.retries }}
@@ -24,7 +24,7 @@ mongodb server archive {{ mongodb.server.dirname }} download:
 
 mongodb server archive {{ mongodb.server.dirname }} install:
   archive.extracted:
-    - source: file://{{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }}
+    - source: file://{{ mongodb.dl.tmpdir }}/{{ mongodb.server.name }}
     - name: {{ mongodb.system.prefix }}
     - makedirs: True
     - trim_output: True

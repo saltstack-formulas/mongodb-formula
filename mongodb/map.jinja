@@ -30,24 +30,24 @@
 ) %}
 
 #### archives
-{%- set arcname = m.server.url.split('/')[-1]|string %}
-{%- do m.server.update({ 'arcname': arcname|replace('RELEASE', m.server.version),
-                         'dirname': arcname|replace('RELEASE', m.server.version)|replace('.tgz', '')|replace('-ssl', ''),
+{%- set name = m.server.url.split('/')[-1]|string %}
+{%- do m.server.update({ 'name': name|replace('RELEASE', m.server.version),
+                         'dirname': name|replace('RELEASE', m.server.version)|replace('.tgz', '')|replace('-ssl', ''),
                          'url'    : m.server.url|replace('RELEASE', m.server.version)|string }) %}
 
-{%- set arcname = m.bic.url.split('/')[-1]|string %}
-{%- do m.bic.update({ 'arcname': arcname|replace('RELEASE', m.bic.version),
-                      'dirname': arcname|replace('RELEASE', m.bic.version)|replace('.tgz', ''),
+{%- set name = m.bic.url.split('/')[-1]|string %}
+{%- do m.bic.update({ 'name': name|replace('RELEASE', m.bic.version),
+                      'dirname': name|replace('RELEASE', m.bic.version)|replace('.tgz', ''),
                       'url'    : m.bic.url|replace('RELEASE', m.bic.version)|string }) %}
 
-{%- set arcname = m.robo3t.url.split('/')[-1]|string %}
-{%- do m.robo3t.update({ 'arcname': arcname|replace('RELEASE', m.robo3t.version),
-                         'dirname': arcname|replace('RELEASE', m.robo3t.version)|replace('.tgz', ''),
+{%- set name = m.robo3t.url.split('/')[-1]|string %}
+{%- do m.robo3t.update({ 'name': name|replace('RELEASE', m.robo3t.version),
+                         'dirname': name|replace('RELEASE', m.robo3t.version)|replace('.tgz', ''),
                          'url'    : m.robo3t.url|replace('RELEASE', m.robo3t.version)|string }) %}
 
-{%- set arcname = m.compass.url.split('/')[-1]|string %}
-{%- do m.compass.update({ 'arcname': arcname|replace('RELEASE', m.compass.version),
-                          'dirname': arcname|replace('RELEASE', m.compass.version)|replace('.tgz', ''),
+{%- set name = m.compass.url.split('/')[-1]|string %}
+{%- do m.compass.update({ 'name': name|replace('RELEASE', m.compass.version),
+                          'dirname': name|replace('RELEASE', m.compass.version)|replace('.tgz', ''),
                           'url'    : m.compass.url|replace('RELEASE', m.compass.version)|string }) %}
 
 

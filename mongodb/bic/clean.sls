@@ -56,7 +56,7 @@ mongodb bic cleanup:
     - names:
       - {{ mongodb.system.prefix }}/{{ mongodb.bic.dirname }}
       - {{ mongodb.bic.binpath }}
-      - {{ mongodb.dl.tmpdir }}/{{ mongodb.bic.arcname }}
+      - {{ mongodb.dl.tmpdir }}/{{ mongodb.bic.name }}
       - /etc/logrotate.d/mongodb-bic
       - /tmp/mac_shortcut.sh
   user.absent:

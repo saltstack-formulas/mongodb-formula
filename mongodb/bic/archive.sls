@@ -12,8 +12,8 @@ mongodb bic archive {{ mongodb.bic.dirname }} download:
   pkg.installed:
     - names: {{ mongodb.system.deps }}
   cmd.run:
-    - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.bic.arcname }} {{ mongodb.bic.url }}
-    - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.bic.arcname }}
+    - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.bic.name }} {{ mongodb.bic.url }}
+    - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.bic.name }}
         {% if grains['saltversioninfo'] >= [2017, 7, 0] %}
     - retry:
         attempts: {{ mongodb.dl.retries }}
@@ -24,7 +24,7 @@ mongodb bic archive {{ mongodb.bic.dirname }} download:
 
 mongodb bic archive {{ mongodb.bic.dirname }} install:
   archive.extracted:
-    - source: file://{{ mongodb.dl.tmpdir }}/{{ mongodb.bic.arcname }}
+    - source: file://{{ mongodb.dl.tmpdir }}/{{ mongodb.bic.name }}
     - name: {{ mongodb.system.prefix }}
     - makedirs: True
     - trim_output: True
