@@ -3,11 +3,11 @@
 # vim: ft=yaml
 {% from 'mongodb/map.jinja' import mongodb with context %}
 
-mongodb robo3t archive {{ mongodb.robo3t.dirname }} download:
+mongodb robo3t archive {{ mongodb.robo3t.pkgname }} download:
   file.directory:
     - names:
       - {{ mongodb.dl.tmpdir }}
-      - {{ mongodb.system.prefix }}/{{ mongodb.robo3t.dirname }}/
+      - {{ mongodb.system.prefix }}/{{ mongodb.robo3t.pkgname }}/
     - makedirs: True
   cmd.run:
     - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.name }} {{ mongodb.robo3t.url }}
@@ -25,16 +25,16 @@ mongodb robo3t archive {{ mongodb.robo3t.dirname }} download:
     - path: '{{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.name }}'
     - file_hash: {{ mongodb.robo3t.source_hash }}
     - onchanges:
-      - cmd: mongodb robo3t archive {{ mongodb.robo3t.dirname }} download
+      - cmd: mongodb robo3t archive {{ mongodb.robo3t.pkgname }} download
     - require_in:
            {% if grains.os == 'MacOS' %}
-      - macpackge: mongodb robo3t archive {{ mongodb.robo3t.dirname }} install
+      - macpackge: mongodb robo3t archive {{ mongodb.robo3t.pkgname }} install
            {%- else %}
-      - archive: mongodb robo3t archive {{ mongodb.robo3t.dirname }} install
+      - archive: mongodb robo3t archive {{ mongodb.robo3t.pkgname }} install
            {%- endif %}
         {%- endif %}
 
-mongodb robo3t archive {{ mongodb.robo3t.dirname }} install:
+mongodb robo3t archive {{ mongodb.robo3t.pkgname }} install:
       {% if grains.os == 'MacOS' %}
   macpackage.installed:
     - name: '{{ mongodb.dl.tmpdir }}/{{ mongodb.robo3t.name }}'
@@ -53,12 +53,12 @@ mongodb robo3t archive {{ mongodb.robo3t.dirname }} install:
     - source_hash: {{ mongodb.robo3t.source_hash }}
       {%- endif %}
     - require:
-      - mongodb robo3t archive {{ mongodb.robo3t.dirname }} download
+      - mongodb robo3t archive {{ mongodb.robo3t.pkgname }} download
     - require_in:
-      - file: mongodb robo3t archive {{ mongodb.robo3t.dirname }} install
+      - file: mongodb robo3t archive {{ mongodb.robo3t.pkgname }} install
       {% if mongodb.robo3t.binpath and grains.os not in ('MacOS', 'Windows') %}
   file.symlink:
     - name: {{ mongodb.robo3t.binpath }}
-    - target: {{ mongodb.system.prefix }}/{{ mongodb.robo3t.dirname }}
+    - target: {{ mongodb.system.prefix }}/{{ mongodb.robo3t.pkgname }}
     - unless: test -d {{ mongodb.robo3t.binpath }}
       {%- endif %}

@@ -3,11 +3,11 @@
 # vim: ft=yaml
 {% from 'mongodb/map.jinja' import mongodb with context %}
 
-mongodb compass archive {{ mongodb.compass.dirname }} download:
+mongodb compass archive {{ mongodb.compass.pkgname }} download:
   file.directory:
     - names:
       - {{ mongodb.dl.tmpdir }}
-      - {{ mongodb.system.prefix }}/{{ mongodb.compass.dirname }}/
+      - {{ mongodb.system.prefix }}/{{ mongodb.compass.pkgname }}/
     - makedirs: True
   cmd.run:
     - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.compass.name }} {{ mongodb.compass.url }}
@@ -25,16 +25,16 @@ mongodb compass archive {{ mongodb.compass.dirname }} download:
     - path: '{{ mongodb.dl.tmpdir }}/{{ mongodb.compass.name }}'
     - file_hash: {{ mongodb.compass.source_hash }}
     - onchanges:
-      - cmd: mongodb compass archive {{ mongodb.compass.dirname }} download
+      - cmd: mongodb compass archive {{ mongodb.compass.pkgname }} download
     - require_in:
            {% if grains.os == 'MacOS' %}
-      - macpackge: mongodb compass archive {{ mongodb.compass.dirname }} install
+      - macpackge: mongodb compass archive {{ mongodb.compass.pkgname }} install
            {%- else %}
-      - archive: mongodb compass archive {{ mongodb.compass.dirname }} install
+      - archive: mongodb compass archive {{ mongodb.compass.pkgname }} install
            {%- endif %}
         {%- endif %}
 
-mongodb compass archive {{ mongodb.compass.dirname }} install:
+mongodb compass archive {{ mongodb.compass.pkgname }} install:
       {% if grains.os == 'MacOS' %}
   macpackage.installed:
     - name: '{{ mongodb.dl.tmpdir }}/{{ mongodb.compass.name }}'
@@ -53,12 +53,12 @@ mongodb compass archive {{ mongodb.compass.dirname }} install:
     - source_hash: {{ mongodb.compass.source_hash }}
       {%- endif %}
     - require:
-      - mongodb compass archive {{ mongodb.compass.dirname }} download
+      - mongodb compass archive {{ mongodb.compass.pkgname }} download
     - require_in:
-      - file: mongodb compass archive {{ mongodb.compass.dirname }} install
+      - file: mongodb compass archive {{ mongodb.compass.pkgname }} install
       {% if mongodb.compass.binpath and grains.os not in ('MacOS', 'Windows') %}
   file.symlink:
     - name: {{ mongodb.compass.binpath }}
-    - target: {{ mongodb.system.prefix }}/{{ mongodb.compass.dirname }}
+    - target: {{ mongodb.system.prefix }}/{{ mongodb.compass.pkgname }}
     - unless: test -d {{ mongodb.compass.binpath }}
       {%- endif %}

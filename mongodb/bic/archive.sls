@@ -3,11 +3,11 @@
 # vim: ft=yaml
 {% from 'mongodb/map.jinja' import mongodb with context %}
 
-mongodb bic archive {{ mongodb.bic.dirname }} download:
+mongodb bic archive {{ mongodb.bic.pkgname }} download:
   file.directory:
     - names:
       - {{ mongodb.dl.tmpdir }}
-      - {{ mongodb.system.prefix }}/{{ mongodb.bic.dirname }}
+      - {{ mongodb.system.prefix }}/{{ mongodb.bic.pkgname }}
     - makedirs: True
   pkg.installed:
     - names: {{ mongodb.system.deps }}
@@ -22,7 +22,7 @@ mongodb bic archive {{ mongodb.bic.dirname }} download:
         splay: 10
         {% endif %}
 
-mongodb bic archive {{ mongodb.bic.dirname }} install:
+mongodb bic archive {{ mongodb.bic.pkgname }} install:
   archive.extracted:
     - source: file://{{ mongodb.dl.tmpdir }}/{{ mongodb.bic.name }}
     - name: {{ mongodb.system.prefix }}
@@ -32,16 +32,16 @@ mongodb bic archive {{ mongodb.bic.dirname }} install:
     - skip_verify: True  ## see https://jira.mongodb.org/browse/DOCS-12151
     # source_hash: {{ mongodb.bic.url ~ '.sha256' if "source_hash" not in mongodb.bic else mongodb.bic.source_hash }}
     - require:
-      - cmd: mongodb bic archive {{ mongodb.bic.dirname }} download
+      - cmd: mongodb bic archive {{ mongodb.bic.pkgname }} download
     - require_in:
-      - file: mongodb bic archive {{ mongodb.bic.dirname }} install
-      - file: mongodb bic archive {{ mongodb.bic.dirname }} profile
+      - file: mongodb bic archive {{ mongodb.bic.pkgname }} install
+      - file: mongodb bic archive {{ mongodb.bic.pkgname }} profile
   file.symlink:
     - name: {{ mongodb.bic.binpath }}
-    - target: {{ mongodb.system.prefix }}/{{ mongodb.bic.dirname }}
+    - target: {{ mongodb.system.prefix }}/{{ mongodb.bic.pkgname }}
     - unless: test -d {{ mongodb.bic.binpath }}
 
-mongodb bic archive {{ mongodb.bic.dirname }} profile:
+mongodb bic archive {{ mongodb.bic.pkgname }} profile:
   file.managed:
     - name: /etc/profile.d/mongodb.sh
     - source: salt://mongodb/files/mongodb.profile.jinja
