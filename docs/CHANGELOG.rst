@@ -2,6 +2,22 @@
 Changelog
 =========
 
+`0.19.1 <https://github.com/saltstack-formulas/mongodb-formula/compare/v0.19.0...v0.19.1>`_ (2020-01-25)
+------------------------------------------------------------------------------------------------------------
+
+Code Refactoring
+^^^^^^^^^^^^^^^^
+
+
+* **variable:** rename private vars to (pkgname, name) (\ `55655d9 <https://github.com/saltstack-formulas/mongodb-formula/commit/55655d9d52a9b0a30c0f6ae3ac1d64aa19120bf5>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **gemfile:** restrict ``train`` gem version until upstream fix [skip ci] (\ `5405069 <https://github.com/saltstack-formulas/mongodb-formula/commit/54050694813564fe72b6af3cc6a3797f18fd69e7>`_\ )
+* **travis:** use ``major.minor`` for ``semantic-release`` version [skip ci] (\ `e3be127 <https://github.com/saltstack-formulas/mongodb-formula/commit/e3be1276b87c1fece23c75b68342d6384c7b29f2>`_\ )
+
 `0.19.0 <https://github.com/saltstack-formulas/mongodb-formula/compare/v0.18.3...v0.19.0>`_ (2019-11-29)
 ------------------------------------------------------------------------------------------------------------
 
