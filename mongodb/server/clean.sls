@@ -58,8 +58,8 @@ mongodb server cleanup:
   file.absent:
     - names:
       - {{ mongodb.server.shell.mongorc }}
-      - {{ mongodb.system.prefix }}/{{ mongodb.server.dirname }}
-      - {{ mongodb.dl.tmpdir }}/{{ mongodb.server.arcname }}
+      - {{ mongodb.system.prefix }}/{{ mongodb.server.pkgname }}
+      - {{ mongodb.dl.tmpdir }}/{{ mongodb.server.name }}
       - /etc/logrotate.d/mongodb-mongod
       - /etc/logrotate.d/mongodb-mongos
       - /etc/logrotate.d/mongodb-server

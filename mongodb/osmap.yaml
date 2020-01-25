@@ -47,7 +47,6 @@ Windows:
     # yamllint disable-line rule:line-length
     source_hash: sha512=d8e98efea4a694786556773ad8234eb8b85f04afc3b31c75a81c4e81f3a2a5be75298ec78b5666bedc4d6f1bdb8b43b6880670b50c7767ce11874875dff54541
 
-
 MacOS:
   system:
     use_firewalld: false
