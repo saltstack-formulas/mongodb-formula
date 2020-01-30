@@ -52,6 +52,7 @@
 {{ distro_codename('ubuntu', 'cosmic', 'ubuntu1804', 'multiverse') }}
 
 # Redhat
+{{ distro_codename('rhel', 'CentOS Linux 8 (Core)',    'rhel80') }}
 {{ distro_codename('rhel', 'CentOS Linux 7 (Core)',    'rhel70') }}
 {{ distro_codename('rhel', 'Fedora 27 (Twenty Seven)', 'rhel70') }}
 {{ distro_codename('rhel', 'Fedora 28 (Twenty Eight)', 'rhel70') }}
