@@ -11,4 +11,4 @@ mongodb:
     package: robo3t
     use_repo: false
     use_archive: true
-    binpath: None
+    binpath: null

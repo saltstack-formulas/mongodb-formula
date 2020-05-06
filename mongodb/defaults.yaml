@@ -33,7 +33,7 @@ mongodb:
     version: 4.0
     use_repo: true
     use_archive: false
-    url: None
+    url: null
     use_schema: false
     disable_transparent_hugepages: true
     binpath: /usr
