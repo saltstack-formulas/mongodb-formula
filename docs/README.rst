@@ -53,32 +53,32 @@ Available states
    :local:
 
 ``mongodb``
-^^^^^^^^^^^
+^^^^^^^^^
 
 Metastate to deploy MongoDB products from packages and/or archive files.  
 
 ``mongodb.server``
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
 
 Deploy and configure MongoDB "Community Server" and start 'mongos' and 'mongod' services.
 
 ``mongodb.bic``
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^
 
 Deploy and configure MongoDB "Connector for BI" and start 'mongosqld' service.
 
 ``mongodb.compass``
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
 
 Deploy Compass, the GUI for MongoDB
 
 ``mongodb.robo3t``
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
 
 Deploy Robo 3T (formerly Robomongo), another GUI for MongoDB
 
 ``mongodb.clean``
-^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 Metastate to uninstall MongoDB products
 

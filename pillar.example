@@ -3,24 +3,6 @@
 ---
 mongodb:
 
-  ## NO PILLAR DATA ##
-
-
-  ## MINIMAL EXAMPLE ##
-
-  server:
-    ######## install from OS distribution (default: true)
-    use_repo: true
-    version: 4.0
-    ######## install from archive file (default: false)
-    # use_archive: true
-    # version: 4.0.3
-    # {%- if grains.os == 'MacOS' %}
-    # yamllint disable-line rule:line-length
-    # source_hash: sha512=001f2f480ef70edc423f08ff3b8d299a404f3544318737aa7db3a303e681b5ba3e6b3c605a84ea75b48e7ed9427a8ddbad39b85811f353180e95b1054480b166
-    # {%- endif %}
-
-
   ## DETAILED EXAMPLE ##
 
   robo3t:
