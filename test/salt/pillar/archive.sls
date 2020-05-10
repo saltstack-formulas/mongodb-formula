@@ -11,11 +11,8 @@ mongodb:
   server:
     package: mongodb-org
     version: 4.2
-    use_repo: true
-    repo:
-      # `keyid` for version `4.2` (Debian-based)
-      keyid: E162F504A20CDF15827F718D4B7C549A058F8B6B
-    use_archive: false
+    use_repo: false
+    use_archive: true
   bic:
     version: 2.7.0
     use_repo: false

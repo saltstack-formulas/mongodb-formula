@@ -147,6 +147,7 @@ suites:
       state_top:
         base:
           '*':
+            - mongodb.clean
             - mongodb
       pillars:
         top.sls:
@@ -158,3 +159,20 @@ suites:
     verifier:
       inspec_tests:
         - path: test/integration/default
+  - name: archive
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - mongodb.clean
+            - mongodb
+      pillars:
+        top.sls:
+          base:
+            '*':
+              - mongodb
+      pillars_from_files:
+        mongodb.sls: test/salt/pillar/archive.sls
+    verifier:
+      inspec_tests:
+        - path: test/integration/archive
