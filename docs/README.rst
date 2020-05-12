@@ -17,6 +17,7 @@ mongodb
 Install and configure MongoDB products on GNU/Linux and MacOS.
 
 .. contents:: **Table of Contents**
+   :depth: 1
 
 General notes
 -------------
