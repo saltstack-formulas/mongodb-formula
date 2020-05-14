@@ -10,7 +10,7 @@ mongodb bic archive {{ mongodb.bic.pkgname }} download:
       - {{ mongodb.system.prefix }}/{{ mongodb.bic.pkgname }}
     - makedirs: True
   pkg.installed:
-    - names: {{ mongodb.system.deps }}
+    - names: {{ mongodb.system.deps|json }}
   cmd.run:
     - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.bic.name }} {{ mongodb.bic.url }}
     - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.bic.name }}

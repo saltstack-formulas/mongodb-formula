@@ -10,7 +10,7 @@ mongodb server archive {{ mongodb.server.pkgname }} download:
       - {{ mongodb.system.prefix }}/{{ mongodb.server.pkgname }}/
     - makedirs: True
   pkg.installed:
-    - names: {{ mongodb.system.deps }}
+    - names: {{ mongodb.system.deps|json }}
   cmd.run:
     - name: curl -s -L -o {{ mongodb.dl.tmpdir }}/{{ mongodb.server.name }} {{ mongodb.server.url }}
     - unless: test -f {{ mongodb.dl.tmpdir }}/{{ mongodb.server.name }}

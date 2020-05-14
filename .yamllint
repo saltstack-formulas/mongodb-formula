@@ -12,6 +12,7 @@ ignore: |
   node_modules/
   test/**/states/**/*.sls
   .kitchen/
+  mongodb/osfamilymap.yaml
   mongodb/oscodemap.yaml
   mongodb/osmap.yaml
 
@@ -29,9 +30,6 @@ rules:
   empty-values:
     forbid-in-block-mappings: true
     forbid-in-flow-mappings: true
-  key-duplicates:
-    ignore: |
-      pillar.example
   line-length:
     # Increase from default of `80`
     # Based on https://github.com/PyCQA/flake8-bugbear#opinionated-warnings (`B950`)
