@@ -12,7 +12,6 @@ ignore: |
   node_modules/
   test/**/states/**/*.sls
   .kitchen/
-  mongodb/osfamilymap.yaml
   mongodb/oscodemap.yaml
   mongodb/osmap.yaml
 

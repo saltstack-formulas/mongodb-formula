@@ -5,7 +5,8 @@ name: archive
 title: mongodb formula
 maintainer: SaltStack Formulas
 license: Apache-2.0
-summary: Verify that the mongodb formula is setup and configured correctly
+# yamllint disable-line rule:line-length
+summary: Verify that the mongodb formula is setup and configured correctly (deploying from archive files)
 supports:
   - platform-name: debian
   - platform-name: ubuntu
