@@ -13,6 +13,9 @@ sed -i -e "s_^\(version:\).*_\1 ${1}_" FORMULA
 # Install `m2r`
 sudo -H pip install m2r
 
+# working directory
+MYPWD=$( pwd )
+
 # Copy and then convert the `.md` docs
 cp ./*.md docs/
 cd docs/ || exit
@@ -27,4 +30,4 @@ sed -i -e '1,4s/-/=/g' CHANGELOG.rst
 # cat CHANGELOG.rst
 
 # Return back to the main directory
-cd ..
+cd "${MYPWD}" || exit

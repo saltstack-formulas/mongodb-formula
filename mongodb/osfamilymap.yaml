@@ -1,50 +1,176 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
+#
+# Setup variables using grains['os_family'] based logic.
+# You just need to add the key:values for an `os_family` that differ
+# from `defaults.yaml`.
+# Only add an `os_family` which is/will be supported by the formula
+#
+# If you do not need to provide defaults via the `os_family` grain,
+# you will need to provide at least an empty dict in this file, e.g.
+# osfamilymap: {}
 ---
+{%- if grains.os == 'MacOS' %}
+    {%- set macos_rootuser = salt['cmd.run']("stat -f '%Su' /dev/console") %}
+    {%- set macos_rootgroup = salt['cmd.run']("stat -f '%Sg' /dev/console") %}
+{%- endif %}
+
 Arch:
-  server:
-    use_repo: false
+  wanted:
+    firewall: false
+  pkg:
+    deps:
+      - tar
+      - curl
+      - openssl
+      - firewalld
+
+Alpine: {}
 
 Debian:
-  server:
-    # deb unofficial packages conflict with MongoDB offical supported packages
-    use_repo: true
-  compass:
-    # yamllint disable-line rule:line-length
-    url: https://downloads.mongodb.com/compass/mongodb-compass-community_RELEASE_amd64.deb
-    ### hash for v1.17.0
-    # yamllint disable-line rule:line-length
-    source_hash: sha512=cc6b23e9e18cafc06831a51c16ca7e1d3725fc1c49e98b307d0bfe693881b0c1f088f2c231bd519eba6888a1b96733d718e25fcc7c20595b19f01183812c557d
+  wanted:
+    firewall: false
+    # package conflict occured when true
+    upstream_repo: false
+  pkg:
+    deps:
+      - curl
+      - openssl
+      - tar
+      - unzip
+      - firewalld
+    repo:
+      file: /etc/apt/sources.list.d/mongodb-org-REL.list
+      from_repo_value: {{ '' if 'oscodename' not in grains else grains.oscodename }}
+      keyid: 9DA31620334BD75D9DCB49F368818C72E52529D4
+      keyserver: hkp://keyserver.ubuntu.com:80
+                 {%- if 'oscodename' in grains %}
+      # yamllint disable-line rule:line-length
+      name: deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/{{ grains.os_family|lower }} {{ grains.oscodename }}/mongodb-org/REL {{ 'main' if grains.os in ('Debian',) else 'multiverse' }}
+      # yamllint enable-line rule:line-length
+                 {%- endif %}
+    database:
+      mongod:
+        name: mongodb-org
+    gui:
+      compass:
+        package_format: native
+        native:
+          source: https://downloads.mongodb.com/compass/mongodb-compass-community_VER_amd64.deb
+          source_hash: 8101ae6c2294072090751c7226dd0ee0467f65217bf68886a9b8b6b1f3441bc8
+          skip_verify: false
 
 RedHat:
-  system:
-    use_firewalld: true
-    use_selinux: true
-    pip: python2-pip
+  wanted:
+    firewall: false    # turned off for travis ci
+    selinux: false     # turrned off for travs citrue
+    upstream_repo: true
+    default:
+      user: mongod
+      group: mongod
+  pkg:
     deps:
+      - python2-pip
       - libcurl
-  server:
-    user: mongod
-    group: mongod
-  bic:
-    user: mongod
-    group: mongod
-  compass:
-    # yamllint disable-line rule:line-length
-    url: https://downloads.mongodb.com/compass/mongodb-compass-community-RELEASE.x86_64.rpm
-    ### hash for v1.17.0
-    # yamllint disable-line rule:line-length
-    source_hash: sha512=4478943e1dea416c17bec6603f46a8fa4c4248e3e9a5aad2f8ca2d9911146a96586713c07306a683a3129672d36cc0f7ff09a1e352c56f5d5326e9cf6fce5278
+      - openssl
+      - tar
+      - unzip
+      - firewalld
+      - {{ 'policycoreutils' if grains.osrelease|int >= 8 else 'policycoreutils-python' }}
+      - selinux-policy-targeted
+    repo:
+      # yamllint disable-line rule:line-length
+      basesource: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/REL/$basearch
+      name: mongodb-org-REL
+      humanname: MongoDB REL Repository
+      gpgkey: https://www.mongodb.org/static/pgp/server-REL.asc
+      from_repo_value: ''
+    database:
+      mongod:
+        user: mongod
+        group: mongod
+    gui:
+      compass:
+        package_format: native
+        native:
+          source: https://downloads.mongodb.com/compass/mongodb-compass-community-VER.ARCH.rpm
+          source_hash: ee4ab84302710686e8bec0309c68de5ab49d85a77b60e244a63be3e0e93562ca
+          skip_verify: false
+    connectors:
+      bi:
+        user: mongod
+        group: mongod
 
-Suse:
-  server:
-    url: 'https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-suse12-RELEASE.tgz'
-  bic:
-    # yamllint disable-line rule:line-length
-    url: 'https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-linux-x86_64-suse12-vRELEASE.tgz'
-  compass:
-    # yamllint disable-line rule:line-length
-    url: https://downloads.mongodb.com/compass/mongodb-compass-community-RELEASE.x86_64.rpm
-    ### hash for v1.17.0
-    # yamllint disable-line rule:line-length
-    source_hash: sha512=4478943e1dea416c17bec6603f46a8fa4c4248e3e9a5aad2f8ca2d9911146a96586713c07306a683a3129672d36cc0f7ff09a1e352c56f5d5326e9cf6fce5278
+Suse: {}
+
+Gentoo: {}
+
+FreeBSD:
+  identity:
+    rootgroup: wheel
+
+OpenBSD:
+  identity:
+    rootgroup: wheel
+  kernel: openbsd
+
+Solaris: {}
+
+Windows:
+  wanted:
+    disable_transparent_hugepages: false
+  dir:
+    archive: C:\\Program Files\\MongoDB
+  pkg:
+    gui:
+      robo3t:
+        archive:
+          source: https://download-test.robomongo.org/windows/robo3t-VER-windows-ARCH-7419c406.zip
+          skip_verify: true
+
+MacOS:
+  wanted:
+    disable_transparent_hugepages: false
+  dir:
+    default: /etc/defaults
+    homes: /Users
+  identity:
+    user: {{ macos_rootuser | d('') }}
+    rootuser: {{ macos_rootuser | d('') }}
+    rootgroup: {{ macos_rootgroup | d('') }}
+  pkg:
+    deps:
+      - curl
+    database:
+      mongod:
+        service:
+          name: org.mongo.mongodb.mongod
+        archive:
+          source: https://fastdl.mongodb.org/osx/mongodb-macos-ARCH-VER.tgz
+          source_hash: 701fda6ab0b49121913204596d527d89d4a533a3a7d1ca2f245c7908e1342c5b
+      mongos:
+        service:
+          name: org.mongo.mongodb.mongos
+      dbtools:
+        package_format: archive
+        archive:
+          source: https://fastdl.mongodb.org/tools/db/mongodb-database-tools-macos-ARCH-VER.tgz
+      shell:
+        package_format: archive
+        archive:
+          source: https://fastdl.mongodb.org/osx/mongodb-macos-ARCH-VER.tgz
+          skip_verify: true
+    gui:
+      compass:
+        name: MongoDB Compass Community
+        package_format: macapp
+        macapp:
+          source: https://downloads.mongodb.com/compass/mongodb-compass-community-VER-darwin-x64.dmg
+          source_hash: af2840d0a71a15d01160b547766cd291acc2f15955f1dee1ac79cc9db60153ba
+          skip_verify: true
+      robo3t:
+        name: Robo 3T
+        package_format: macapp
+        macapp:
+          source: https://download-test.robomongo.org/mac/robo3t-VER-darwin-ARCH-7419c40.dmg
+          skip_verify: true

@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+#
+# Collection of common macros
+
+{%- macro format_kwargs(kwarg) -%}
+
+  {%- filter indent(4) %}
+    {%- for k, v in kwarg|dictsort() %}
+- {{ k }}: {{ v }}
+    {%- endfor %}
+  {%- endfilter %}
+{%- endmacro %}
+
+{%- macro concat_args(args) %}
+{%-   set args = args|dictsort %}
+{%-   if args|length > 0 %}
+{%-     for k,v in args -%}
+{%-       if not k or not v %}{% continue %}{% endif -%}
+{%-         if v == True -%}
+          --{{ k }}
+{%-         elif v == False -%}
+          --no-{{ k }}
+{%-         else -%}
+          --{{ k }}={{ v }}
+{%-         endif -%}
+{%-       if not loop.last %} {% endif -%}
+{%-     endfor -%}
+{%-   endif -%}
+{%- endmacro %}

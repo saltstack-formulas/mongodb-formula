@@ -2,168 +2,95 @@
 # vim: ft=yaml
 ---
 mongodb:
+  wanted:
+    # choose what you want
+    database:
+      - mongod
+      - mongos
+      # dbtools
+      # shell
+    gui:
+      - robo3t
+         {%- if grains.kernel|lower == 'darwin' %}
+      - compass    # mongodb compass upstream rpm/deb packages has gui dependencies
+         {%- endif %}
+    connectors:
+      # bi   # enterprise subscription only
+      - kafka
+    upstream_repo: false
 
-  ## DETAILED EXAMPLE ##
-
-  robo3t:
-    ######## install from archive file
-    version: 1.2.1
-    # {%- if grains.os == 'Windows' %}
-    # yamllint disable-line rule:line-length
-    # source_hash: sha512=1d143a4eb96f639102e3586445204d111cc94accbc3e3724c973f5e34d3df2ba971601eee9b2fe2601d694067577324160fb7bf9a3e1f1daad0b91cd1c717237
-    # {%- elif grains.os == 'MacOS' %}
-    # yamllint disable-line rule:line-length
-    # source_hash: sha512=1abd0f592503c100271646ce172c4af5c1f9fb322840dc7087eb0810a31368332a671523a1dc52ce7a4a5e37d36190405188bf6fb22c857fe132ea1b15548bf9
-    # {%- else %} # Linux
-    # yamllint disable-line rule:line-length
-    source_hash: sha512=ead2c4847dc1cd4024f60f34a142af6c6818f90a37b5ae075c8b65414ee8ca8074355446c9e264094f776f7798bfba37a7c7018f94d0bec109715061ab3a57c3
-    # {%- endif %}
-
-  compass:
-    # compass will not be installed unless this is set
-    install: true
-    ######## install from archive file
-    version: 1.17.0
-
-  system:
-    userhome: /home
-    use_firewalld: false
-    use_selinux: false
-    pidpath: /var/run/mongodb
+  pkg:
     deps:
-      - curl
-      - openssl
-  dl:
-    interval: 60
-    retries: 2
-    tmpdir: /tmp/mongodbtmp
+      - python-pip
 
-  server:
-    package: mongodb-org
-    version: 4.0
-    use_repo: false
-    use_archive: false
-    use_schema: false
-    disable_transparent_hugepages: true
-    binpath: /usr  # could be /usr/local/mongodb when use_archive=true
-    user: mongodb
-    group: mongodb
-    mongod:
-      service: mongod
-      shortcut: false
-      package: mongodb-org-server
-      conf_path: /etc/mongod.conf
-      conf:
-        systemLog:
-          logAppend: false
-          destination: file
-          path: /var/log/mongodb/mongod.log
-        storage:
-          dbPath: /var/lib/mongodb/mongod
-          journal:
-            enabled: true
-        replication:
-          replSetName: "rs1"
-        sharding:
-          clusterRole: shardsvr
-        net:
-          bindIp: '{{ grains.ipv4[-1] or grains.ipv6[-1] }}'
-          port: 27018
-        processManagement:
-          timeZoneInfo: /usr/share/zoneinfo
-          fork: true
-          pidFilePath: /var/run/mongodb/mongod.pid
-      systemd:
-        file: /usr/lib/systemd/system/mongod.service
-        conf:
-          Type: forking
-          LimitFSIZE: infinity
-          LimitCPU: infinity
-          LimitAS: infinity
-          LimitNOFILE: 64000
-          LimitNPROC: 64000
-          LimitMEMLOCK: infinity
-          TasksMax: infinity
-          TasksAccounting: false
-
-    mongos:
-      service: mongos
-      shortcut: false
-      package: mongodb-org-mongos
-      conf_path: /etc/mongos.conf
-      conf:
-        systemLog:
-          destination: file
-          path: /var/log/mongodb/mongos.log
-        processManagement:
-          timeZoneInfo: /usr/share/zoneinfo
-          fork: true
-          pidFilePath: /var/run/mongodb/mongos.pid
-        net:
-          bindIp: '{{ grains.ipv4[-1] or grains.ipv6[-1] }}'
-          port: 28017
-        sharding:
-          configDB: 'rs1/{{ grains.ipv4[-1] or grains.ipv6[-1] }}:27018'
-      systemd:
-        file: /usr/lib/systemd/system/mongos.service
-        conf:
-          Type: simple
-          LimitFSIZE: infinity
-          LimitCPU: infinity
-          LimitAS: infinity
-          LimitNOFILE: 64000
-          LimitNPROC: 64000
-          LimitMEMLOCK: infinity
-          TasksMax: infinity
-          TasksAccounting: false
-    shell:
-      package: mongodb-org-shell
-      mongorc: /etc/mongorc.js
-    tools:
-      package: mongodb-org-tools
-
-  bic:
-    ######### install from archive file
-    version: 2.7.0
-    # {%- if grains.os == 'MacOS' %}
-    # source_hash: md5=b88ccf9ce4ff785fd1e65add94e4eb8e
-    # {%- endif %}
-    use_repo: false
-    use_archive: true
-    use_schema: true
-    binpath: /usr/local/bic
-    user: mongodb
-    group: mongodb
-    mongosqld:
-      service: mongosqld
-      shortcut: false
-      conf_path: /etc/mongosqld.conf
-      conf:
-        systemLog:
-          logAppend: true
-          path: /var/log/mongodb/mongosqld.log
-        schema:
-          path: /etc/mongosqld/schema
-        security:
-          enabled: false
-        mongodb:
+    database:
+      dbtools:
+        version: 100.0.1
+        archive:
+          skip_verify: true
+      shell:
+        archive:
+          skip_verify: true
+      mongod:
+        version: 4.2.6.1
+        archive:
+          skip_verify: true
+        config:
+          # http://docs.mongodb.org/manual/reference/configuration-options
+          storage:
+            dbPath: /var/lib/mongodb/mongod
+          replication:
+            replSetName: "rs1"
+          sharding:
+            clusterRole: shardsvr
           net:
-            uri: '{{ grains.ipv4[-1] or grains.ipv6[-1] }}:27018'
-            # auth:
-            #  username: root
-            #  password: changeme
-        net:
-          bindIp: '{{ grains.ipv4[-1] or grains.ipv6[-1] }}'
-          port: 3307
-      systemd:
-        file: /usr/lib/systemd/system/mongosqld.service
-        conf:
-          Type: simple
-          LimitFSIZE: infinity
-          LimitCPU: infinity
-          LimitAS: infinity
-          LimitNOFILE: 64000
-          LimitNPROC: 64000
-          LimitMEMLOCK: infinity
-          TasksMax: infinity
-          TasksAccounting: false
+            bindIp: {{ grains.ipv4[-1] or grains.ipv6[-1] or '0.0.0.0,::' }}
+            port: 27018
+        firewall:
+          ports:
+            - tcp/27017
+            - tcp/27018
+            - tcp/27019
+      mongos:
+        config:
+          net:
+            bindIp: '{{ grains.ipv4[-1] or grains.ipv6[-1] or '0.0.0.0' }}'
+          net:
+          sharding:
+            configDB: 'rs1/{{ grains.ipv4[-1] or grains.ipv6[-1] }}:27018'
+        firewall:
+          ports:
+            - tcp/9093
+            # tcp/9094
+    gui:
+      compass:
+        version: 1.21.2
+        archive:
+          skip_verify: true
+      robo3t:
+        version: 1.3.1
+    connectors:
+      bi:
+        version: 2.13.4
+        archive:
+          skip_verify: true
+        service:
+          name: mongosqld
+        firewall:
+          ports: tcp/29017
+      kafka:
+        version: 1.1.0
+        archive:
+          skip_verify: true
+      spark:
+        name: mongo-spark
+        version: 2.4.1
+        archive:
+          skip_verify: true
+
+  # Just here for testing
+  added_in_defaults: pillar_value
+  winner: pillar
+
+  linux:
+    altpriority: 10000
