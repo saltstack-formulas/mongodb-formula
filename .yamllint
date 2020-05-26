@@ -12,11 +12,9 @@ ignore: |
   node_modules/
   test/**/states/**/*.sls
   .kitchen/
-  bin/kitchen
+  pillar.example
   mongodb/osfamilymap.yaml
   mongodb/osfingermap.yaml
-  pillar.example
-  test/integration/pillar/default.sls
 
 yaml-files:
   # Default settings
@@ -35,7 +33,7 @@ rules:
   line-length:
     # Increase from default of `80`
     # Based on https://github.com/PyCQA/flake8-bugbear#opinionated-warnings (`B950`)
-    max: 98
+    max: 88
   octal-values:
     forbid-implicit-octal: true
     forbid-explicit-octal: true
