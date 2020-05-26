@@ -2,56 +2,50 @@
 Changelog
 =========
 
-`0.19.1 <https://github.com/saltstack-formulas/mongodb-formula/compare/v0.19.0...v0.19.1>`_ (2020-01-25)
-------------------------------------------------------------------------------------------------------------
-
-Code Refactoring
-^^^^^^^^^^^^^^^^
-
-
-* **variable:** rename private vars to (pkgname, name) (\ `55655d9 <https://github.com/saltstack-formulas/mongodb-formula/commit/55655d9d52a9b0a30c0f6ae3ac1d64aa19120bf5>`_\ )
-
-Continuous Integration
-^^^^^^^^^^^^^^^^^^^^^^
-
-
-* **gemfile:** restrict ``train`` gem version until upstream fix [skip ci] (\ `5405069 <https://github.com/saltstack-formulas/mongodb-formula/commit/54050694813564fe72b6af3cc6a3797f18fd69e7>`_\ )
-* **travis:** use ``major.minor`` for ``semantic-release`` version [skip ci] (\ `e3be127 <https://github.com/saltstack-formulas/mongodb-formula/commit/e3be1276b87c1fece23c75b68342d6384c7b29f2>`_\ )
-
-`0.19.0 <https://github.com/saltstack-formulas/mongodb-formula/compare/v0.18.3...v0.19.0>`_ (2019-11-29)
-------------------------------------------------------------------------------------------------------------
+`1.0.0 <https://github.com/saltstack-formulas/mongodb-formula/compare/v0.19.1...v1.0.0>`_ (2020-05-26)
+----------------------------------------------------------------------------------------------------------
 
 Bug Fixes
 ^^^^^^^^^
 
 
-* **salt-lint:** fix all errors (\ `0b748ff <https://github.com/saltstack-formulas/mongodb-formula/commit/0b748ff3e1f1f2bf6b130c1af246e2d25f68cdfc>`_\ )
-* **shellcheck:** fix all errors (\ `0399d36 <https://github.com/saltstack-formulas/mongodb-formula/commit/0399d36805563a65c2f08d931eba0130002e6001>`_\ )
-* **yamllint:** fix all errors (\ `fe6ce81 <https://github.com/saltstack-formulas/mongodb-formula/commit/fe6ce812f4f4c478369d1b84e9f2975b47abb31c>`_\ )
+* **script:** fix some travis tests (\ `63cfb1e <https://github.com/saltstack-formulas/mongodb-formula/commit/63cfb1e388b46f82b5e555f27839f618d49734f4>`_\ )
 
 Code Refactoring
 ^^^^^^^^^^^^^^^^
 
 
-* **kitchen:** prefer ``kitchen.yml`` to ``.kitchen.yml`` (\ `7b5b905 <https://github.com/saltstack-formulas/mongodb-formula/commit/7b5b905d2755743f24e1f268bd1c837891a9a722>`_\ )
+* **all:** align to template; fix bugs and ci (\ `fc1ff28 <https://github.com/saltstack-formulas/mongodb-formula/commit/fc1ff28b9dc944bf9460c804e8a70d2be6cd4fb8>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **gemfile.lock:** add to repo with updated ``Gemfile`` [skip ci] (\ `e76b40c <https://github.com/saltstack-formulas/mongodb-formula/commit/e76b40ce14405173c1d4f88584dba8ef28c1eb07>`_\ )
+* **kitchen:** avoid using bootstrap for ``master`` instances [skip ci] (\ `498b79f <https://github.com/saltstack-formulas/mongodb-formula/commit/498b79f6ffaeef4560c02d805536d20c6f7d1ba7>`_\ )
+* **kitchen+travis:** adjust matrix to add ``3000.3`` [skip ci] (\ `f98319a <https://github.com/saltstack-formulas/mongodb-formula/commit/f98319a348c222462a0ef9bad7662e927b9f4e37>`_\ )
+* **kitchen+travis:** remove ``master-py2-arch-base-latest`` [skip ci] (\ `2220bd9 <https://github.com/saltstack-formulas/mongodb-formula/commit/2220bd95bad711817b1deebf70184555fa3d66fc>`_\ )
+* **travis:** add notifications => zulip [skip ci] (\ `81d3677 <https://github.com/saltstack-formulas/mongodb-formula/commit/81d3677a277b92b2de0998f2d98224607a32f4ac>`_\ )
+* **workflows/commitlint:** add to repo [skip ci] (\ `3e8848d <https://github.com/saltstack-formulas/mongodb-formula/commit/3e8848db7b08dd3368b969039031d61916d6a2fb>`_\ )
 
 Documentation
 ^^^^^^^^^^^^^
 
 
-* **readme:** modify according to standard structure (\ `f4af1ac <https://github.com/saltstack-formulas/mongodb-formula/commit/f4af1ac5d67632e0857e00d85252b112fc427b25>`_\ )
-* **readme:** move to ``docs/`` directory (\ `668850e <https://github.com/saltstack-formulas/mongodb-formula/commit/668850eb36e133f6c59f9e27ad3c6be32189a745>`_\ )
+* **readme:** add depth one (\ `5680c6b <https://github.com/saltstack-formulas/mongodb-formula/commit/5680c6b151c1db2d43fb81d7d3b02c3bea0eedc6>`_\ )
 
 Features
 ^^^^^^^^
 
 
-* **semantic-release:** implement for this formula (\ `c778890 <https://github.com/saltstack-formulas/mongodb-formula/commit/c778890fb6c535f4dd244e78375f75aae64cd0f4>`_\ )
+* **semantic-release:** standardise for this formula (\ `f56ba6a <https://github.com/saltstack-formulas/mongodb-formula/commit/f56ba6ac75998b97842f897266b4c6b13d9e37c7>`_\ )
 
-Tests
-^^^^^
+BREAKING CHANGES
+^^^^^^^^^^^^^^^^
 
 
-* **inspec:** add tests for package & service (\ `15b8d4c <https://github.com/saltstack-formulas/mongodb-formula/commit/15b8d4c820a20e6ccddcf3b4ecb5e6ddc6ad2e8e>`_\ )
-* **pillar:** add pillar for ``default`` suite (from ``pillar.example``\ ) (\ `2167491 <https://github.com/saltstack-formulas/mongodb-formula/commit/216749170953cb9122e0558a2e74f9e774c2f67e>`_\ )
-* **pillar:** install ``4.2`` from repo (\ `d6df790 <https://github.com/saltstack-formulas/mongodb-formula/commit/d6df790c83c541aa50d589a60f93c6d40c7ffa5b>`_\ )
+* **all:** The data dictionary is simplified and redesigned.
+  This formula is aligned to template-formula with multiple fixes.
+  Retest your states and update pillar data accordingly.
+  For developer convenience, connectors and gui states are introduced.
+  See pillar.example, defaults.yaml, and docs/README.
