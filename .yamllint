@@ -12,8 +12,9 @@ ignore: |
   node_modules/
   test/**/states/**/*.sls
   .kitchen/
-  mongodb/oscodemap.yaml
-  mongodb/osmap.yaml
+  pillar.example
+  mongodb/osfamilymap.yaml
+  mongodb/osfingermap.yaml
 
 yaml-files:
   # Default settings

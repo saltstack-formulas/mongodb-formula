@@ -1,7 +1,9 @@
 .. _readme:
 
-mongodb
-=======
+mongodb-formula
+==================
+
+Formula for MongoDB on GNU/Linux and MacOS.
 
 |img_travis| |img_sr|
 
@@ -14,7 +16,6 @@ mongodb
    :scale: 100%
    :target: https://github.com/semantic-release/semantic-release
 
-Install and configure MongoDB products on GNU/Linux and MacOS.
 
 .. contents:: **Table of Contents**
    :depth: 1
@@ -23,32 +24,67 @@ General notes
 -------------
 
 See the full `SaltStack Formulas installation and usage instructions
-<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
+<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.  If you are interested in writing or contributing to formulas, please pay attention to the `Writing Formula Section
+<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#writing-formulas>`_. If you want to use this formula, please pay attention to the ``FORMULA`` file and/or ``git tag``, which contains the currently released version. This formula is versioned according to `Semantic Versioning <http://semver.org/>`_.  See `Formula Versioning Section <https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#versioning>`_ for more details.
 
-If you are interested in writing or contributing to formulas, please pay attention to the `Writing Formula Section
-<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#writing-formulas>`_.
+Special notes
+-------------
 
-If you want to use this formula, please pay attention to the ``FORMULA`` file and/or ``git tag``,
-which contains the currently released version. This formula is versioned according to `Semantic Versioning <http://semver.org/>`_.
+By default only MongoDB server component (`mongod`) is installed.  This behaviour is configurable via pillars.
 
-See `Formula Versioning Section <https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#versioning>`_ for more details.
+.. code-block:: yaml
 
-If you need (non-default) configuration, please pay attention to the ``pillar.example`` file and/or `Special notes`_ section.
+    mongodb:
+      wanted:
+        # choose what you want or everything
+        database:
+          - mongod
+          - mongos
+          - dbtools
+          - shell
+        gui:
+          - robo3t
+          - compass
+        connectors:
+          - bi
+          - kafka
+
+Configuration can be supplied in yaml:
+
+.. code-block:: yaml
+
+    mongodb:
+      pkg:
+        database:
+          version: 4.2.6.1
+          archive:
+            skip_verify: true
+          config:
+            # http://docs.mongodb.org/manual/reference/configuration-options
+            storage:
+              dbPath: /var/lib/mongodb/mongod
+            replication:
+              replSetName: "rs1"
+            sharding:
+              clusterRole: shardsvr
+            net:
+              bindIp: '0.0.0.0,::'
+              port: 27018
+          firewall:
+            ports:
+              - tcp/27017
+              - tcp/27018
+              - tcp/27019
 
 Contributing to this repo
 -------------------------
 
 **Commit message formatting is significant!!**
 
-Please see `How to contribute <https://github.com/saltstack-formulas/.github/blob/master/CONTRIBUTING.rst>`_ for more details.
+Please see :ref:`How to contribute <CONTRIBUTING>` for more details.
 
-Special notes
--------------
-
-None
-
-Available states
-----------------
+Available metastates
+--------------------
 
 .. contents::
    :local:
@@ -56,72 +92,41 @@ Available states
 ``mongodb``
 ^^^^^^^^^
 
-Metastate to deploy MongoDB products from packages and/or archive files.  
+*Meta-state (This is a state that includes other states)*.
 
-``mongodb.server``
-^^^^^^^^^^^^^^^^
+This installs the MongoDB solution.
 
-Deploy and configure MongoDB "Community Server" and start 'mongos' and 'mongod' services.
 
-``mongodb.bic``
-^^^^^^^^^^^^^
-
-Deploy and configure MongoDB "Connector for BI" and start 'mongosqld' service.
-
-``mongodb.compass``
+``mongodb.install``
 ^^^^^^^^^^^^^^^^^
 
-Deploy Compass, the GUI for MongoDB
+This state will install mongodb components on MacOS and GNU/Linux from archive.
 
-``mongodb.robo3t``
+``mongodb.config``
 ^^^^^^^^^^^^^^^^
 
-Deploy Robo 3T (formerly Robomongo), another GUI for MongoDB
+This state will apply mongodb service configuration (files).
+
+``mongodb.service``
+^^^^^^^^^^^^^^^^^
+
+This state will start mongodb component services.
+
+``mongodb.service.clean``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+This state will stop mongodb component services.
+
+``mongodb.config.clean``
+^^^^^^^^^^^^^^^^^^^^^^
+
+This state will remove mongodb service configuration (files).
 
 ``mongodb.clean``
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
 
-Metastate to uninstall MongoDB products
+This state will remove mongodb components on MacOS and GNU/Linux.
 
-Other states
-------------
-
-``mongodb.server.config``
-
-``mongodb.server.clean``
-
-``mongodb.bic.config``
-
-``mongodb.bic.clean``
-
-``mongodb.compass.clean``
-
-``mongodb.robo3t.clean``
-
-
-Pillar Data
------------
-Use Linux distribution repo::
-
-       mongodb:
-         server:
-           version: '4.0'
-
-Use official upstream repo::
-
-       mongodb:
-         server:
-           use_repo: true
-           version: '4.0'
-
-Use official upstream archives::
-
-       mongodb:
-         server:
-           use_archive: true
-           version: '4.0.3'
-         bic:
-           version: 2.7.0
 
 Testing
 -------
@@ -168,4 +173,3 @@ Runs all of the stages above in one go: i.e. ``destroy`` + ``converge`` + ``veri
 
 Gives you SSH access to the instance for manual testing.
 
-.. vim: fenc=utf-8 spell spl=en cc=100 tw=99 fo=want sts=2 sw=2 et

@@ -1,0 +1,50 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+{% macro m(name, uri, oscode) %}
+{{ uriname|default(name, true) }}:
+  pkg:
+    database:
+      mongod:
+        package_format: archive
+        archive:
+          source: https://fastdl.mongodb.org/linux/mongodb-linux-ARCH-{{ oscode }}-VER.tgz
+          source_hash: https://fastdl.mongodb.org/linux/mongodb-linux-ARCH-{{ oscode }}-VER.tgz.sha256
+        native:
+          source: https://repo.mongodb.org/{{ uri|replace('COMP', 'mongodb-org-server') }}
+          skip_verify: true
+      dbtools:
+        package_format: archive
+        archive:
+          source: https://fastdl.mongodb.org/tools/db/mongodb-database-tools-{{ oscode }}-ARCH-VER.tgz  # noqa 204
+          skip_verify: true
+      shell:
+        # package_format: native  # Debian 10 error: 'LookupError There is no member named control'
+        native:
+          source: https://repo.mongodb.org/{{ uri|replace('COMP', 'mongodb-org-shell') }}
+          skip_verify: true
+    connectors:
+      bi:
+        package_format: archive
+        archive:
+          source: https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-linux-ARCH-{{ oscode }}-vVER.tgz  # noqa 204
+          source_hash: https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-linux-ARCH-{{ oscode }}-vVER.tgz.sha256  # noqa 204
+
+{% endmacro %}
+
+{# native sources: https://www.mongodb.com/download-center/community #}
+{{ m('Amazon-2', 'yum/amazon/2/mongodb-org/REL/ARCH/RPMS/COMP-VER.amzn2.ARCH.rpm', 'amazon2') }}
+{{ m('CentOS Linux-6', 'yum/redhat/6/mongodb-org/REL/ARCH/RPMS/COMP-VER.el6.ARCH.rpm', 'rhel62') }}
+{{ m('CentOS Linux-7', 'yum/redhat/7/mongodb-org/REL/ARCH/RPMS/COMP-VER.el7.ARCH.rpm', 'rhel70') }}
+{{ m('CentOS Linux-8', 'um/redhat/8/mongodb-org/REL/ARCH/RPMS/COMP-VER.el8.ARCH.rpm', 'rhel80') }}
+{{ m('Fedora-31', 'yum/redhat/8/mongodb-org/REL/ARCH/RPMS/COMP-VER.el8.ARCH.rpm', 'rhel80') }}
+{{ m('Fedora-32', 'yum/redhat/8/mongodb-org/REL/ARCH/RPMS/COMP-VER.el8.ARCH.rpm', 'rhel80') }}
+{{ m('Fedora-33', 'yum/redhat/8/mongodb-org/REL/ARCH/RPMS/COMP-VER.el8.ARCH.rpm', 'rhel80') }}
+{{ m('Leap-15', 'zypper/suse/15/mongodb-org/REL/ARCH/RPMS/COMP-VER.suse15.ARCH.rpm', 'suse15') }}
+{{ m('Suse', 'zypper/suse/12/mongodb-org/REL/ARCH/RPMS/COMP-VER.suse12.ARCH.rpm', 'suse12') }}
+{{ m('Debian-9', 'apt/debian/dists/stretch/mongodb-org/REL/main/binary-amd64/COMP_VER_amd64.deb', 'debian92') }}
+{{ m('Debian-10', 'apt/debian/dists/buster/mongodb-org/REL/main/binary-amd64/COMP_VER_amd64.deb', 'debian10') }}
+
+{{ m('Ubuntu-16.04', 'apt/ubuntu/dists/xenial/mongodb-org/REL/multiverse/binary-amd64/COMP_VER_amd64.deb', 'ubuntu1604') }}  # noqa 204
+{{ m('Ubuntu-18.04', 'apt/ubuntu/dists/bionic/mongodb-org/REL/multiverse/binary-amd64/COMP_VER_amd64.deb', 'ubuntu1804') }}  # noqa 204
+{{ m('Ubuntu-20.04', 'apt/ubuntu/dists/bionic/mongodb-org/REL/multiverse/binary-amd64/COMP_VER_amd64.deb', 'ubuntu2004') }}  # noqa 204
