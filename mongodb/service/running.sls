@@ -15,15 +15,16 @@ include:
   file.managed:
     - name: /etc/init.d/disable-transparent-hugepages
     - source: salt://{{ formula }}/files/disable-transparent-hugepages.init
-    - unless: test -f /etc/init.d/disable-transparent-hugepages
-    - onlyif: {{ d.wanted.disable_transparent_hugepages }}
+    - unless: test -f /etc/init.d/disable-transparent-hugepages 2>/dev/null
+    - onlyif: {{ grains.kernel|lower == 'linux' and d.wanted.disable_transparent_hugepages }}
     - mode: '0755'
     - makedirs: True
     - require:
       - sls: {{ sls_software_install }}
   cmd.run:
     - name: echo never >/sys/kernel/mm/transparent_hugepage/enabled
-    - onlyif: {{ d.wanted.disable_transparent_hugepages }}
+    - unless: test -f /etc/init.d/disable-transparent-hugepages 2>/dev/null
+    - onlyif: {{ grains.kernel|lower == 'linux' and d.wanted.disable_transparent_hugepages }}
     - require:
       - file: {{ formula }}-service-running-prerequisites
         {%- if d.wanted.firewall %}
