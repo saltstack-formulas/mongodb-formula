@@ -20,19 +20,18 @@
         )
       )
     )
- %}
+%}
+{%- set d = salt['grains.filter_by']( {'defaults': defaults}, default='defaults', merge=_config) %}
 
 # depreciate two params
 {%- if 'software_component_matrix' in d %}
-    {%- do d.update({ 'components': d.software_component_matrix %}
+    {%- do d.update({ 'components': d.software_component_matrix }) %}
 {%- endif %}
 {%- if 'software_package_matrix' in d %}
-    {%- do d.update({ 'use_upstream': d.software_package_matrix %}
+    {%- do d.update({ 'use_upstream': d.software_package_matrix }) %}
 {%- endif %}
 
 # build dict
-{%- set d = salt['grains.filter_by']( {'defaults': defaults}, default='defaults', merge=_config) %}
-
 {%- for comp in d.components %}
     {%- if comp in d.pkg and d.pkg[comp] is mapping %}
         {%- for name,v in d.pkg[comp].items() %}

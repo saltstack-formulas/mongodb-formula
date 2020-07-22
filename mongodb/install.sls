@@ -76,7 +76,7 @@ include:
                             {#- NATIVE PACKAGE INSTALL #}
 
                         {%- if package == 'native' %}
-                            {%- if d.use_upstream = 'repo' and 'repo' in d.pkg and d.pkg.repo %}
+                            {%- if d.use_upstream == 'repo' and 'repo' in d.pkg and d.pkg.repo %}
   pkgrepo.managed:
     {{- format_kwargs(d.pkg['repo']) }}
                             {%- endif %}
@@ -261,6 +261,7 @@ include:
         svc: {{ servicename|replace('org.mongo.mongodb.', '') }}
         config: {{ software['config_file'] }}
         binpath: {{ software['path'] }}
+        user: {{ d.default.user if 'user' not in software else software['user'] }}
 
                         {%- endif %}   {# linux/darwin #}
                     {%- endif %}       {# service #}

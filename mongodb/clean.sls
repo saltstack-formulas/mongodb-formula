@@ -81,10 +81,11 @@ include:
       - {{ d.dir.var }}/{{ name }}
       - {{ d.dir.service }}/{{ name }}.service
       - /Library/LaunchAgents/{{ name if 'name' not in service else service.name }}.plist
-    - require:
-      - file: {{ formula }}-clean-prerequisites
+    # require:
+      # file: {{ formula }}-clean-prerequisites
   cmd.run:
     - name: systemctl daemon-reload >/dev/null 2>&1 || true
+    - onlyif: {{ grains.kernel|lower == 'linux' }}
     - onchange:
       - file: {{ formula }}-{{ comp }}-{{ package }}-{{ name }}-clean-service
 
