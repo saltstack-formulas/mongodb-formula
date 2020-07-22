@@ -28,8 +28,11 @@ include:
       - group: {{ formula }}-config-clean-{{ name }}-usergroup
     - require:
       - sls: {{ sls_service_clean }}
+      - sls: {{ sls_alternatives_clean }}
   group.absent:
     - name: {{ d.default.group if 'group' not in software else software['group'] }}
+    - require:
+      - user: {{ formula }}-config-clean-{{ name }}-usergroup
                     {%- endif %}  {# users #}
 
 {{ formula }}-config-clean-{{ name }}-files:
@@ -47,6 +50,7 @@ include:
             {%- endif %}
     - require:
       - sls: {{ sls_service_clean }}
+      - sls: {{ sls_alternatives_clean }}
 
                 {%- endif %}          {# wanted #}
             {%- endfor %}             {# component #}

@@ -4,6 +4,10 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import data as d with context %}
 {%- set formula = d.formula %}
+{%- set sls_software_install = tplroot ~ '.install' %}
+
+include:
+  - {{ sls_software_install }}
 
     {%- for comp in d.components %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
@@ -19,6 +23,8 @@
     - name: {{ d.default.group if 'group' not in software else software['group'] }}
     - require_in:
       - user: {{ formula }}-config-usergroup-{{ servicename }}-install-usergroup-present
+    - require_in:
+      - sls: {{ sls_software_install }}
   user.present:
     - name: {{ user }}
     - shell: /bin/false

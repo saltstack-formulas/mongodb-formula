@@ -124,6 +124,13 @@ include:
     - group: {{ d.identity.rootgroup }}
     - require:
       - file: {{ formula }}-{{ comp }}-{{ name }}-{{ package }}-install
+    - unless:
+      - test -f {{ software['path'] }}/dummyFILENAME
+                                {%- if 'commands' in software  and software['commands'] is iterable %}
+                                    {%- for cmd in software['commands'] %}
+      - test -x {{ software['path'] }}/bin/{{ cmd }}
+                                    {%- endfor %}
+                                {%- endif %}
 
                             {%- else %}
   test.show_notification:

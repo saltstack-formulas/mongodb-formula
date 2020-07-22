@@ -20,16 +20,32 @@ include:
                             {%- set servicename = name if 'service' not in software else software.service.name %}
 
 {{ formula }}-service-dead-{{ comp }}-{{ servicename }}-clean:
+            {%- if grains.kernel|lower == 'darwin' %}  {# service.running is buggy #}
+  cmd.run:
+    - names:
+      - launchctl stop {{ servicename }} || true
+      - launchctl unload /Library/LaunchAgents/{{ servicename }}.plist || true
+            {%- else %}
   service.dead:
     - name: {{ servicename }}
                             {% if grains.kernel|lower == 'linux' %}
     - onlyif: systemctl list-units |grep {{ servicename }} >/dev/null 2>&1
                             {%- endif %}  {# linux #}
     - enable: False
+            {%- endif %}
+    - require_in:
+      - sls: {{ sls_config_clean }}
   file.absent:
     - names:
       - {{ d.dir.service }}/{{ servicename }}.service
       - /etc/logrotate.d/{{ formula }}_{{ servicename }}
+                  {%- if 'systemLog' in config and 'destination' in config['systemLog'] %}
+                      {%- if config['systemLog']['destination'] == 'file'  %}
+      - {{ config['systemLog']['path'] }}
+                      {%- else %}
+      - {{ '/var/log/mongodb/' ~ servicename ~ '.log' }}
+                      {%- endif %} 
+                  {%- endif %} 
     - require_in:
       - sls: {{ sls_config_clean }}
                             {% if grains.kernel|lower == 'linux' %}
@@ -43,18 +59,20 @@ include:
   file.absent:
   - names:
     - /tmp/MySiLydUmMyFiLE
-                            {%- if 'processManagement' in config and config['processManagement']['pidFilePath'] %}
+               {%- if 'processManagement' in config and 'pidFilePath' in config['processManagement'] %}
     - {{ config['processManagement']['pidFilePath'] }}
-                            {%- endif %}
-                            {%- if 'storage' in config and 'dbPath' in config['storage'] %}
+               {%- else %}
+    - {{ '/var/run/{{ name }}.pid' }}
+               {%- endif %}
+               {%- if 'storage' in config and 'dbPath' in config['storage'] %}
     - {{ config['storage']['dbPath'] }}
-                            {%- endif %}
-                            {%- if 'schema' in config and 'path' in config['schema'] %}
+               {%- endif %}
+               {%- if 'schema' in config and 'path' in config['schema'] %}
     - {{ config['schema']['path'] }}
-                            {%- endif %}
-                            {%- if 'systemLog' in config and 'path' in config['systemLog'] %}
+               {%- endif %}
+               {%- if 'systemLog' in config and 'path' in config['systemLog'] %}
     - {{ config['systemLog']['path'] }}
-                            {%- endif %}
+               {%- endif %}
   - require_in:
     - sls: {{ sls_config_clean }}
 

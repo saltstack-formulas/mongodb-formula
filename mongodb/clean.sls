@@ -4,7 +4,7 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import data as d with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
-{%- set sls_config_clean = tplroot ~ '.config.users' %}
+{%- set sls_config_clean = tplroot ~ '.config.clean' %}
 {%- set sls_service_clean = tplroot ~ '.service.clean' %}
 {%- set formula = d.formula %}
 
@@ -15,14 +15,16 @@ include:
 {{ formula }}-clean-prerequisites:
   pip.removed:
     - names: {{ d.pkg.pips|json }}
+    - require:
+      - sls: {{ sls_service_clean }}
+      - sls: {{ sls_config_clean }}
+    - require_in:
+      - file: {{ formula }}-clean-prerequisites
   file.absent:
     - names:
       - {{ d.dir.tmp }}
       - {{ d.dir.var }}
       - /tmp/mac_shortcut.sh
-    - require:
-      - sls: {{ sls_service_clean }}
-      - sls: {{ sls_config_clean }}
 
     {%- for comp in d.components %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
@@ -42,6 +44,8 @@ include:
       - file: {{ formula }}-clean-prerequisites
   file.absent:
     - name: {{ software['path'] }}
+    - require:
+      - file: {{ formula }}-clean-prerequisites
                             {%- if d.use_upstream == 'repo' %}
   pkgrepo.absent:
     - name: {{ d.pkg['repo']['name'] }}
@@ -81,8 +85,8 @@ include:
       - {{ d.dir.var }}/{{ name }}
       - {{ d.dir.service }}/{{ name }}.service
       - /Library/LaunchAgents/{{ name if 'name' not in service else service.name }}.plist
-    # require:
-      # file: {{ formula }}-clean-prerequisites
+    - require:
+      - file: {{ formula }}-clean-prerequisites
   cmd.run:
     - name: systemctl daemon-reload >/dev/null 2>&1 || true
     - onlyif: {{ grains.kernel|lower == 'linux' }}

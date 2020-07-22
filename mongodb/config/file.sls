@@ -21,6 +21,7 @@ include:
     - makedirs: True
     - require:
       - sls: {{ sls_software_install }}
+      - sls: {{ sls_config_users }}
 
     {%- for comp in d.components %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
