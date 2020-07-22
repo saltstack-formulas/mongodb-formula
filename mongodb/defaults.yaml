@@ -2,8 +2,8 @@
 # vim: ft=yaml
 ---
 mongodb:
-  software_component_matrix: ['database', 'gui', 'connectors']
-  software_package_matrix: ['archive', 'macapp', 'native']
+  components: ['database', 'gui', 'connectors'] # depreciate software_component_matrix
+  use_upstream: ['archive', 'macapp', 'repo'] # depreciate software_package_matrix
   wanted:
     database:
       - mongod
@@ -12,7 +12,6 @@ mongodb:
     firewall: false
     selinux: false
     disable_transparent_hugepages: true
-    upstream_repo: false
   default:
     user: mongodb
     group: mongodb

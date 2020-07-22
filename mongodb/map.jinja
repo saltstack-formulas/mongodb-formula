@@ -22,9 +22,18 @@
     )
  %}
 
+# depreciate two params
+{%- if 'software_component_matrix' in d %}
+    {%- do d.update({ 'components': d.software_component_matrix %}
+{%- endif %}
+{%- if 'software_package_matrix' in d %}
+    {%- do d.update({ 'use_upstream': d.software_package_matrix %}
+{%- endif %}
+
+# build dict
 {%- set d = salt['grains.filter_by']( {'defaults': defaults}, default='defaults', merge=_config) %}
 
-{%- for comp in d.software_component_matrix %}
+{%- for comp in d.components %}
     {%- if comp in d.pkg and d.pkg[comp] is mapping %}
         {%- for name,v in d.pkg[comp].items() %}
             {%- set software = d.pkg[comp][name] %}
@@ -34,7 +43,7 @@
                 {%- set release = v.version.split('.')[0] ~ '.' ~ v.version.split('.')[1] %}
                 {%- set dir = '%s-%s'|format(name, v.version) %}
                 {%- set path = d.dir.archive ~ '/' ~ dir %}
-                {%- for package in d.software_package_matrix %}
+                {%- for package in d.use_upstream %}
                     {%- if package in v and v[package] %}
                         {%- set path = d.dir[package] if package == 'macapp' else path %}
                         {%- do software[package].update({'name': path}) %}

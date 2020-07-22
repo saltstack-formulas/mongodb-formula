@@ -24,13 +24,13 @@ include:
       - sls: {{ sls_service_clean }}
       - sls: {{ sls_config_clean }}
 
-    {%- for comp in d.software_component_matrix %}
+    {%- for comp in d.components %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
             {%- for name,v in d.pkg[comp].items() %}
                 {%- if name in d.wanted[comp] %}
                     {%- set software = d.pkg[comp][name] %}
                     {%- set package = software.package_format %}
-                    {%- if package in d.software_package_matrix %}
+                    {%- if package in d.use_upstream %}
 
                             {#- PACKAGE CLEAN #}
                         {%- if package in software and software[package] is mapping %}
@@ -42,7 +42,7 @@ include:
       - file: {{ formula }}-clean-prerequisites
   file.absent:
     - name: {{ software['path'] }}
-                            {%- if d.wanted.upstream_repo %}
+                            {%- if d.use_upstream == 'repo' %}
   pkgrepo.absent:
     - name: {{ d.pkg['repo']['name'] }}
                             {%- endif %}

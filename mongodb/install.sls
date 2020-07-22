@@ -31,13 +31,13 @@ include:
       - pkg: {{ formula }}-install-prerequisites
       - pip: {{ formula }}-install-prerequisites
 
-    {%- for comp in d.software_component_matrix %}
+    {%- for comp in d.components %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
             {%- for name,v in d.pkg[comp].items() %}
                 {%- if name in d.wanted[comp] %}
                     {%- set software = d.pkg[comp][name] %}
                     {%- set package = software.package_format %}
-                    {%- if package in d.software_package_matrix %}
+                    {%- if package in d.use_upstream %}
 
                             {# DOWNLOAD NATIVE PACKAGE #}
 
@@ -76,7 +76,7 @@ include:
                             {#- NATIVE PACKAGE INSTALL #}
 
                         {%- if package == 'native' %}
-                            {%- if d.wanted.upstream_repo and 'repo' in d.pkg and d.pkg.repo %}
+                            {%- if d.use_upstream = 'repo' and 'repo' in d.pkg and d.pkg.repo %}
   pkgrepo.managed:
     {{- format_kwargs(d.pkg['repo']) }}
                             {%- endif %}

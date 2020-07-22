@@ -22,7 +22,7 @@ include:
     - require:
       - sls: {{ sls_software_install }}
 
-    {%- for comp in d.software_component_matrix %}
+    {%- for comp in d.components %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
             {%- for name,v in d.pkg[comp].items() %}
                 {%- if name in d.wanted[comp] %}

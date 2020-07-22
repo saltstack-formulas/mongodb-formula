@@ -28,10 +28,9 @@ Arch:
 Alpine: {}
 
 Debian:
+  use_upstream: 'archive'    # using 'repo' caused a conflict
   wanted:
     firewall: false
-    # package conflict occured when true
-    upstream_repo: false
   pkg:
     deps:
       - curl
@@ -61,10 +60,10 @@ Debian:
           skip_verify: false
 
 RedHat:
+  use_upstream: 'repo'
   wanted:
     firewall: false    # turned off for travis ci
     selinux: false     # turrned off for travs citrue
-    upstream_repo: true
     default:
       user: mongod
       group: mongod
