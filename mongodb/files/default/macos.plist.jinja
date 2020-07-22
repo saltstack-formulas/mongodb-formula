@@ -12,6 +12,16 @@
     </array>
     <key>RunAtLoad</key>
     <true/>
+    <key>SoftResourceLimits</key>
+      <dict>
+        <key>NumberOfFiles</key>
+	<integer>{{ limits.soft }}</integer>
+      </dict>
+    <key>HardResourceLimits</key>
+      <dict>
+        <key>NumberOfFiles</key>
+	<integer>{{ limits.hard }}</integer>
+      </dict>
     <key>StandardErrorPath</key>
     <string>/var/log/mongodb/{{ svc }}.log</string>
     <key>StandardOutPath</key>

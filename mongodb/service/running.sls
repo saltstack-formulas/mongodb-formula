@@ -57,8 +57,8 @@ include:
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-pidpath:
   file.directory:
     - name: {{ config['processManagement']['pidFilePath'] }}
-    - user: {{ d.default.user if 'user' not in software else software['user'] }}
-    - group: {{ d.default.group if 'group' not in software else software['group'] }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
     - dir_mode: '0775'
     - makedirs: True
     - require:
@@ -84,8 +84,8 @@ include:
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-datapath:
   file.directory:
     - name: {{ config['storage']['dbPath'] }}
-    - user: {{ d.default.user if 'user' not in software else software['user'] }}
-    - group: {{ d.default.group if 'group' not in software else software['group'] }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
     - dir_mode: '0775'
     - makedirs: True
     - recurse:
@@ -113,8 +113,8 @@ include:
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-schemapath:
   file.directory:
     - name: {{ config['schema']['path'] }}
-    - user: {{ d.default.user if 'user' not in software else software['user'] }}
-    - group: {{ d.default.group if 'group' not in software else software['group'] }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
     - dir_mode: '0775'
     - makedirs: True
     - recurse:
@@ -148,8 +148,8 @@ include:
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-syslogpath:
   file.directory:
     - name: {{ salt['cmd.run']( 'dirname ' ~ path ) }}
-    - user: {{ d.default.user if 'user' not in software else software['user'] }}
-    - group: {{ d.default.group if 'group' not in software else software['group'] }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
     - dir_mode: '0775'
     - makedirs: True
     - require:
@@ -161,8 +161,8 @@ include:
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-syslogfile:
   file.managed:
     - name: {{ path }}
-    - user: {{ d.default.user if 'user' not in software else software['user'] }}
-    - group: {{ d.default.group if 'group' not in software else software['group'] }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
     - mode: '0775'
     - create: true
     - replace: false

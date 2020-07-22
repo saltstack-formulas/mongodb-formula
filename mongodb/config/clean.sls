@@ -20,7 +20,7 @@ include:
 
 {{ formula }}-config-clean-{{ name }}-usergroup:
   user.absent:
-    - name: {{ d.default.user if 'user' not in software else software['user'] }}
+    - name: {{ software['user'] }}
                         {%- if grains.os_family == 'MacOS' %}
     - onlyif: /usr/bin/dscl . list /Users | grep {{ name }} >/dev/null 2>&1
                         {%- endif %}
@@ -30,7 +30,7 @@ include:
       - sls: {{ sls_service_clean }}
       - sls: {{ sls_alternatives_clean }}
   group.absent:
-    - name: {{ d.default.group if 'group' not in software else software['group'] }}
+    - name: {{ software['group'] }}
     - require:
       - user: {{ formula }}-config-clean-{{ name }}-usergroup
                     {%- endif %}  {# users #}

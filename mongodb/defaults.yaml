@@ -12,9 +12,6 @@ mongodb:
     firewall: false
     selinux: false
     disable_transparent_hugepages: true
-  default:
-    user: mongodb
-    group: mongodb
   pkg:
     deps:
       - python-pip
@@ -189,6 +186,9 @@ mongodb:
     splay: 10
   linux:
     altpriority: 0
+  limits:
+    soft: 2048
+    hard: 4096
 
   dir:
     archive: /usr/local/mongodb

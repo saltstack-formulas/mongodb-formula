@@ -40,8 +40,8 @@ include:
                  )
               }}
     - mode: 644
-    - user: {{ d.default.user if 'user' not in software else software['user']  }}
-    - group: {{ d.default.group if 'group' not in software else software['group']  }}
+    - user: {{ software['user']  }}
+    - group: {{ software['group']  }}
     - makedirs: True
     - template: jinja
     - context:

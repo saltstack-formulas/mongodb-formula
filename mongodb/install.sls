@@ -214,8 +214,8 @@ include:
 {{ formula }}-{{ comp }}-{{ service.name }}-install-service-directory:
   file.directory:
     - name: {{ d.dir.var }}/{{ name }}
-    - user: {{ d.default.user if 'user' not in software else software['user'] }}
-    - group: {{ d.default.group if 'group' not in software else software['group'] }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
     - mode: '0755'
     - makedirs: True
     - require:
@@ -241,8 +241,8 @@ include:
         desc: {{ formula }} {{ name }} service
         name: {{ name }}
         workdir: {{ d.dir.var }}/{{ name }}
-        user: {{ d.default.user if 'user' not in software else software['user'] }}
-        group: {{ d.default.group if 'group' not in software else software['group'] }}
+        user: {{ software['user'] }}
+        group: {{ software['group'] }}
         stop: ''
         start: {{ software['path'] }}/bin/{{ name }}
     - watch_in:
@@ -252,7 +252,7 @@ include:
 
                         {%- elif grains.kernel == 'Darwin' %}
                             {%- set servicename = name if 'name' not in service else service.name %}
-
+    - require_in:
       - file: {{ formula }}-{{ comp }}-{{ servicename }}-install-service-launched
 
 {{ formula }}-{{ comp }}-{{ servicename }}-install-service-launched:
@@ -268,7 +268,8 @@ include:
         svc: {{ servicename|replace('org.mongo.mongodb.', '') }}
         config: {{ software['config_file'] }}
         binpath: {{ software['path'] }}
-        user: {{ d.default.user if 'user' not in software else software['user'] }}
+        user: {{ software['user'] }}
+        limits: {{ d.limits }}
 
                         {%- endif %}   {# linux/darwin #}
                     {%- endif %}       {# service #}
