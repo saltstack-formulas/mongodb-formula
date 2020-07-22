@@ -26,13 +26,13 @@ include:
       - {{ d.dir.var }}
       - /tmp/mac_shortcut.sh
 
-    {%- for comp in d.components %}
+    {%- for comp in d.componentypes %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
             {%- for name,v in d.pkg[comp].items() %}
                 {%- if name in d.wanted[comp] %}
                     {%- set software = d.pkg[comp][name] %}
-                    {%- set package = software.package_format %}
-                    {%- if package in d.use_upstream %}
+                    {%- set package = software['use_upstream'] %}
+                    {%- if package in d.packagetypes %}
 
                             {#- PACKAGE CLEAN #}
                         {%- if package in software and software[package] is mapping %}
@@ -46,7 +46,7 @@ include:
     - name: {{ software['path'] }}
     - require:
       - file: {{ formula }}-clean-prerequisites
-                            {%- if d.use_upstream == 'repo' %}
+                            {%- if package == 'repo' %}
   pkgrepo.absent:
     - name: {{ d.pkg['repo']['name'] }}
                             {%- endif %}

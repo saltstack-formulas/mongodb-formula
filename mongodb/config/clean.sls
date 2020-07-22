@@ -11,7 +11,7 @@ include:
   - {{ sls_service_clean }}
   - {{ sls_alternatives_clean }}
 
-    {%- for comp in d.components %}
+    {%- for comp in d.componentypes %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
             {%- for name,v in d.pkg[comp].items() %}
                 {%- if name in d.wanted[comp] %}

@@ -39,7 +39,7 @@ include:
         {%- endif %}
     {%- endif %}
 
-    {%- for comp in d.components %}
+    {%- for comp in d.componentypes %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
             {%- for name,v in d.pkg[comp].items() %}
                 {%- if name in d.wanted[comp] %}
@@ -135,7 +135,7 @@ include:
                                 {%- endif %}
 
                             {%- endif %}
-                            {%- set path = '/var/log/mongodb/' ~ servicename ~ '.log' %} 
+                            {%- set path = '/var/log/mongodb/' ~ servicename ~ '.log' %}
                             {%- if 'systemLog' in config and 'destination' in config['systemLog'] %}
                                 {%- if config['systemLog']['destination'] == 'file'  %}
                                     {%- if 'path' in config['systemLog'] %}

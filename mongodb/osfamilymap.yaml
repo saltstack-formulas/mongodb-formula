@@ -28,7 +28,6 @@ Arch:
 Alpine: {}
 
 Debian:
-  use_upstream: 'archive'    # using 'repo' caused a conflict
   wanted:
     firewall: false
   pkg:
@@ -51,16 +50,16 @@ Debian:
     database:
       mongod:
         name: mongodb-org
+        use_upstream: 'archive'    # using 'repo' caused a conflict
     gui:
       compass:
-        package_format: native
+        use_upstream: native
         native:
           source: https://downloads.mongodb.com/compass/mongodb-compass-community_VER_amd64.deb
           source_hash: 8101ae6c2294072090751c7226dd0ee0467f65217bf68886a9b8b6b1f3441bc8
           skip_verify: false
 
 RedHat:
-  use_upstream: 'repo'
   wanted:
     firewall: false    # turned off for travis ci
     selinux: false     # turrned off for travs citrue
@@ -86,11 +85,16 @@ RedHat:
       from_repo_value: ''
     database:
       mongod:
+          {%- if 'osfinger' in grains and 'amazon' in grains.osfinger|lower %}
+        use_upstream: 'archive'
+          {%- else %}
+        use_upstream: 'repo'
+          {%- endif %}
         user: mongod
         group: mongod
     gui:
       compass:
-        package_format: native
+        use_upstream: native
         native:
           source: https://downloads.mongodb.com/compass/mongodb-compass-community-VER.ARCH.rpm
           source_hash: ee4ab84302710686e8bec0309c68de5ab49d85a77b60e244a63be3e0e93562ca
@@ -151,25 +155,25 @@ MacOS:
         service:
           name: org.mongo.mongodb.mongos
       dbtools:
-        package_format: archive
+        use_upstream: archive
         archive:
           source: https://fastdl.mongodb.org/tools/db/mongodb-database-tools-macos-ARCH-VER.tgz
       shell:
-        package_format: archive
+        use_upstream: archive
         archive:
           source: https://fastdl.mongodb.org/osx/mongodb-macos-ARCH-VER.tgz
           skip_verify: true
     gui:
       compass:
         name: MongoDB Compass Community
-        package_format: macapp
+        use_upstream: macapp
         macapp:
           source: https://downloads.mongodb.com/compass/mongodb-compass-community-VER-darwin-x64.dmg
           source_hash: af2840d0a71a15d01160b547766cd291acc2f15955f1dee1ac79cc9db60153ba
           skip_verify: true
       robo3t:
         name: Robo 3T
-        package_format: macapp
+        use_upstream: macapp
         macapp:
           source: https://download-test.robomongo.org/mac/robo3t-VER-darwin-ARCH-7419c40.dmg
           skip_verify: true
