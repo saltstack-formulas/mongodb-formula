@@ -27,7 +27,7 @@ include:
     - onlyif: {{ grains.kernel|lower == 'linux' and d.wanted.disable_transparent_hugepages }}
     - require:
       - file: {{ formula }}-service-running-prerequisites
-        {%- if d.wanted.firewall %}
+        {%- if d.wanted.firewall and grains.kernel|lower == 'linux' %}
   pkg.installed:
     - name: firewalld
     - reload_modules: true
