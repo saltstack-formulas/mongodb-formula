@@ -90,13 +90,13 @@ control 'mongodb components' do
     its('owner') { should eq 'root' }
     its('group') { should eq 'root' }
   end
-  describe file('/etc/mongodb/mongod.yml') do
+  describe file('/etc/mongodb/mongod.conf') do
     it { should exist }
     its('mode') { should cmp '0644' }
     # its('owner') { should eq 'mongodb' }
     # its('group') { should eq 'mongodb' }
   end
-  describe file('/etc/mongodb/mongos.yml') do
+  describe file('/etc/mongodb/mongos.conf') do
     it { should exist }
     its('mode') { should cmp '0644' }
     its('owner') { should eq 'mongos' }

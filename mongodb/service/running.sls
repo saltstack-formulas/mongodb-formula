@@ -11,16 +11,18 @@ include:
   - {{ sls_config_users }}
   - {{ sls_software_install }}
 
+    {%- if grains.kernel|lower == 'linux' %}
 {{ formula }}-service-running-prerequisites:
   file.managed:
     - name: /etc/init.d/disable-transparent-hugepages
     - source: salt://{{ formula }}/files/disable-transparent-hugepages.init
-    - unless: test -f /etc/init.d/disable-transparent-hugepages
+    - unless: test -f /etc/init.d/disable-transparent-hugepages 2>/dev/null
     - onlyif: {{ d.wanted.disable_transparent_hugepages }}
     - mode: '0755'
     - makedirs: True
     - require:
       - sls: {{ sls_software_install }}
+      - sls: {{ sls_config_users }}
   cmd.run:
     - name: echo never >/sys/kernel/mm/transparent_hugepage/enabled
     - onlyif: {{ d.wanted.disable_transparent_hugepages }}
@@ -35,6 +37,7 @@ include:
     - onlyif: systemctl list-units | grep firewalld >/dev/null 2>&1
     - enable: True
         {%- endif %}
+    {%- endif %}
 
     {%- for comp in d.software_component_matrix %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
@@ -96,7 +99,7 @@ include:
   selinux.fcontext_policy_present:
     - name: '{{ config['storage']['dbPath'] }}(/.*)?'
     - sel_type: {{ name }}_var_lib_t
-    - require:
+    - onchanges:
       - file: {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-datapath
     - require_in:
       - selinux: {{ formula }}-service-running-{{ comp }}-{{ servicename }}-selinux-applied
@@ -192,7 +195,7 @@ include:
                             {%- endif %}
 
                         {%- endif %}  {# config #}
-                        {%- if d.wanted.firewall and 'firewall' in software %}
+                        {%- if grains.kernel == 'Linux' and d.wanted.firewall and 'firewall' in software %}
 
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-firewall-present:
   firewalld.present:

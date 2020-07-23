@@ -180,7 +180,7 @@ include:
                                     {#- SYMLINK INSTALL #}
 
                         {%- if grains.kernel|lower in ('linux', 'darwin') %}
-                            {%- if package in ('archve', 'macapp') %}
+                            {%- if package in ('archive', 'macapp') %}
                                 {%- if d.linux.altpriority|int <= 0 or grains.os_family in ('MacOS', 'Arch') %}
                                     {%- if 'commands' in software  and software['commands'] is iterable %}
                                         {%- for cmd in software['commands'] %}
@@ -246,6 +246,7 @@ include:
                         {%- elif grains.kernel == 'Darwin' %}
                             {%- set servicename = name if 'name' not in service else service.name %}
 
+    - require_in:
       - file: {{ formula }}-{{ comp }}-{{ servicename }}-install-service-launched
 
 {{ formula }}-{{ comp }}-{{ servicename }}-install-service-launched:

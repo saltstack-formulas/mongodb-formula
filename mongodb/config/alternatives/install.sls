@@ -58,4 +58,12 @@ include:
             {%- endfor %}                  {# component #}
         {%- endif %}                       {# wanted #}
     {%- endfor %}                          {# components #}
-{%- endif %}                               {# linux #}
+
+{%- else %}
+
+{{ formula }}-config-alternatives-install-notification:
+  test.show_notification:
+    - text: |
+        Note: The linux alternatives state is not applicable for {{ grains.os }}
+
+{%- endif %}                               {# os #}

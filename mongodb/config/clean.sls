@@ -37,7 +37,7 @@ include:
     - names:
             {%- if 'service' in software and software['service'] is mapping %}
                 {%- set servicename = name if 'service' not in software else software.service.name %}
-      - {{ d.dir.etc }}/{{ servicename|replace('org.mongo.mongodb.', '') }}.yml
+      - {{ d.dir.etc }}/{{ servicename|replace('org.mongo.mongodb.', '') }}.conf
             {%- endif %}
             {%- if 'config_file' in software and 'config' in software and software['config'] is mapping %}
       - {{ software['config_file'] }}
