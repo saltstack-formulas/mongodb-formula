@@ -216,7 +216,7 @@ include:
                             {%- endif %}
 
                         {%- endif %}  {# config #}
-                        {%- if d.wanted.firewall and 'firewall' in software %}
+                        {%- if grains.kernel == 'Linux' and d.wanted.firewall and 'firewall' in software %}
 
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-firewall-present:
   firewalld.present:
