@@ -11,16 +11,18 @@ include:
   - {{ sls_config_users }}
   - {{ sls_software_install }}
 
+    {%- if grains.kernel|lower == 'linux' %}
 {{ formula }}-service-running-prerequisites:
   file.managed:
     - name: /etc/init.d/disable-transparent-hugepages
     - source: salt://{{ formula }}/files/disable-transparent-hugepages.init
-    - unless: test -f /etc/init.d/disable-transparent-hugepages
+    - unless: test -f /etc/init.d/disable-transparent-hugepages 2>/dev/null
     - onlyif: {{ d.wanted.disable_transparent_hugepages }}
     - mode: '0755'
     - makedirs: True
     - require:
       - sls: {{ sls_software_install }}
+      - sls: {{ sls_config_users }}
   cmd.run:
     - name: echo never >/sys/kernel/mm/transparent_hugepage/enabled
     - onlyif: {{ d.wanted.disable_transparent_hugepages }}
@@ -35,8 +37,9 @@ include:
     - onlyif: systemctl list-units | grep firewalld >/dev/null 2>&1
     - enable: True
         {%- endif %}
+    {%- endif %}
 
-    {%- for comp in d.software_component_matrix %}
+    {%- for comp in d.componentypes %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
             {%- for name,v in d.pkg[comp].items() %}
                 {%- if name in d.wanted[comp] %}
@@ -48,14 +51,14 @@ include:
                             {%- set config = software['config'] %}
 
                             {%- set service_files = [] %}
-                            {%- if 'processManagement' in config and config['processManagement']['pidFilePath'] %}
+                            {%- if 'processManagement' in config and 'pidFilePath' in config['processManagement'] %}
                                 {%- do service_files.append(config['processManagement']['pidFilePath']) %}
 
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-pidpath:
   file.directory:
     - name: {{ config['processManagement']['pidFilePath'] }}
-    - user: {{ d.default.user if 'user' not in software else software['user'] }}
-    - group: {{ d.default.group if 'group' not in software else software['group'] }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
     - dir_mode: '0775'
     - makedirs: True
     - require:
@@ -81,8 +84,8 @@ include:
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-datapath:
   file.directory:
     - name: {{ config['storage']['dbPath'] }}
-    - user: {{ d.default.user if 'user' not in software else software['user'] }}
-    - group: {{ d.default.group if 'group' not in software else software['group'] }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
     - dir_mode: '0775'
     - makedirs: True
     - recurse:
@@ -90,13 +93,14 @@ include:
       - group
     - require:
       - sls: {{ sls_config_users }}
+    - unless: test -d {{ config['storage']['dbPath'] }}
     - require_in:
       - service: {{ formula }}-service-running-{{ comp }}-{{ servicename }}
                                 {%- if 'selinux' in d.wanted and d.wanted.selinux %}
   selinux.fcontext_policy_present:
     - name: '{{ config['storage']['dbPath'] }}(/.*)?'
     - sel_type: {{ name }}_var_lib_t
-    - require:
+    - onchanges:
       - file: {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-datapath
     - require_in:
       - selinux: {{ formula }}-service-running-{{ comp }}-{{ servicename }}-selinux-applied
@@ -109,8 +113,8 @@ include:
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-schemapath:
   file.directory:
     - name: {{ config['schema']['path'] }}
-    - user: {{ d.default.user if 'user' not in software else software['user'] }}
-    - group: {{ d.default.group if 'group' not in software else software['group'] }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
     - dir_mode: '0775'
     - makedirs: True
     - recurse:
@@ -131,15 +135,21 @@ include:
                                 {%- endif %}
 
                             {%- endif %}
-                            {%- if 'systemLog' in config and 'path' in config['systemLog'] %}
-                                {%- do service_files.append(config['systemLog']['path']) %}
-                                {%- do service_files.append('/etc/logrotate.d/{{ formula }}_' ~ name ) %}
+                            {%- set path = '/var/log/mongodb/' ~ servicename ~ '.log' %}
+                            {%- if 'systemLog' in config and 'destination' in config['systemLog'] %}
+                                {%- if config['systemLog']['destination'] == 'file'  %}
+                                    {%- if 'path' in config['systemLog'] %}
+                                        {%- set path = config['systemLog']['path'] %}
+                                    {%- endif %}
+                                {%- endif %}
+                            {%- endif %}
+                            {%- do service_files.append(path) %}
 
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-syslogpath:
   file.directory:
-    - name: {{ config['systemLog']['path'] }}
-    - user: {{ d.default.user if 'user' not in software else software['user'] }}
-    - group: {{ d.default.group if 'group' not in software else software['group'] }}
+    - name: {{ salt['cmd.run']( 'dirname ' ~ path ) }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
     - dir_mode: '0775'
     - makedirs: True
     - require:
@@ -147,15 +157,26 @@ include:
     - recurse:
       - user
       - group
+
+{{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-syslogfile:
+  file.managed:
+    - name: {{ path }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
+    - mode: '0775'
+    - create: true
+    - replace: false
+    - require:
+      - file: {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-syslogpath
     - require_in:
       - service: {{ formula }}-service-running-{{ comp }}-{{ servicename }}
-                                {%- if 'selinux' in d.wanted and d.wanted.selinux %}
+                            {%- if 'selinux' in d.wanted and d.wanted.selinux %}
   selinux.fcontext_policy_present:
-    - name: '{{ logpath }}(/.*)?'
+    - name: {{ salt['cmd.run']( 'dirname ' ~ path ) }}'(/.*)?'
     - sel_type: {{ name }}_var_log_t
     - require_in:
       - selinux: {{ formula }}-service-running-{{ comp }}-{{ servicename }}-selinux-applied
-                                {%- endif %}
+                            {%- endif %}
 
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}-install-logrotate:
   file.managed:
@@ -168,19 +189,22 @@ include:
     - source: salt://{{ formula }}/files/default/logrotate.jinja
     - context:
         svc: {{ name }}
-        pattern: {{ config['systemLog']['path'] }}
+        pattern: {{ salt['cmd.run']( 'dirname ' ~ path ) }}
+                 {%- if 'processManagement' in config and 'pidFilePath' in config['processManagement'] %}
         pidpath: {{ config['processManagement']['pidFilePath'] }}
+                 {%- else %}
+        pidpath: {{ '/var/run/{{ name }}.pid' }}
+                 {%- endif %}
         days: 7
     - require_in:
       - service: {{ formula }}-service-running-{{ comp }}-{{ servicename }}
-                                {%- if 'selinux' in d.wanted and d.wanted.selinux %}
+                            {%- if 'selinux' in d.wanted and d.wanted.selinux %}
   selinux.fcontext_policy_present:
     - name: '/etc/logrotate.d/{{ formula }}_{{ svc }}(/.*)?'
     - sel_type: etc_t
     - require_in:
       - selinux: {{ formula }}-service-running-{{ comp }}-{{ servicename }}-selinux-applied
     - recursive: True
-                                {%- endif %}
                             {%- endif %}
 
                             {%- if 'selinux' in d.wanted and d.wanted.selinux %}
@@ -198,9 +222,11 @@ include:
   firewalld.present:
     - name: public
     - ports: {{ software['firewall']['ports']|json }}
+                            {%- if grains.kernel|lower == 'linux' %}
     - require:
       - pkg: {{ formula }}-service-running-prerequisites
       - service: {{ formula }}-service-running-prerequisites
+                            {%- endif %}
     - require_in:
       - service: {{ formula }}-service-running-{{ comp }}-{{ servicename }}
                         {%- endif %}  {# firewall #}
@@ -218,14 +244,20 @@ include:
       - service: {{ formula }}-service-running-{{ comp }}-{{ servicename }}
 
 {{ formula }}-service-running-{{ comp }}-{{ servicename }}:
+                        {%- if grains.kernel|lower == 'darwin' %}  {# service.running is buggy #}
+  cmd.run:
+    - names:
+      - launchctl load /Library/LaunchAgents/{{ servicename }}.plist || true
+      - launchctl start {{ servicename }}
+                        {%- else %}
   service.running:
     - name: {{ servicename }}
     - enable: True
+    - onlyif: systemctl list-units | grep {{ servicename }} >/dev/null 2>&1
+                        {%- endif %}
     - require:
       - sls: {{ sls_software_install }}
-                        {%- if grains.kernel|lower == 'linux' %}
-    - onlyif: systemctl list-units | grep {{ servicename }} >/dev/null 2>&1
-                        {%- endif %}  {# linux #}
+      - sls: {{ sls_config_users }}
                         {%- if 'config' in software and software['config'] is mapping %}
     - watch:
       - file: {{ formula }}-config-file-{{ servicename }}-file-managed

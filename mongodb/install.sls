@@ -31,13 +31,13 @@ include:
       - pkg: {{ formula }}-install-prerequisites
       - pip: {{ formula }}-install-prerequisites
 
-    {%- for comp in d.software_component_matrix %}
+    {%- for comp in d.componentypes %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
             {%- for name,v in d.pkg[comp].items() %}
                 {%- if name in d.wanted[comp] %}
                     {%- set software = d.pkg[comp][name] %}
-                    {%- set package = software.package_format %}
-                    {%- if package in d.software_package_matrix %}
+                    {%- set package = software['use_upstream'] %}
+                    {%- if package in d.packagetypes %}
 
                             {# DOWNLOAD NATIVE PACKAGE #}
 
@@ -73,10 +73,10 @@ include:
 
 {{ formula }}-{{ comp }}-{{ name }}-{{ package }}-install:
 
-                            {#- NATIVE PACKAGE INSTALL #}
+                        {#- NATIVE PACKAGE INSTALL #}
 
-                        {%- if package == 'native' %}
-                            {%- if d.wanted.upstream_repo and 'repo' in d.pkg and d.pkg.repo %}
+                        {%- if package in ('native', 'repo') %}
+                            {%- if package == 'repo' and 'repo' in d.pkg and d.pkg.repo %}
   pkgrepo.managed:
     {{- format_kwargs(d.pkg['repo']) }}
                             {%- endif %}
@@ -89,7 +89,7 @@ include:
     - require:
       - module: {{ formula }}-{{ comp }}-{{ name }}-{{ package }}-download
                                 {%- endif %}
-                            {%- else %}
+                            {%- else %}  {# package #}
     - name: {{ software.get('name', name) }}
                             {%- endif %}
     - reload_modules: true
@@ -124,6 +124,13 @@ include:
     - group: {{ d.identity.rootgroup }}
     - require:
       - file: {{ formula }}-{{ comp }}-{{ name }}-{{ package }}-install
+    - unless:
+      - test -f {{ software['path'] }}/dummyFILENAME
+                                {%- if 'commands' in software  and software['commands'] is iterable %}
+                                    {%- for cmd in software['commands'] %}
+      - test -x {{ software['path'] }}/bin/{{ cmd }}
+                                    {%- endfor %}
+                                {%- endif %}
 
                             {%- else %}
   test.show_notification:
@@ -180,7 +187,7 @@ include:
                                     {#- SYMLINK INSTALL #}
 
                         {%- if grains.kernel|lower in ('linux', 'darwin') %}
-                            {%- if package in ('archve', 'macapp') %}
+                            {%- if package in ('archive', 'macapp') %}
                                 {%- if d.linux.altpriority|int <= 0 or grains.os_family in ('MacOS', 'Arch') %}
                                     {%- if 'commands' in software  and software['commands'] is iterable %}
                                         {%- for cmd in software['commands'] %}
@@ -207,8 +214,8 @@ include:
 {{ formula }}-{{ comp }}-{{ service.name }}-install-service-directory:
   file.directory:
     - name: {{ d.dir.var }}/{{ name }}
-    - user: {{ d.default.user if 'user' not in software else software['user'] }}
-    - group: {{ d.default.group if 'group' not in software else software['group'] }}
+    - user: {{ software['user'] }}
+    - group: {{ software['group'] }}
     - mode: '0755'
     - makedirs: True
     - require:
@@ -234,8 +241,8 @@ include:
         desc: {{ formula }} {{ name }} service
         name: {{ name }}
         workdir: {{ d.dir.var }}/{{ name }}
-        user: {{ d.default.user if 'user' not in software else software['user'] }}
-        group: {{ d.default.group if 'group' not in software else software['group'] }}
+        user: {{ software['user'] }}
+        group: {{ software['group'] }}
         stop: ''
         start: {{ software['path'] }}/bin/{{ name }}
     - watch_in:
@@ -245,7 +252,7 @@ include:
 
                         {%- elif grains.kernel == 'Darwin' %}
                             {%- set servicename = name if 'name' not in service else service.name %}
-
+    - require_in:
       - file: {{ formula }}-{{ comp }}-{{ servicename }}-install-service-launched
 
 {{ formula }}-{{ comp }}-{{ servicename }}-install-service-launched:
@@ -261,6 +268,8 @@ include:
         svc: {{ servicename|replace('org.mongo.mongodb.', '') }}
         config: {{ software['config_file'] }}
         binpath: {{ software['path'] }}
+        user: {{ software['user'] }}
+        limits: {{ d.limits }}
 
                         {%- endif %}   {# linux/darwin #}
                     {%- endif %}       {# service #}

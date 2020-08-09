@@ -4,7 +4,7 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import data as d with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
-{%- set sls_config_clean = tplroot ~ '.config.users' %}
+{%- set sls_config_clean = tplroot ~ '.config.clean' %}
 {%- set sls_service_clean = tplroot ~ '.service.clean' %}
 {%- set formula = d.formula %}
 
@@ -15,22 +15,24 @@ include:
 {{ formula }}-clean-prerequisites:
   pip.removed:
     - names: {{ d.pkg.pips|json }}
+    - require:
+      - sls: {{ sls_service_clean }}
+      - sls: {{ sls_config_clean }}
+    - require_in:
+      - file: {{ formula }}-clean-prerequisites
   file.absent:
     - names:
       - {{ d.dir.tmp }}
       - {{ d.dir.var }}
       - /tmp/mac_shortcut.sh
-    - require:
-      - sls: {{ sls_service_clean }}
-      - sls: {{ sls_config_clean }}
 
-    {%- for comp in d.software_component_matrix %}
+    {%- for comp in d.componentypes %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
             {%- for name,v in d.pkg[comp].items() %}
                 {%- if name in d.wanted[comp] %}
                     {%- set software = d.pkg[comp][name] %}
-                    {%- set package = software.package_format %}
-                    {%- if package in d.software_package_matrix %}
+                    {%- set package = software['use_upstream'] %}
+                    {%- if package in d.packagetypes %}
 
                             {#- PACKAGE CLEAN #}
                         {%- if package in software and software[package] is mapping %}
@@ -42,7 +44,9 @@ include:
       - file: {{ formula }}-clean-prerequisites
   file.absent:
     - name: {{ software['path'] }}
-                            {%- if d.wanted.upstream_repo %}
+    - require:
+      - file: {{ formula }}-clean-prerequisites
+                            {%- if package == 'repo' %}
   pkgrepo.absent:
     - name: {{ d.pkg['repo']['name'] }}
                             {%- endif %}
@@ -85,6 +89,7 @@ include:
       - file: {{ formula }}-clean-prerequisites
   cmd.run:
     - name: systemctl daemon-reload >/dev/null 2>&1 || true
+    - onlyif: {{ grains.kernel|lower == 'linux' }}
     - onchange:
       - file: {{ formula }}-{{ comp }}-{{ package }}-{{ name }}-clean-service
 

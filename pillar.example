@@ -17,7 +17,6 @@ mongodb:
     connectors:
       # bi   # enterprise subscription only
       - kafka
-    upstream_repo: false
 
   pkg:
     deps:

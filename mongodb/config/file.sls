@@ -21,8 +21,9 @@ include:
     - makedirs: True
     - require:
       - sls: {{ sls_software_install }}
+      - sls: {{ sls_config_users }}
 
-    {%- for comp in d.software_component_matrix %}
+    {%- for comp in d.componentypes %}
         {%- if comp in d.wanted and d.wanted is iterable and comp in d.pkg and d.pkg[comp] is mapping %}
             {%- for name,v in d.pkg[comp].items() %}
                 {%- if name in d.wanted[comp] %}
@@ -33,14 +34,14 @@ include:
 
 {{ formula }}-config-file-{{ servicename }}-file-managed:
   file.managed:
-    - name: {{ d.dir.etc }}/{{ servicename|replace('org.mongo.mongodb.', '') }}.yml
+    - name: {{ d.dir.etc }}/{{ servicename|replace('org.mongo.mongodb.', '') }}.conf
     - source: {{ files_switch(['config.yml.jinja'],
                               lookup=formula ~ '-config-file-' ~ servicename ~ '-file-managed'
                  )
               }}
     - mode: 644
-    - user: {{ d.default.user if 'user' not in software else software['user']  }}
-    - group: {{ d.default.group if 'group' not in software else software['group']  }}
+    - user: {{ software['user']  }}
+    - group: {{ software['group']  }}
     - makedirs: True
     - template: jinja
     - context:
