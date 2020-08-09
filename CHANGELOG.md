@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.0.1](https://github.com/saltstack-formulas/mongodb-formula/compare/v1.0.0...v1.0.1) (2020-08-09)
+
+
+### Bug Fixes
+
+* **config:** rename config file to .conf ([274e50b](https://github.com/saltstack-formulas/mongodb-formula/commit/274e50ba35b73d2d9fea1991ac246a48cd21b65e))
+* **linux:** fixup linux ci/cd ([b002965](https://github.com/saltstack-formulas/mongodb-formula/commit/b00296553f36fb02ad6fae3961f1c9bad1fc415e))
+* **macos:** hugepages in linux kernel only ([25a6883](https://github.com/saltstack-formulas/mongodb-formula/commit/25a6883d36540a78baea2d478ed3a22180d04c28))
+* **macos:** launchctl and plist fixes ([543d5c7](https://github.com/saltstack-formulas/mongodb-formula/commit/543d5c7e6c0ff8a9de0b2cf3e086dee090a8fabd))
+
+
+### Code Refactoring
+
+* **jinja:** depreciate/replacer two variable names ([2f07675](https://github.com/saltstack-formulas/mongodb-formula/commit/2f076757cf31b216d11699d7604f5dc36614e454))
+
+
+### Continuous Integration
+
+* **kitchen:** use `saltimages` Docker Hub where available [skip ci] ([2f143f9](https://github.com/saltstack-formulas/mongodb-formula/commit/2f143f9dccfad53a52e0b7135a962daa60da9b9d))
+* **kitchen+travis:** add new platforms [skip ci] ([c16bb41](https://github.com/saltstack-formulas/mongodb-formula/commit/c16bb4167af505633d7b0fd79f404d3adb5e02e5))
+
+
+### Styles
+
+* **libtofs.jinja:** use Black-inspired Jinja formatting [skip ci] ([af35635](https://github.com/saltstack-formulas/mongodb-formula/commit/af35635af74ce477d720d078b11bda654f140a44))
+
 # [1.0.0](https://github.com/saltstack-formulas/mongodb-formula/compare/v0.19.1...v1.0.0) (2020-05-26)
 
 
