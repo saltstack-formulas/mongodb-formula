@@ -6,7 +6,7 @@
   pkg:
     database:
       mongod:
-        package_format: archive
+        use_upstream: archive
         archive:
           source: https://fastdl.mongodb.org/linux/mongodb-linux-ARCH-{{ oscode }}-VER.tgz
           source_hash: https://fastdl.mongodb.org/linux/mongodb-linux-ARCH-{{ oscode }}-VER.tgz.sha256
@@ -14,18 +14,18 @@
           source: https://repo.mongodb.org/{{ uri|replace('COMP', 'mongodb-org-server') }}
           skip_verify: true
       dbtools:
-        package_format: archive
+        use_upstream: archive
         archive:
           source: https://fastdl.mongodb.org/tools/db/mongodb-database-tools-{{ oscode }}-ARCH-VER.tgz  # noqa 204
           skip_verify: true
       shell:
-        # package_format: native  # Debian 10 error: 'LookupError There is no member named control'
+        # use_upstream: native  # Debian 10 error: 'LookupError There is no member named control'
         native:
           source: https://repo.mongodb.org/{{ uri|replace('COMP', 'mongodb-org-shell') }}
           skip_verify: true
     connectors:
       bi:
-        package_format: archive
+        use_upstream: archive
         archive:
           source: https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-linux-ARCH-{{ oscode }}-vVER.tgz  # noqa 204
           source_hash: https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-linux-ARCH-{{ oscode }}-vVER.tgz.sha256  # noqa 204

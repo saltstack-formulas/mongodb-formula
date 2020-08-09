@@ -2,8 +2,8 @@
 # vim: ft=yaml
 ---
 mongodb:
-  software_component_matrix: ['database', 'gui', 'connectors']
-  software_package_matrix: ['archive', 'macapp', 'native']
+  componentypes: ['database', 'gui', 'connectors']
+  packagetypes: ['archive', 'package', 'repo', 'native']
   wanted:
     database:
       - mongod
@@ -12,10 +12,6 @@ mongodb:
     firewall: false
     selinux: false
     disable_transparent_hugepages: true
-    upstream_repo: false
-  default:
-    user: mongodb
-    group: mongodb
   pkg:
     deps:
       - python-pip
@@ -36,7 +32,7 @@ mongodb:
       dbtools:
         version: 100.0.1
         name: mongodb-database-tools
-        package_format: archive
+        use_upstream: 'archive'
         archive:
           skip_verify: true
         commands:
@@ -51,14 +47,14 @@ mongodb:
       shell:
         version: 4.2.6
         name: mongodb-org-shell
-        package_format: archive
+        use_upstream: 'archive'
         config_file: /etc/mongodb/mongorc.js
         commands:
           - mongo
       mongod:
         version: 4.2.6
         name: mongodb-org-server
-        package_format: archive
+        use_upstream: 'archive'
         user: mongodb
         group: mongodb
         config_file: /etc/mongodb/mongod.conf
@@ -72,6 +68,12 @@ mongodb:
           # http://docs.mongodb.org/manual/reference/configuration-options
           storage:
             dbPath: /var/lib/mongodb/mongod
+          systemLog:
+            quiet: true
+            traceAllExceptions: false
+            path: /var/log/mongodb/mongod.log
+            destination: file
+            logAppend: true
           # replication:
           #   replSetName: "rs1"
           # sharding:
@@ -103,13 +105,17 @@ mongodb:
       mongos:
         version: 4.2.6
         name: mongodb-org-mongos
-        package_format: null      # installed with mongod
+        use_upstream: null    # installed with mongod
         user: mongos
         group: mongos
         config_file: /etc/mongodb/mongos.conf
         config:
           sharding:
             configDB: 'rs1/127.0.0.1:27018'
+          systemLog:
+            quiet: true
+            traceAllExceptions: false
+            path: /var/log/mongodb/mongos.log
         service:
           name: mongos
         firewall:
@@ -120,10 +126,10 @@ mongodb:
       compass:
         version: 1.21.2
         name: mongo-compass
-        package_format: native
+        use_upstream: native
       robo3t:
         version: 1.3.1
-        package_format: archive
+        use_upstream: archive
         archive:
           # yamllint disable-line rule:line-length
           source: https://download-test.robomongo.org/linux/robo3t-VER-linux-ARCH-7419c406.tar.gz
@@ -135,7 +141,7 @@ mongodb:
       bi:
         name: mongodb-bi
         version: 2.13.4
-        package_format: archive
+        use_upstream: archive
         archive:
           # for linux, see osfingermap; bi is unavailable for macos
           skip_verify: true
@@ -150,7 +156,7 @@ mongodb:
       kafka:
         version: 1.1.0
         name: mongo-kafka
-        package_format: archive
+        use_upstream: archive
         archive:
           # yamllint disable-line rule:line-length
           source: https://github.com/mongodb/mongo-kafka/releases/download/rVER/mongodb-kafka-connect-mongodb-VER.zip
@@ -158,7 +164,7 @@ mongodb:
       spark:
         version: 2.4.1
         name: mongo-spark
-        package_format: archive
+        use_upstream: archive
         archive:
           source: https://github.com/mongodb/mongo-spark/archive/rVER.tar.gz
           skip_verify: true
@@ -180,6 +186,9 @@ mongodb:
     splay: 10
   linux:
     altpriority: 0
+  limits:
+    soft: 2048
+    hard: 4096
 
   dir:
     archive: /usr/local/mongodb
