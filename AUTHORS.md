@@ -4,7 +4,7 @@ This list is sorted by the number of commits per contributor in _descending_ ord
 
 Avatar|Contributor|Contributions
 :-:|---|:-:
-<img class='float-left rounded-1' src='https://avatars1.githubusercontent.com/u/13322818?v=4' width='36' height='36' alt='@noelmcloughlin'>|[@noelmcloughlin](https://github.com/noelmcloughlin)|41
+<img class='float-left rounded-1' src='https://avatars1.githubusercontent.com/u/13322818?v=4' width='36' height='36' alt='@noelmcloughlin'>|[@noelmcloughlin](https://github.com/noelmcloughlin)|44
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/10231489?v=4' width='36' height='36' alt='@myii'>|[@myii](https://github.com/myii)|40
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/1396878?v=4' width='36' height='36' alt='@gravyboat'>|[@gravyboat](https://github.com/gravyboat)|18
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/2986054?v=4' width='36' height='36' alt='@kevinschoon'>|[@kevinschoon](https://github.com/kevinschoon)|9

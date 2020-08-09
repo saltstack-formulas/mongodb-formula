@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/saltstack-formulas/mongodb-formula/compare/v1.0.1...v1.0.2) (2020-08-09)
+
+
+### Bug Fixes
+
+* **issues:** file various minor issues ([cf8b457](https://github.com/saltstack-formulas/mongodb-formula/commit/cf8b457bb75fcfde90cfa77d9ad113922bb1fc74))
+
 ## [1.0.1](https://github.com/saltstack-formulas/mongodb-formula/compare/v1.0.0...v1.0.1) (2020-08-09)
 
 
