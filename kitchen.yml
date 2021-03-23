@@ -312,6 +312,7 @@ suites:
       state_top:
         base:
           '*':
+            - mongodb._mapdata
             - mongodb
       pillars:
         top.sls:
