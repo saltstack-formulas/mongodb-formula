@@ -1,7 +1,5 @@
-.. _readme:
-
 mongodb-formula
-==================
+===============
 
 Formula for MongoDB on GNU/Linux and MacOS.
 
@@ -81,7 +79,7 @@ Contributing to this repo
 
 **Commit message formatting is significant!!**
 
-Please see :ref:`How to contribute <CONTRIBUTING>` for more details.
+Please see `How to contribute <https://github.com/saltstack-formulas/.github/blob/master/CONTRIBUTING.rst>`_ for more details.
 
 Available metastates
 --------------------
@@ -90,7 +88,7 @@ Available metastates
    :local:
 
 ``mongodb``
-^^^^^^^^^
+^^^^^^^^^^^
 
 *Meta-state (This is a state that includes other states)*.
 
@@ -98,32 +96,32 @@ This installs the MongoDB solution.
 
 
 ``mongodb.install``
-^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 This state will install mongodb components on MacOS and GNU/Linux from archive.
 
 ``mongodb.config``
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 
 This state will apply mongodb service configuration (files).
 
 ``mongodb.service``
-^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 This state will start mongodb component services.
 
 ``mongodb.service.clean``
-^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will stop mongodb component services.
 
 ``mongodb.config.clean``
-^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will remove mongodb service configuration (files).
 
 ``mongodb.clean``
-^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
 
 This state will remove mongodb components on MacOS and GNU/Linux.
 
@@ -172,4 +170,3 @@ Runs all of the stages above in one go: i.e. ``destroy`` + ``converge`` + ``veri
 ^^^^^^^^^^^^^^^^^^^^^
 
 Gives you SSH access to the instance for manual testing.
-
