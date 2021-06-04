@@ -215,6 +215,7 @@ include:
                     {%- if 'service' in software and software['service'] %}
                         {%- set service = software['service'] %}
 
+                        {%- if package != 'repo' %}
 {{ formula }}-{{ comp }}-{{ service.name }}-install-service-directory:
   file.directory:
     - name: {{ d.dir.var }}/{{ name }}
@@ -226,7 +227,7 @@ include:
       - sls: {{ sls_config_users }}
       - file: {{ formula }}-install-prerequisites
     - require_in:
-                        {%-  if grains.kernel == 'Linux' %}
+                          {%- if grains.kernel == 'Linux' %}
       - file: {{ formula }}-{{ comp }}-{{ service.name }}-install-service-systemd
 
 {{ formula }}-{{ comp }}-{{ service.name }}-install-service-systemd:
@@ -251,10 +252,9 @@ include:
         start: {{ software['path'] }}/bin/{{ name }}
     - watch_in:
       - cmd: {{ formula }}-{{ comp }}-{{ service.name }}-install-service-systemd
-  cmd.run:
+  cmd.wait:
     - name: systemctl daemon-reload
-
-                        {%- elif grains.kernel == 'Darwin' %}
+                          {%- elif grains.kernel == 'Darwin' %}
                             {%- set servicename = name if 'name' not in service else service.name %}
     - require_in:
       - file: {{ formula }}-{{ comp }}-{{ servicename }}-install-service-launched
@@ -275,7 +275,8 @@ include:
         user: {{ software['user'] }}
         limits: {{ d.limits }}
 
-                        {%- endif %}   {# linux/darwin #}
+                          {%- endif %}  {# linux/darwin #}
+                        {%- endif %}   {# !repo #}
                     {%- endif %}       {# service #}
                 {%- endif %}           {# wanted #}
             {%- endfor %}              {# component #}
