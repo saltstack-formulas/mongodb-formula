@@ -23,7 +23,6 @@ Arch:
       - tar
       - curl
       - openssl
-      - firewalld
 
 Alpine: {}
 
@@ -36,7 +35,6 @@ Debian:
       - openssl
       - tar
       - unzip
-      - firewalld
     repo:
       file: /etc/apt/sources.list.d/mongodb-org-REL.list
       from_repo_value: {{ '' if 'oscodename' not in grains else grains.oscodename }}
@@ -73,7 +71,6 @@ RedHat:
       - openssl
       - tar
       - unzip
-      - firewalld
       - {{ 'policycoreutils' if grains.osrelease|int >= 8 else 'policycoreutils-python' }}
       - selinux-policy-targeted
     repo:
