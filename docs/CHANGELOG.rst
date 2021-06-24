@@ -2,6 +2,46 @@
 Changelog
 =========
 
+`1.0.3 <https://github.com/saltstack-formulas/mongodb-formula/compare/v1.0.2...v1.0.3>`_ (2021-06-24)
+---------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* remove firewalld from dependencies (\ `7bf363c <https://github.com/saltstack-formulas/mongodb-formula/commit/7bf363c9830b86939d6442d615f4d03c435435c2>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **kitchen+gitlab:** remove Ubuntu 16.04 & Fedora 32 (EOL) [skip ci] (\ `f709345 <https://github.com/saltstack-formulas/mongodb-formula/commit/f70934596c541cdfc4ab6f6276e5513101e8b6b0>`_\ )
+* add ``arch-master`` to matrix and update ``.travis.yml`` [skip ci] (\ `706b49f <https://github.com/saltstack-formulas/mongodb-formula/commit/706b49fe244a581c5621e3faabf04300d4a51687>`_\ )
+* **commitlint:** ensure ``upstream/master`` uses main repo URL [skip ci] (\ `8c82e2b <https://github.com/saltstack-formulas/mongodb-formula/commit/8c82e2b7bb4e49825cbe766a35bfc2a54c127d7b>`_\ )
+* **gemfile+lock:** use ``ssf`` customised ``kitchen-docker`` repo [skip ci] (\ `b24c101 <https://github.com/saltstack-formulas/mongodb-formula/commit/b24c101f24c33c0f5f4b07cb13fbc2daffd34f0d>`_\ )
+* **gitlab-ci:** add ``rubocop`` linter (with ``allow_failure``\ ) [skip ci] (\ `586292c <https://github.com/saltstack-formulas/mongodb-formula/commit/586292c2e2d02202cc1474f524dce3401ac630d1>`_\ )
+* **gitlab-ci:** use GitLab CI as Travis CI replacement (\ `b743808 <https://github.com/saltstack-formulas/mongodb-formula/commit/b7438088004ed6147338c4bead19e3dbb2ccee03>`_\ )
+* **kitchen+ci:** use latest pre-salted images (after CVE) [skip ci] (\ `74ce488 <https://github.com/saltstack-formulas/mongodb-formula/commit/74ce4886c79f8192c207c1268313343bfa6ca946>`_\ )
+* **kitchen+gitlab:** adjust matrix to add ``3003`` [skip ci] (\ `d3e5feb <https://github.com/saltstack-formulas/mongodb-formula/commit/d3e5feb2ed06739ffb228ed06d51b6e9f0a754f8>`_\ )
+* **kitchen+gitlab-ci:** use latest pre-salted images [skip ci] (\ `7db78ba <https://github.com/saltstack-formulas/mongodb-formula/commit/7db78ba0919a42c271c48e26a40f9ba3ac142212>`_\ )
+* **pre-commit:** add to formula [skip ci] (\ `6849f80 <https://github.com/saltstack-formulas/mongodb-formula/commit/6849f80287e608fdf7230ebe8dbdf9c4634f132e>`_\ )
+* **pre-commit:** enable/disable ``rstcheck`` as relevant [skip ci] (\ `ffe3388 <https://github.com/saltstack-formulas/mongodb-formula/commit/ffe33882c7815cc8b3ba60c282bcfac770974947>`_\ )
+* **pre-commit:** finalise ``rstcheck`` configuration [skip ci] (\ `b9e0df0 <https://github.com/saltstack-formulas/mongodb-formula/commit/b9e0df09fab10aa7cd14c32ec9b41aeab53d9f93>`_\ )
+* **pre-commit:** update hook for ``rubocop`` [skip ci] (\ `dccb17c <https://github.com/saltstack-formulas/mongodb-formula/commit/dccb17cbab62f4f1aa9ee438155f2e2ab5965d93>`_\ )
+
+Documentation
+^^^^^^^^^^^^^
+
+
+* remove files which aren't formula-specific [skip ci] (\ `b8bfdd3 <https://github.com/saltstack-formulas/mongodb-formula/commit/b8bfdd3a0e35d03095c1543f49f169972bb9f366>`_\ )
+* **readme:** fix headings and contributing link [skip ci] (\ `8e6d59b <https://github.com/saltstack-formulas/mongodb-formula/commit/8e6d59b4b3a30745e48f9ee24d6df4b5a80e883b>`_\ )
+
+Tests
+^^^^^
+
+
+* standardise use of ``share`` suite & ``_mapdata`` state [skip ci] (\ `82a3b26 <https://github.com/saltstack-formulas/mongodb-formula/commit/82a3b2611858189baa186fa098c3f5281fb6ad2f>`_\ )
+
 `1.0.2 <https://github.com/saltstack-formulas/mongodb-formula/compare/v1.0.1...v1.0.2>`_ (2020-08-09)
 ---------------------------------------------------------------------------------------------------------
 
