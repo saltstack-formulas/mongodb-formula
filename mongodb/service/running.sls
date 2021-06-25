@@ -34,7 +34,7 @@ include:
     - reload_modules: true
   service.running:
     - name: firewalld
-    - onlyif: systemctl list-units | grep firewalld >/dev/null 2>&1
+    - onlyif: systemctl list-unit-files | grep firewalld >/dev/null 2>&1
     - enable: True
         {%- endif %}
     {%- endif %}
@@ -236,7 +236,7 @@ include:
     - name: {{ servicename }}
     - onlyif:
        - {{ grains.kernel|lower == 'linux' }}
-       - systemctl list-units | grep {{ servicename }} >/dev/null 2>&1
+       - systemctl list-unit-files | grep {{ servicename }} >/dev/null 2>&1
     - require:
       - sls: {{ sls_software_install }}
       - sls: {{ sls_config_users }}
@@ -253,7 +253,7 @@ include:
   service.running:
     - name: {{ servicename }}
     - enable: True
-    - onlyif: systemctl list-units | grep {{ servicename }} >/dev/null 2>&1
+    - onlyif: systemctl list-unit-files | grep {{ servicename }} >/dev/null 2>&1
                         {%- endif %}
     - require:
       - sls: {{ sls_software_install }}

@@ -29,7 +29,7 @@ include:
   service.dead:
     - name: {{ servicename }}
                             {% if grains.kernel|lower == 'linux' %}
-    - onlyif: systemctl list-units |grep {{ servicename }} >/dev/null 2>&1
+    - onlyif: systemctl list-unit-files |grep {{ servicename }} >/dev/null 2>&1
                             {%- endif %}  {# linux #}
     - enable: False
             {%- endif %}
