@@ -1,5 +1,20 @@
 # Changelog
 
+# [1.1.0](https://github.com/saltstack-formulas/mongodb-formula/compare/v1.0.3...v1.1.0) (2021-08-09)
+
+
+### Continuous Integration
+
+* **gemfile+lock:** use `ssf` customised `inspec` repo [skip ci] ([0baed21](https://github.com/saltstack-formulas/mongodb-formula/commit/0baed214054aff08236184d096d9add7c7442e35))
+* add Debian 11 Bullseye & update `yamllint` configuration [skip ci] ([6266aa9](https://github.com/saltstack-formulas/mongodb-formula/commit/6266aa95d08e411f0a0d7ef456381ed0d5635f4f))
+* **3003.1:** update inc. AlmaLinux, Rocky & `rst-lint` [skip ci] ([b34922b](https://github.com/saltstack-formulas/mongodb-formula/commit/b34922bd9448b22940f549ce2f498d39efeaf9ba))
+* **kitchen:** move `provisioner` block & update `run_command` [skip ci] ([a1af7a5](https://github.com/saltstack-formulas/mongodb-formula/commit/a1af7a575a942a48bf1d3af026c78d790ce1e04f))
+
+
+### Features
+
+* **repository:** only take keys with values ([d71b5d1](https://github.com/saltstack-formulas/mongodb-formula/commit/d71b5d144818dd668af51bd7c158a5e797b05fa6))
+
 ## [1.0.3](https://github.com/saltstack-formulas/mongodb-formula/compare/v1.0.2...v1.0.3) (2021-06-24)
 
 
