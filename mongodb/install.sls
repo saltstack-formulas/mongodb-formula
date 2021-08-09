@@ -78,7 +78,11 @@ include:
                         {%- if package in ('native', 'repo') %}
                             {%- if package == 'repo' and 'repo' in d.pkg and d.pkg.repo %}
   pkgrepo.managed:
-    {{- format_kwargs(d.pkg['repo']) }}
+    {%- for k, v in d.pkg.repo|dictsort %}
+    {%-   if v %}
+    - {{ k }}: {{ v|json }}
+    {%-   endif %}
+    {%- endfor %}
                             {%- endif %}
   pkg.installed:
                             {%- if package in software and software[package] is mapping %}
