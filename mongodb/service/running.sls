@@ -23,6 +23,10 @@ include:
     - require:
       - sls: {{ sls_software_install }}
       - sls: {{ sls_config_users }}
+  service.enabled:
+    - name: disable-transparent-hugepages
+    - require:
+      - file: {{ formula }}-service-running-prerequisites-hugepages
   cmd.run:
     - name: echo never >/sys/kernel/mm/transparent_hugepage/enabled
     - unless: "grep '[[]never[]]' /sys/kernel/mm/transparent_hugepage/enabled"
