@@ -13,7 +13,7 @@ include:
 
     {%- if grains.kernel|lower == 'linux' %}
         {%- if d.wanted.disable_transparent_hugepages %}
-{{ formula }}-service-running-prerequisites-hugepages:
+{{ formula }}-service-running-prerequisites-hugepages-service:
   file.managed:
     - name: /etc/init.d/disable-transparent-hugepages
     - source: salt://{{ formula }}/files/disable-transparent-hugepages.init
@@ -23,15 +23,20 @@ include:
     - require:
       - sls: {{ sls_software_install }}
       - sls: {{ sls_config_users }}
+  cmd.wait:
+    - name: systemctl daemon-reload
+    - watch:
+      - file: {{ formula }}-service-running-prerequisites-hugepages-service
+    - require_in:
+      - service: {{ formula }}-service-running-prerequisites-hugepages-service
   service.enabled:
     - name: disable-transparent-hugepages
     - require:
-      - file: {{ formula }}-service-running-prerequisites-hugepages
+      - file: {{ formula }}-service-running-prerequisites-hugepages-service
+{{ formula }}-service-running-prerequisites-hugepages-now:
   cmd.run:
     - name: echo never >/sys/kernel/mm/transparent_hugepage/enabled
     - unless: "grep '[[]never[]]' /sys/kernel/mm/transparent_hugepage/enabled"
-    - require:
-      - file: {{ formula }}-service-running-prerequisites-hugepages
         {% endif %}
 
         {%- if d.wanted.firewall %}
