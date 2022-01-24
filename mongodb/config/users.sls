@@ -20,12 +20,14 @@ include:
 {{ formula }}-config-usergroup-{{ servicename }}-install-usergroup-present:
   group.present:
     - name: {{ software['group'] }}
+    - system: true
     - require_in:
       - user: {{ formula }}-config-usergroup-{{ servicename }}-install-usergroup-present
     - require_in:
       - sls: {{ sls_software_install }}
   user.present:
     - name: {{ software['user'] }}
+    - system: true
     - shell: /bin/false
     - createhome: false
     - groups:
