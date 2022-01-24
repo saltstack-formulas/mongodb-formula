@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.1](https://github.com/saltstack-formulas/mongodb-formula/compare/v1.1.0...v1.1.1) (2022-01-24)
+
+
+### Bug Fixes
+
+* **repo:** do not override service from package ([789bb9a](https://github.com/saltstack-formulas/mongodb-formula/commit/789bb9a7c205a80163bea96652e3e1e758387609))
+* **users:** mongodb as system user/group ([0054e6e](https://github.com/saltstack-formulas/mongodb-formula/commit/0054e6ebf1f58411e8a7041d7f930e9cce93490e))
+
+
+### Continuous Integration
+
+* **kitchen+ci:** update with `3004` pre-salted images/boxes [skip ci] ([1ed6fd5](https://github.com/saltstack-formulas/mongodb-formula/commit/1ed6fd507b0ac58bb095b4860a40c01246e88fe2))
+* **kitchen+ci:** update with latest `3003.2` pre-salted images [skip ci] ([c66a656](https://github.com/saltstack-formulas/mongodb-formula/commit/c66a6566142d5d30a429771601ed8562875b468a))
+* **kitchen+ci:** update with latest CVE pre-salted images [skip ci] ([67228eb](https://github.com/saltstack-formulas/mongodb-formula/commit/67228eb31c1a646996efbdc5e534d056c075c3ce))
+
 # [1.1.0](https://github.com/saltstack-formulas/mongodb-formula/compare/v1.0.3...v1.1.0) (2021-08-09)
 
 
