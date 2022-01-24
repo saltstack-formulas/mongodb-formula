@@ -12,7 +12,7 @@ include:
   - {{ sls_software_install }}
 
     {%- if grains.kernel|lower == 'linux' %}
-{{ formula }}-service-running-prerequisites:
+{{ formula }}-service-running-prerequisites-hugepages:
   file.managed:
     - name: /etc/init.d/disable-transparent-hugepages
     - source: salt://{{ formula }}/files/disable-transparent-hugepages.init
@@ -27,8 +27,10 @@ include:
     - name: echo never >/sys/kernel/mm/transparent_hugepage/enabled
     - onlyif: {{ d.wanted.disable_transparent_hugepages }}
     - require:
-      - file: {{ formula }}-service-running-prerequisites
+      - file: {{ formula }}-service-running-prerequisites-hugepages
+
         {%- if d.wanted.firewall %}
+{{ formula }}-service-running-prerequisites-firewalld:
   pkg.installed:
     - name: firewalld
     - reload_modules: true
@@ -224,8 +226,8 @@ include:
     - ports: {{ software['firewall']['ports']|json }}
                             {%- if grains.kernel|lower == 'linux' %}
     - require:
-      - pkg: {{ formula }}-service-running-prerequisites
-      - service: {{ formula }}-service-running-prerequisites
+      - pkg: {{ formula }}-service-running-prerequisites-firewalld
+      - service: {{ formula }}-service-running-prerequisites-firewalld
                             {%- endif %}
     - require_in:
       - service: {{ formula }}-service-running-{{ comp }}-{{ servicename }}
