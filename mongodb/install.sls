@@ -252,7 +252,7 @@ include:
         start: {{ software['path'] }}/bin/{{ name }}
     - watch_in:
       - cmd: {{ formula }}-{{ comp }}-{{ service.name }}-install-service-systemd
-  cmd.wait:
+  cmd.wait:  # noqa: 213
     - name: systemctl daemon-reload
                           {%- elif grains.kernel == 'Darwin' %}
                             {%- set servicename = name if 'name' not in service else service.name %}

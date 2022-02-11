@@ -90,7 +90,7 @@ include:
   cmd.run:
     - name: systemctl daemon-reload >/dev/null 2>&1 || true
     - onlyif: {{ grains.kernel|lower == 'linux' }}
-    - onchange:
+    - onchanges:
       - file: {{ formula }}-{{ comp }}-{{ package }}-{{ name }}-clean-service
 
                     {%- endif %}          {# service #}
