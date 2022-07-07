@@ -252,14 +252,23 @@ include:
                         {%- else %}
   service.running:
     - name: {{ servicename }}
-    - enable: True
+    - onlyif: systemctl list-unit-files | grep {{ servicename }} >/dev/null 2>&1
+    - require:
+      - sls: {{ sls_software_install }}
+      - sls: {{ sls_config_users }}
+                            {%- if 'config' in software and software['config'] is mapping %}
+    - watch:
+      - file: {{ formula }}-config-file-{{ servicename }}-file-managed
+                            {%- endif %}
+{{ formula }}-service-running-{{ comp }}-{{ servicename }}-enabled:
+  service.enabled:
+    - name: {{ servicename }}
     - onlyif: systemctl list-unit-files | grep {{ servicename }} >/dev/null 2>&1
                         {%- endif %}
     - require:
       - sls: {{ sls_software_install }}
       - sls: {{ sls_config_users }}
                         {%- if 'config' in software and software['config'] is mapping %}
-    - watch:
       - file: {{ formula }}-config-file-{{ servicename }}-file-managed
                         {%- endif %}
 
