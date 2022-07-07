@@ -23,6 +23,8 @@ include:
     - require:
       - sls: {{ sls_software_install }}
       - sls: {{ sls_config_users }}
+{%   if grains.get('os_family') != 'Arch' %}
+{#      Arch does not seem to find /etc/init.d services? #}
   cmd.run:
     - name: systemctl daemon-reload
     - onchanges:
@@ -33,6 +35,7 @@ include:
     - name: disable-transparent-hugepages
     - require:
       - file: {{ formula }}-service-running-prerequisites-hugepages-service
+{%   endif %}
 {{ formula }}-service-running-prerequisites-hugepages-now:
   cmd.run:
     - name: echo never >/sys/kernel/mm/transparent_hugepage/enabled
