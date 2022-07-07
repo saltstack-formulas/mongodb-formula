@@ -23,9 +23,9 @@ include:
     - require:
       - sls: {{ sls_software_install }}
       - sls: {{ sls_config_users }}
-  cmd.wait:
+  cmd.run:
     - name: systemctl daemon-reload
-    - watch:
+    - onchanges:
       - file: {{ formula }}-service-running-prerequisites-hugepages-service
     - require_in:
       - service: {{ formula }}-service-running-prerequisites-hugepages-service
