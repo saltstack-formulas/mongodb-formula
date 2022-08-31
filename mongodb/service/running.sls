@@ -12,23 +12,38 @@ include:
   - {{ sls_software_install }}
 
     {%- if grains.kernel|lower == 'linux' %}
-{{ formula }}-service-running-prerequisites:
+        {%- if d.wanted.disable_transparent_hugepages %}
+{{ formula }}-service-running-prerequisites-hugepages-service:
   file.managed:
     - name: /etc/init.d/disable-transparent-hugepages
     - source: salt://{{ formula }}/files/disable-transparent-hugepages.init
     - unless: test -f /etc/init.d/disable-transparent-hugepages 2>/dev/null
-    - onlyif: {{ d.wanted.disable_transparent_hugepages }}
     - mode: '0755'
     - makedirs: True
     - require:
       - sls: {{ sls_software_install }}
       - sls: {{ sls_config_users }}
+{%   if grains.get('os_family') != 'Arch' %}
+{#      Arch does not seem to find /etc/init.d services? #}
+  cmd.run:
+    - name: systemctl daemon-reload
+    - onchanges:
+      - file: {{ formula }}-service-running-prerequisites-hugepages-service
+    - require_in:
+      - service: {{ formula }}-service-running-prerequisites-hugepages-service
+  service.enabled:
+    - name: disable-transparent-hugepages
+    - require:
+      - file: {{ formula }}-service-running-prerequisites-hugepages-service
+{%   endif %}
+{{ formula }}-service-running-prerequisites-hugepages-now:
   cmd.run:
     - name: echo never >/sys/kernel/mm/transparent_hugepage/enabled
-    - onlyif: {{ d.wanted.disable_transparent_hugepages }}
-    - require:
-      - file: {{ formula }}-service-running-prerequisites
+    - unless: "grep '[[]never[]]' /sys/kernel/mm/transparent_hugepage/enabled"
+        {% endif %}
+
         {%- if d.wanted.firewall %}
+{{ formula }}-service-running-prerequisites-firewalld:
   pkg.installed:
     - name: firewalld
     - reload_modules: true
@@ -224,8 +239,8 @@ include:
     - ports: {{ software['firewall']['ports']|json }}
                             {%- if grains.kernel|lower == 'linux' %}
     - require:
-      - pkg: {{ formula }}-service-running-prerequisites
-      - service: {{ formula }}-service-running-prerequisites
+      - pkg: {{ formula }}-service-running-prerequisites-firewalld
+      - service: {{ formula }}-service-running-prerequisites-firewalld
                             {%- endif %}
     - require_in:
       - service: {{ formula }}-service-running-{{ comp }}-{{ servicename }}
